@@ -17,7 +17,6 @@ class TemperatureData {
 }
 
 class TemperatureChartState extends State<TemperatureChart> {
-  final theme = AppTheme();
   List<TemperatureData> data = [
     TemperatureData('00:00', 28),
     TemperatureData('01:00', 34),
@@ -47,10 +46,10 @@ class TemperatureChartState extends State<TemperatureChart> {
         ),
         enableSideBySideSeriesPlacement: false,
         primaryXAxis: CategoryAxis(
-            labelStyle: theme.textTheme.txt12white.copyWith(
+            labelStyle: AppTextTheme.txt12white.copyWith(
                 fontSize: 10,
                 fontFamily: 'ReemKufi',
-                color: theme.greyButtonInsideColor,
+                color: AppTheme.greyButtonInsideColor,
                 height: 2),
             crossesAt: -30,
             majorGridLines: MajorGridLines(width: 0),
@@ -59,9 +58,9 @@ class TemperatureChartState extends State<TemperatureChart> {
             axisLine: AxisLine(width: 0),
             labelPlacement: LabelPlacement.onTicks),
         primaryYAxis: NumericAxis(
-          labelStyle: theme.textTheme.txt12white.copyWith(
+          labelStyle: AppTextTheme.txt12white.copyWith(
             fontSize: 10,
-            color: theme.greyButtonInsideColor,
+            color: AppTheme.greyButtonInsideColor,
             fontFamily: 'ReemKufi',
           ),
           majorGridLines: MajorGridLines(width: 0, color: Colors.transparent),
@@ -89,7 +88,7 @@ class TemperatureChartState extends State<TemperatureChart> {
               // Enable data label
               dataLabelSettings: DataLabelSettings(
                 isVisible: true,
-                textStyle: theme.textTheme.txt18grey
+                textStyle: AppTextTheme.txt18grey
                     .copyWith(fontFamily: 'ReemKufi', fontSize: 12),
               )),
         ]);
@@ -100,7 +99,7 @@ class TemperatureChartState extends State<TemperatureChart> {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            boxShadow: [theme.shadowMedium],
+            boxShadow: [AppTheme.shadowMedium],
             color: Colors.white,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
@@ -114,17 +113,17 @@ class TemperatureChartState extends State<TemperatureChart> {
               margin: EdgeInsets.only(top: 30),
               child: Text(
                 data.temp.toString() + "°c",
-                style: theme.textTheme.txt18grey
-                    .copyWith(fontSize: 32, height: 0.1),
+                style:
+                    AppTextTheme.txt18grey.copyWith(fontSize: 32, height: 0.1),
               ),
             ),
             Text(
               data.time.toString(),
-              style: theme.textTheme.txt18grey.copyWith(fontSize: 10),
+              style: AppTextTheme.txt18grey.copyWith(fontSize: 10),
             ),
             Text(
               "feels like " + (data.temp - 5).toString() + "°c",
-              style: theme.textTheme.txt18grey.copyWith(fontSize: 10),
+              style: AppTextTheme.txt18grey.copyWith(fontSize: 10),
             )
           ],
         ),

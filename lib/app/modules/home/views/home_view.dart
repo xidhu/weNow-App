@@ -1,186 +1,220 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:motion_widget/motion_widget.dart';
-
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  HomeController homeController = Get.put(HomeController());
-  final SvgImages images = SvgImages();
-  final AppTheme theme = AppTheme();
-  MotionExitConfigurations menuAnimation = MotionExitConfigurations(
+  HomeController _homeController = Get.put(HomeController());
+  MotionExitConfigurations _menuAnimator = MotionExitConfigurations(
       durationMs: 500, displacement: 200, orientation: MotionOrientation.RIGHT);
-  final size = Get.size;
+
   @override
   Widget build(BuildContext context) {
+    Size size = Get.size;
     HomeViewComponents components = HomeViewComponents(size: size);
-
     return Scaffold(
         body: GetBuilder<HomeController>(
-            init: homeController,
-            builder: (homeController) {
-              return Container(
-                child: Stack(
-                  overflow: Overflow.clip,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 50, left: 10),
-                      child: Motion<Column>(
-                        durationMs: 100,
-                        isAutomatic: true,
-                        exitConfigurations: menuAnimation,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          components.menuButton(
-                              onClick: () {
-                                menuAnimation.controller.forward();
-                                homeController.closeDrawer();
-                              },
-                              shadow: theme.shadowMedium,
-                              icon: Icon(
-                                Icons.menu_open_rounded,
-                                color: theme.greyButtonInsideColor,
-                              ),
-                              color: theme.colorWhite),
-                          SizedBox(
-                            height: size.height * 0.1,
-                          ),
-                          MotionElement(
-                            interval: Interval(0.0, 0.33),
-                            child: components.menuItem(
-                                title: "Location",
-                                onClick: () {},
-                                icon: Icons.location_on_rounded),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.03,
-                          ),
-                          MotionElement(
-                            interval: Interval(0.33, 0.66),
-                            child: components.menuItem(
-                                title: "Settings",
-                                onClick: () {},
-                                icon: Icons.settings),
-                          ),
-                          SizedBox(
-                            height: size.height * 0.03,
-                          ),
-                          MotionElement(
-                            interval: Interval(0.66, 1.0),
-                            child: components.menuItem(
-                                title: "About",
-                                onClick: () {},
-                                icon: Icons.info_rounded),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 50),
-                    ),
-                    AnimatedPositioned(
-                      duration: Duration(milliseconds: 200),
-                      left: homeController.isDrawerOpen.isTrue ? 200 : 0,
-                      top: homeController.isDrawerOpen.isTrue ? 50 : 0,
-                      right: homeController.isDrawerOpen.isTrue ? -200 : 0,
-                      bottom: homeController.isDrawerOpen.isTrue ? -50 : 0,
-                      child: AbsorbPointer(
-                        absorbing: homeController.isDrawerOpen.isTrue,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [theme.shadowMediumUp]),
-                          child: Stack(
-                            overflow: Overflow.clip,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
+            init: _homeController,
+            builder: (_homeController) {
+              _homeController.menuAnimationController = _menuAnimator;
+              return GestureDetector(
+                onTap: () {
+                  if (_homeController.isDrawerOpen.value)
+                    _homeController.closeDrawer();
+                },
+                child: Container(
+                  child: Stack(
+                    overflow: Overflow.clip,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: 50, left: 10),
+                        child: Motion<Column>(
+                          durationMs: 100,
+                          isAutomatic: true,
+                          exitConfigurations: _menuAnimator,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            components.menuButton(
+                                onClick: () {
+                                  _menuAnimator.controller.forward();
+                                  _homeController.closeDrawer();
+                                },
+                                shadow: AppTheme.shadowMedium,
+                                icon: Icon(
+                                  Icons.menu_open_rounded,
+                                  color: AppTheme.greyButtonInsideColor,
                                 ),
-                              ),
-                              Container(
+                                color: AppTheme.colorWhite),
+                            SizedBox(
+                              height: size.height * 0.1,
+                            ),
+                            MotionElement(
+                              interval: Interval(0.0, 0.33),
+                              child: components.menuItem(
+                                  title: "Location",
+                                  onClick: () {
+                                    Get.offAndToNamed(AppPages.LOCATION);
+                                    _homeController.closeDrawer();
+                                  },
+                                  icon: Icons.location_on_rounded),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.03,
+                            ),
+                            MotionElement(
+                              interval: Interval(0.33, 0.66),
+                              child: components.menuItem(
+                                  title: "Settings",
+                                  onClick: () {},
+                                  icon: Icons.settings),
+                            ),
+                            SizedBox(
+                              height: size.height * 0.03,
+                            ),
+                            MotionElement(
+                              interval: Interval(0.66, 1.0),
+                              child: components.menuItem(
+                                  title: "App Info",
+                                  onClick: () {},
+                                  icon: Icons.info_rounded),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(top: 50),
+                      ),
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 200),
+                        left: _homeController.isDrawerOpen.isTrue ? 200 : 0,
+                        top: _homeController.isDrawerOpen.isTrue ? 50 : 0,
+                        right: _homeController.isDrawerOpen.isTrue ? -200 : 0,
+                        bottom: _homeController.isDrawerOpen.isTrue ? -50 : 0,
+                        child: AbsorbPointer(
+                          absorbing: _homeController.isDrawerOpen.isTrue,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [AppTheme.shadowMediumUp]),
+                            child: Stack(
+                              overflow: Overflow.clip,
+                              children: [
+                                Container(
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: size.height / 1.6,
-                                  child: Stack(
-                                    overflow: Overflow.clip,
-                                    children: [
-                                      AnimatedContainer(
-                                        duration: Duration(milliseconds: 200),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        height: size.height / 1.6,
-                                        child: Obx(() => ClipRRect(
-                                              borderRadius: homeController
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    height: size.height / 1.6,
+                                    child: Stack(
+                                      overflow: Overflow.clip,
+                                      children: [
+                                        AnimatedContainer(
+                                            duration:
+                                                Duration(milliseconds: 200),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            height: size.height / 1.6,
+                                            child: ClipRRect(
+                                              borderRadius: _homeController
                                                       .isDrawerOpen.isTrue
                                                   ? BorderRadius.circular(20)
                                                   : BorderRadius.zero,
                                               child: SvgPicture.asset(
-                                                images.background1,
+                                                SvgImages.background1,
                                                 fit: BoxFit.cover,
                                                 width: size.width,
                                               ),
                                             )),
+                                        ForeGroundUp(size)
+                                      ],
+                                    )),
+                                Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child:
+                                      Stack(overflow: Overflow.clip, children: [
+                                    Container(
+                                      margin:
+                                          EdgeInsets.only(top: size.height / 4),
+                                      child: SvgPicture.asset(
+                                        SvgImages.mainVector,
+                                        fit: BoxFit.fill,
+                                        width: size.width,
                                       ),
-                                      ForeGroundUp(size)
-                                    ],
-                                  )),
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child:
-                                    Stack(overflow: Overflow.clip, children: [
-                                  Container(
-                                    margin:
-                                        EdgeInsets.only(top: size.height / 4),
-                                    child: SvgPicture.asset(
-                                      images.mainVector,
-                                      fit: BoxFit.fill,
-                                      width: size.width,
                                     ),
-                                  ),
-                                  Column(
-                                    children: [
-                                      SizedBox(
-                                        height: size.height / 2.4,
-                                      ),
-                                      ForeGroundBottom(
-                                        size: size,
-                                      )
-                                    ],
-                                  ),
-                                ]),
-                              ),
-                              AnimatedContainer(
-                                duration: Duration(milliseconds: 200),
-                                margin:
-                                    EdgeInsets.only(top: size.height * 0.04),
-                                child: homeController.isDrawerOpen.isTrue
-                                    ? Container()
-                                    : components.menuButton(
-                                        onClick: () {
-                                          menuAnimation.controller.reverse();
-                                          homeController.openDrawer();
-                                        },
-                                        color: Colors.transparent,
-                                        icon: Icon(
-                                          Icons.menu_rounded,
-                                          color: theme.colorWhite,
-                                        )),
-                              )
-                            ],
+                                    Column(
+                                      children: [
+                                        SizedBox(
+                                          height: size.height / 2.4,
+                                        ),
+                                        ForeGroundBottom(
+                                          size: size,
+                                        )
+                                      ],
+                                    ),
+                                  ]),
+                                ),
+                                AnimatedContainer(
+                                  duration: Duration(milliseconds: 200),
+                                  margin:
+                                      EdgeInsets.only(top: size.height * 0.04),
+                                  child: _homeController.isDrawerOpen.isTrue
+                                      ? Container()
+                                      : components.menuButton(
+                                          onClick: () {
+                                            _menuAnimator.controller.duration =
+                                                Duration.zero;
+                                            _menuAnimator.controller
+                                                .forward()
+                                                .whenComplete(() {
+                                              _menuAnimator
+                                                      .controller.duration =
+                                                  Duration(milliseconds: 400);
+                                              _menuAnimator.controller
+                                                  .reverse();
+                                            });
+                                            _homeController.openDrawer();
+                                          },
+                                          color: Colors.transparent,
+                                          icon: Icon(
+                                            Icons.menu_rounded,
+                                            color: AppTheme.colorWhite,
+                                          )),
+                                ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: Container(
+                                      child: _homeController.isDrawerOpen.isTrue
+                                          ? BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 1.0, sigmaY: 1.0),
+                                              child: Container(
+                                                  width: size.width,
+                                                  height: size.height,
+                                                  color: Colors.transparent),
+                                            )
+                                          : Container()),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }));
@@ -197,7 +231,6 @@ class ForeGroundBottom extends StatefulWidget {
 }
 
 class _ForeGroundBottomState extends State<ForeGroundBottom> {
-  final theme = AppTheme();
   TemperatureChart chart = TemperatureChart();
   late Size size;
   _ForeGroundBottomState({required Size size}) {
@@ -219,15 +252,15 @@ class _ForeGroundBottomState extends State<ForeGroundBottom> {
               MotionElement(
                   displacement: 20,
                   interval: Interval(0.0, 0.33),
-                  child: components.squareButton(color: theme.color1)),
+                  child: components.squareButton(color: AppTheme.color1)),
               MotionElement(
                   displacement: 20,
                   interval: Interval(0.33, 0.66),
-                  child: components.squareButton(color: theme.color2)),
+                  child: components.squareButton(color: AppTheme.color2)),
               MotionElement(
                   displacement: 20,
                   interval: Interval(0.66, 1.0),
-                  child: components.squareButton(color: theme.color3)),
+                  child: components.squareButton(color: AppTheme.color3)),
             ],
           ),
         ),
@@ -244,7 +277,8 @@ class _ForeGroundBottomState extends State<ForeGroundBottom> {
               children: [
                 Expanded(child: chart),
                 FittedBox(
-                    child: components.squareButton(color: theme.primaryColor)),
+                    child:
+                        components.squareButton(color: AppTheme.primaryColor)),
               ],
             ),
           ),
@@ -257,8 +291,8 @@ class _ForeGroundBottomState extends State<ForeGroundBottom> {
           alignment: Alignment.centerLeft,
           child: Text(
             "Recent Locations",
-            style: theme.textTheme.txt12white
-                .copyWith(color: theme.greyButtonInsideColor),
+            style: AppTextTheme.txt12white
+                .copyWith(color: AppTheme.greyButtonInsideColor),
           ),
         ),
         MotionElement(
@@ -303,8 +337,6 @@ class ForeGroundUp extends StatefulWidget {
 }
 
 class _ForeGroundUpState extends State<ForeGroundUp> {
-  final theme = AppTheme();
-
   @override
   Widget build(BuildContext context) {
     HomeViewComponents components = HomeViewComponents(size: widget.size);
@@ -324,11 +356,11 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                   children: [
                     Text(
                       "Kozhikode",
-                      style: theme.textTheme.txt32white,
+                      style: AppTextTheme.txt32white,
                     ),
                     Text(
                       "India",
-                      style: theme.textTheme.txt18grey
+                      style: AppTextTheme.txt18grey
                           .copyWith(color: Color(0xFF7B5959)),
                     ),
                   ],
@@ -352,8 +384,8 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                         children: [
                           Text(
                             "35°",
-                            style: theme.textTheme.txt60white
-                                .copyWith(height: 0.1),
+                            style:
+                                AppTextTheme.txt60white.copyWith(height: 0.1),
                           ),
                           Padding(
                             padding: EdgeInsets.only(right: 30),
@@ -364,10 +396,8 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                                   children: [
                                     Text(
                                       "35°",
-                                      style: theme.textTheme.txt18white
-                                          .copyWith(
-                                              height: 0.1,
-                                              color: Colors.white54),
+                                      style: AppTextTheme.txt18white.copyWith(
+                                          height: 0.1, color: Colors.white54),
                                     ),
                                   ],
                                 ),
@@ -375,7 +405,7 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                                   padding: EdgeInsets.only(bottom: 20),
                                   child: Text(
                                     "F",
-                                    style: theme.textTheme.txt18white.copyWith(
+                                    style: AppTextTheme.txt18white.copyWith(
                                         fontSize: 12, color: Colors.white54),
                                   ),
                                 )
@@ -388,7 +418,7 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                         padding: EdgeInsets.only(bottom: 90),
                         child: Text(
                           "C",
-                          style: theme.textTheme.txt18white,
+                          style: AppTextTheme.txt18white,
                         ),
                       )
                     ],
@@ -397,7 +427,7 @@ class _ForeGroundUpState extends State<ForeGroundUp> {
                     padding: EdgeInsets.only(bottom: 20),
                     child: Text(
                       "Sunny",
-                      style: theme.textTheme.txt32white,
+                      style: AppTextTheme.txt32white,
                     ),
                   ),
                 ],

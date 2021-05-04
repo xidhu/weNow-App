@@ -3,8 +3,10 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   static const HOME = _Paths.HOME;
+  static const LOCATION_SELECT = _Paths.LOCATION_SELECT;
 }
 
 abstract class _Paths {
   static const HOME = '/home';
+  static const LOCATION_SELECT = '/location-select';
 }

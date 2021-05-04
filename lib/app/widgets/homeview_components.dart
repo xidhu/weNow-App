@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
+
 import 'package:we_now/app/theme/app_theme.dart';
 
 class HomeViewComponents {
-  final theme = AppTheme();
-  final images = SvgImages();
   late Size size;
 
   HomeViewComponents({required Size size}) {
@@ -45,7 +43,7 @@ class HomeViewComponents {
         decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [theme.shadowMedium]),
+            boxShadow: [AppTheme.shadowMedium]),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -59,20 +57,20 @@ class HomeViewComponents {
                 children: [
                   Text(
                     "Precipitation",
-                    style: theme.textTheme.txt12white,
+                    style: AppTextTheme.txt12white,
                   ),
                   SizedBox(
                     height: 6,
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset(images.droplet),
+                      SvgPicture.asset(SvgImages.droplet),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
                         "8%",
-                        style: theme.textTheme.txt18white,
+                        style: AppTextTheme.txt18white,
                       ),
                     ],
                   )
@@ -93,16 +91,16 @@ class HomeViewComponents {
             width: size.width / 3.5,
             height: size.height / 15,
             decoration: BoxDecoration(
-                color: theme.color1,
+                color: AppTheme.color1,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [theme.shadowMedium]),
+                boxShadow: [AppTheme.shadowMedium]),
             child: Stack(
               children: [
                 Container(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: SvgPicture.asset(
-                      images.background1,
+                      SvgImages.background1,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -123,14 +121,14 @@ class HomeViewComponents {
                           children: [
                             Text(
                               "Kozhikode",
-                              style: theme.textTheme.txt12white,
+                              style: AppTextTheme.txt12white,
                             ),
                             SizedBox(
                               height: 8,
                             ),
                             Text(
                               "India",
-                              style: theme.textTheme.txt12white
+                              style: AppTextTheme.txt12white
                                   .copyWith(color: Colors.white30, fontSize: 8),
                             ),
                           ],
@@ -151,29 +149,28 @@ class HomeViewComponents {
       margin: EdgeInsets.only(left: size.width * 0.03),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [theme.shadowMedium],
-          color: theme.colorWhite),
+          boxShadow: [AppTheme.shadowMedium],
+          color: AppTheme.colorWhite),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           onTap: () => onClick(),
           child: Padding(
-              padding:
-                  EdgeInsets.only(top: 30, bottom: 19, left: 20, right: 20),
+              padding: EdgeInsets.only(top: 10, bottom: 9, left: 20, right: 20),
               child: Row(
                 children: [
                   Container(
-                    padding: EdgeInsets.only(right: 10, bottom: 10),
+                    padding: EdgeInsets.only(right: 10, bottom: 0),
                     child: Icon(
                       icon,
-                      color: theme.greyButtonInsideColor.withOpacity(0.5),
-                      size: 25,
+                      color: AppTheme.greyButtonInsideColor.withOpacity(0.5),
+                      size: 20,
                     ),
                   ),
                   Text(
                     title,
-                    style: theme.textTheme.txt32grey,
+                    style: AppTextTheme.txt18grey,
                   ),
                 ],
               )),
@@ -193,8 +190,6 @@ class Switcher extends StatefulWidget {
 }
 
 class _SwitcherState extends State<Switcher> {
-  final theme = AppTheme();
-  final images = SvgImages();
   bool today = true;
 
   @override
@@ -223,8 +218,8 @@ class _SwitcherState extends State<Switcher> {
                         child: Text(
                           "Today",
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.txt12white
-                              .copyWith(color: theme.greyButtonInsideColor),
+                          style: AppTextTheme.txt12white
+                              .copyWith(color: AppTheme.greyButtonInsideColor),
                         ),
                       ),
                       SizedBox(
@@ -233,8 +228,9 @@ class _SwitcherState extends State<Switcher> {
                       Container(
                         width: widget.size.width / 3.5,
                         height: 5,
-                        color:
-                            today ? theme.primaryColor : theme.secondaryColor,
+                        color: today
+                            ? AppTheme.primaryColor
+                            : AppTheme.secondaryColor,
                       ),
                     ],
                   ),
@@ -259,8 +255,8 @@ class _SwitcherState extends State<Switcher> {
                         child: Text(
                           "Tommorrow",
                           textAlign: TextAlign.center,
-                          style: theme.textTheme.txt12white
-                              .copyWith(color: theme.greyButtonInsideColor),
+                          style: AppTextTheme.txt12white
+                              .copyWith(color: AppTheme.greyButtonInsideColor),
                         ),
                       ),
                       SizedBox(
@@ -269,8 +265,9 @@ class _SwitcherState extends State<Switcher> {
                       Container(
                         width: widget.size.width / 3.5,
                         height: 5,
-                        color:
-                            !today ? theme.primaryColor : theme.secondaryColor,
+                        color: !today
+                            ? AppTheme.primaryColor
+                            : AppTheme.secondaryColor,
                       ),
                     ],
                   ),
@@ -300,7 +297,6 @@ class _PeriodChooserState extends State<PeriodChooser> {
     this.size = size;
   }
   List<bool> isClicked = [true, false, false];
-  AppTheme theme = AppTheme();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -338,9 +334,9 @@ class _PeriodChooserState extends State<PeriodChooser> {
           decoration: BoxDecoration(
               color: !isClicked[index]
                   ? Colors.grey.withOpacity(0.3)
-                  : theme.color1,
+                  : AppTheme.color1,
               borderRadius: BorderRadius.circular(8),
-              boxShadow: !isClicked[index] ? [theme.shadowMedium] : []),
+              boxShadow: !isClicked[index] ? [AppTheme.shadowMedium] : []),
           child: Material(
             color: Colors.transparent,
             child: InkWell(
@@ -357,7 +353,7 @@ class _PeriodChooserState extends State<PeriodChooser> {
                 child: FittedBox(
                   child: Text(
                     "$title",
-                    style: theme.textTheme.txt12white.copyWith(fontSize: 8),
+                    style: AppTextTheme.txt12white.copyWith(fontSize: 8),
                   ),
                 ),
               ),
