@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:motion_widget/motion_widget.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
@@ -9,13 +8,11 @@ import 'package:we_now/app/widgets/temperature_chart.dart';
 class HomeController extends GetxController {
   //Static Variables
   GetStorage appData = GetStorage();
-  MotionExitConfigurations menuAnimator = MotionExitConfigurations(
-      durationMs: 500, displacement: 200, orientation: MotionOrientation.RIGHT);
-  HomeViewComponents components = HomeViewComponents();
 
   //Global Variables
   late Rx<bool> isDrawerOpen;
   late Rx<Size> size;
+  late Rx<HomeViewComponents> components;
   late Rx<AppTheme> theme;
   late Rx<bool> isDarkModeOn;
 
@@ -37,6 +34,7 @@ class HomeController extends GetxController {
     theme = isDarkModeOn.value
         ? AppTheme.darkTheme().obs
         : AppTheme.lightTheme().obs;
+    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
     chart = TemperatureChart(theme: theme.value).obs;
     periodChooserState = [true, false, false].obs;
     switcherState = false.obs;
@@ -49,6 +47,7 @@ class HomeController extends GetxController {
     theme = setDarkModeEnable
         ? AppTheme.darkTheme().obs
         : AppTheme.lightTheme().obs;
+    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
     update();
   }
 
