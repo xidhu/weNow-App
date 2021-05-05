@@ -4,8 +4,10 @@ import 'package:we_now/app/theme/app_theme.dart';
 
 class SelectPageComponents {
   late Size size;
-  SelectPageComponents({required Size size}) {
+  late AppTheme theme;
+  SelectPageComponents({required Size size, required AppTheme theme}) {
     this.size = size;
+    this.theme = theme;
   }
 
   Widget buildAppbar({required double offset, required Function onClickBack}) {
@@ -21,7 +23,7 @@ class SelectPageComponents {
   Widget greyBackButton({required Function onClick, required double offset}) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: offset > 100 ? [AppTheme.shadowMild] : null,
+        boxShadow: offset > 100 ? [theme.appColorTheme.shadowMild] : null,
       ),
       margin: EdgeInsets.all(10),
       child: Material(
@@ -39,7 +41,7 @@ class SelectPageComponents {
             height: 50,
             child: Icon(
               Icons.arrow_back_rounded,
-              color: AppTheme.greyButtonInsideColor,
+              color: theme.appColorTheme.greyButtonInsideColor,
             ),
           ),
         ),
@@ -54,7 +56,7 @@ class SelectPageComponents {
         height: 50,
         width: size.width * 0.8,
         decoration: BoxDecoration(
-            boxShadow: offset > 100 ? [AppTheme.shadowMild] : null,
+            boxShadow: offset > 100 ? [theme.appColorTheme.shadowMild] : null,
             color: Color.fromRGBO(
                 235 + (offset / 100).toInt() * 20,
                 235 + (offset / 100).toInt() * 20,
@@ -69,12 +71,12 @@ class SelectPageComponents {
                 child: Padding(
                   padding: EdgeInsets.only(left: 10),
                   child: TextField(
-                    style: AppTextTheme.txt18grey,
+                    style: theme.appTextTheme.txt18grey,
                     decoration: InputDecoration(
                         isCollapsed: true,
                         border: InputBorder.none,
                         hintText: "Add Location",
-                        hintStyle: AppTextTheme.txt18grey),
+                        hintStyle: theme.appTextTheme.txt18grey),
                   ),
                 ),
               ),
@@ -92,7 +94,7 @@ class SelectPageComponents {
                     height: 30,
                     child: Icon(
                       Icons.location_on_outlined,
-                      color: AppTheme.greyButtonInsideColor,
+                      color: theme.appColorTheme.greyButtonInsideColor,
                     ),
                   ),
                 ),
@@ -122,7 +124,7 @@ class SelectPageComponents {
                   margin: EdgeInsets.only(bottom: 20, left: 10),
                   child: Text(
                     "Current Location",
-                    style: AppTextTheme.txt18grey,
+                    style: theme.appTextTheme.txt18grey,
                   ),
                 )
               : currLocCount == 0
@@ -130,15 +132,15 @@ class SelectPageComponents {
                       margin: EdgeInsets.only(bottom: 20, left: 10),
                       child: Text(
                         "Recent Locations",
-                        style: AppTextTheme.txt18grey,
+                        style: theme.appTextTheme.txt18grey,
                       ),
                     )
                   : Container(),
           Container(
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                color: AppTheme.primaryColor,
-                boxShadow: [AppTheme.shadowMild],
+                color: theme.appColorTheme.primaryColor,
+                boxShadow: [theme.appColorTheme.shadowMild],
                 borderRadius: BorderRadius.circular(14)),
             child: Stack(
               children: [
@@ -148,7 +150,7 @@ class SelectPageComponents {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(14),
                     child: SvgPicture.asset(
-                      SvgImages.background1,
+                      theme.appSvgImages.background1,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -159,7 +161,8 @@ class SelectPageComponents {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      splashColor: AppTheme.primaryColor.withOpacity(0.2),
+                      splashColor:
+                          theme.appColorTheme.primaryColor.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(14),
                       onTap: () {
                         onClick();
@@ -179,14 +182,16 @@ class SelectPageComponents {
                                         children: [
                                           Text(
                                             "35°",
-                                            style: AppTextTheme.txt40white,
+                                            style:
+                                                theme.appTextTheme.txt40white,
                                           ),
                                           Padding(
                                             padding:
                                                 EdgeInsets.only(bottom: 10),
                                             child: Text(
                                               "C",
-                                              style: AppTextTheme.txt18white,
+                                              style:
+                                                  theme.appTextTheme.txt18white,
                                             ),
                                           )
                                         ],
@@ -194,7 +199,7 @@ class SelectPageComponents {
                                       Container(
                                         child: Icon(
                                           Icons.wb_sunny,
-                                          color: AppTheme.colorWhite,
+                                          color: theme.appColorTheme.colorWhite,
                                         ),
                                       )
                                     ],
@@ -214,11 +219,11 @@ class SelectPageComponents {
                                     ),
                                     Text(
                                       "Kozhikode",
-                                      style: AppTextTheme.txt32white,
+                                      style: theme.appTextTheme.txt32white,
                                     ),
                                     Text(
                                       "India",
-                                      style: AppTextTheme.txt18grey,
+                                      style: theme.appTextTheme.txt18grey,
                                     ),
                                   ],
                                 ),

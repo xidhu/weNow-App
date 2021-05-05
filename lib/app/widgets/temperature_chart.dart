@@ -4,6 +4,11 @@ import 'package:we_now/app/theme/app_theme.dart';
 
 class TemperatureChart extends StatefulWidget {
   late ChartSeriesController controller;
+  late AppTheme theme;
+
+  TemperatureChart({required AppTheme theme}) {
+    this.theme = theme;
+  }
 
   @override
   TemperatureChartState createState() => TemperatureChartState();
@@ -46,10 +51,10 @@ class TemperatureChartState extends State<TemperatureChart> {
         ),
         enableSideBySideSeriesPlacement: false,
         primaryXAxis: CategoryAxis(
-            labelStyle: AppTextTheme.txt12white.copyWith(
+            labelStyle: widget.theme.appTextTheme.txt12white.copyWith(
                 fontSize: 10,
                 fontFamily: 'ReemKufi',
-                color: AppTheme.greyButtonInsideColor,
+                color: widget.theme.appColorTheme.greyButtonInsideColor,
                 height: 2),
             crossesAt: -30,
             majorGridLines: MajorGridLines(width: 0),
@@ -58,9 +63,9 @@ class TemperatureChartState extends State<TemperatureChart> {
             axisLine: AxisLine(width: 0),
             labelPlacement: LabelPlacement.onTicks),
         primaryYAxis: NumericAxis(
-          labelStyle: AppTextTheme.txt12white.copyWith(
+          labelStyle: widget.theme.appTextTheme.txt12white.copyWith(
             fontSize: 10,
-            color: AppTheme.greyButtonInsideColor,
+            color: widget.theme.appColorTheme.greyButtonInsideColor,
             fontFamily: 'ReemKufi',
           ),
           majorGridLines: MajorGridLines(width: 0, color: Colors.transparent),
@@ -88,7 +93,7 @@ class TemperatureChartState extends State<TemperatureChart> {
               // Enable data label
               dataLabelSettings: DataLabelSettings(
                 isVisible: true,
-                textStyle: AppTextTheme.txt18grey
+                textStyle: widget.theme.appTextTheme.txt18grey
                     .copyWith(fontFamily: 'ReemKufi', fontSize: 12),
               )),
         ]);
@@ -99,7 +104,7 @@ class TemperatureChartState extends State<TemperatureChart> {
       child: Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            boxShadow: [AppTheme.shadowMedium],
+            boxShadow: [widget.theme.appColorTheme.shadowMedium],
             color: Colors.white,
             borderRadius: BorderRadius.circular(10)),
         child: Column(
@@ -113,17 +118,17 @@ class TemperatureChartState extends State<TemperatureChart> {
               margin: EdgeInsets.only(top: 30),
               child: Text(
                 data.temp.toString() + "°c",
-                style:
-                    AppTextTheme.txt18grey.copyWith(fontSize: 32, height: 0.1),
+                style: widget.theme.appTextTheme.txt18grey
+                    .copyWith(fontSize: 32, height: 0.1),
               ),
             ),
             Text(
               data.time.toString(),
-              style: AppTextTheme.txt18grey.copyWith(fontSize: 10),
+              style: widget.theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
             ),
             Text(
               "feels like " + (data.temp - 5).toString() + "°c",
-              style: AppTextTheme.txt18grey.copyWith(fontSize: 10),
+              style: widget.theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
             )
           ],
         ),
