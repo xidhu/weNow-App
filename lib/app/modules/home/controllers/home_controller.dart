@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:motion_widget/motion_widget.dart';
@@ -12,20 +13,22 @@ class HomeController extends GetxController {
           orientation: MotionOrientation.RIGHT)
       .obs;
 
-  var isDrawerOpen;
-  var size;
-  var components;
-  var theme;
-  var isDarkModeOn;
+  late Rx<bool> isDrawerOpen;
+  late Rx<Size> size;
+  late Rx<HomeViewComponents> components;
+  late Rx<AppTheme> theme;
+  late Rx<bool> isDarkModeOn;
 
   @override
   void onInit() {
     appData.writeIfNull('isDarkModeEnable', false);
     isDrawerOpen = false.obs;
     isDarkModeOn = (appData.read('isDarkModeEnable') as bool).obs;
-    size = Get.size;
-    theme = isDarkModeOn ? AppTheme.darkTheme() : AppTheme.lightTheme();
-    components = HomeViewComponents(size: size, theme: theme);
+    size = Get.size.obs;
+    theme = isDarkModeOn.value
+        ? AppTheme.darkTheme().obs
+        : AppTheme.lightTheme().obs;
+    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
     super.onInit();
   }
 
@@ -35,6 +38,7 @@ class HomeController extends GetxController {
     theme = setDarkModeEnable
         ? AppTheme.darkTheme().obs
         : AppTheme.lightTheme().obs;
+    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
     update();
   }
 
