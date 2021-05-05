@@ -31,6 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_svg: ^0.22.0
   syncfusion_flutter_charts: ^19.1.58
+
   sembast: ^3.0.2
   get_storage: ^2.0.2
 
@@ -54,7 +55,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - lib/assets/images/svg/
+    - lib/assets/images/svg/icons/
+    - lib/assets/images/svg/images/
+    - lib/assets/images/svg/vectors/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

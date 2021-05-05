@@ -106,6 +106,14 @@ class HomeViewComponents {
                     ),
                   ),
                 ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: theme.appColorTheme.colorBackground.value ==
+                              0xFF212121
+                          ? theme.appColorTheme.colorBackground.withOpacity(0.3)
+                          : Colors.black.withOpacity(0.06)),
+                ),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
@@ -35,9 +36,9 @@ class HomeController extends GetxController {
         ? AppTheme.darkTheme().obs
         : AppTheme.lightTheme().obs;
     components = HomeViewComponents(size: size.value, theme: theme.value).obs;
-    chart = TemperatureChart(theme: theme.value).obs;
+    chart = TemperatureChart().obs;
     periodChooserState = [true, false, false].obs;
-    switcherState = false.obs;
+    switcherState = true.obs;
     super.onInit();
   }
 

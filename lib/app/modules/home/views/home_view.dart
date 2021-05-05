@@ -20,6 +20,7 @@ class HomeView extends GetView<HomeController> {
                   if (controller.isDrawerOpen.value) controller.closeDrawer();
                 },
                 child: Container(
+                  color: controller.theme.value.appColorTheme.colorBackground,
                   child: Stack(
                     overflow: Overflow.clip,
                     children: [
@@ -94,7 +95,8 @@ class HomeView extends GetView<HomeController> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: Colors.white,
+                                    color: controller.theme.value.appColorTheme
+                                        .colorBackground,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                 ),
@@ -128,6 +130,26 @@ class HomeView extends GetView<HomeController> {
                                                     controller.size.value.width,
                                               ),
                                             )),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(14),
+                                              color: controller
+                                                          .theme
+                                                          .value
+                                                          .appColorTheme
+                                                          .colorBackground
+                                                          .value ==
+                                                      0xFF212121
+                                                  ? controller
+                                                      .theme
+                                                      .value
+                                                      .appColorTheme
+                                                      .colorBackground
+                                                      .withOpacity(0.3)
+                                                  : Colors.black
+                                                      .withOpacity(0.06)),
+                                        ),
                                         ForeGroundUpView()
                                       ],
                                     )),
@@ -172,7 +194,7 @@ class HomeView extends GetView<HomeController> {
                                           icon: Icon(
                                             Icons.menu_rounded,
                                             color: controller.theme.value
-                                                .appColorTheme.colorWhite,
+                                                .appColorTheme.colorBlack,
                                           )),
                                 ),
                                 ClipRRect(

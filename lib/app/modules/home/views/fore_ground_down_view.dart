@@ -12,6 +12,7 @@ class ForeGroundDownView extends GetView<HomeController> {
         init: controller,
         builder: (controller) {
           return Container(
+            color: Colors.transparent,
             child: Column(children: [
               Container(
                 padding:
@@ -41,7 +42,7 @@ class ForeGroundDownView extends GetView<HomeController> {
                     FittedBox(
                         child: controller.components.value.squareButton(
                             color: controller
-                                .theme.value.appColorTheme.primaryColor)),
+                                .theme.value.appColorTheme.thirdColor)),
                   ],
                 ),
               ),

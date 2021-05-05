@@ -27,11 +27,17 @@ class LocationViewComponents {
       ),
       margin: EdgeInsets.all(10),
       child: Material(
-        color: Color.fromRGBO(
-            235 + (offset / 100).toInt() * 20,
-            235 + (offset / 100).toInt() * 20,
-            235 + (offset / 100).toInt() * 20,
-            offset + 40 > 100 ? 1 : (offset + 40) / 100),
+        color: theme.appColorTheme.colorBackground.value != 0xFF212121
+            ? Color.fromRGBO(
+                235 + (offset / 100).toInt() * 20,
+                235 + (offset / 100).toInt() * 20,
+                235 + (offset / 100).toInt() * 20,
+                offset + 40 > 100 ? 1 : (offset + 40) / 100)
+            : Color.fromRGBO(
+                50 + (offset / 100).toInt() * 20,
+                50 + (offset / 100).toInt() * 20,
+                50 + (offset / 100).toInt() * 20,
+                offset + 40 > 100 ? 1 : (offset + 40) / 100),
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
@@ -57,11 +63,17 @@ class LocationViewComponents {
         width: size.width * 0.8,
         decoration: BoxDecoration(
             boxShadow: offset > 100 ? [theme.appColorTheme.shadowMild] : null,
-            color: Color.fromRGBO(
-                235 + (offset / 100).toInt() * 20,
-                235 + (offset / 100).toInt() * 20,
-                235 + (offset / 100).toInt() * 20,
-                offset + 40 > 100 ? 1 : (offset + 40) / 100),
+            color: theme.appColorTheme.colorBackground.value != 0xFF212121
+                ? Color.fromRGBO(
+                    235 + (offset / 100).toInt() * 20,
+                    235 + (offset / 100).toInt() * 20,
+                    235 + (offset / 100).toInt() * 20,
+                    offset + 40 > 100 ? 1 : (offset + 40) / 100)
+                : Color.fromRGBO(
+                    50 + (offset / 100).toInt() * 20,
+                    50 + (offset / 100).toInt() * 20,
+                    50 + (offset / 100).toInt() * 20,
+                    offset + 40 > 100 ? 1 : (offset + 40) / 100),
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
@@ -158,6 +170,16 @@ class LocationViewComponents {
                 Container(
                   width: double.infinity,
                   height: size.height * 0.2,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: theme.appColorTheme.colorBackground.value ==
+                              0xFF212121
+                          ? theme.appColorTheme.colorBackground.withOpacity(0.2)
+                          : Colors.transparent),
+                ),
+                Container(
+                  width: double.infinity,
+                  height: size.height * 0.2,
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -199,7 +221,7 @@ class LocationViewComponents {
                                       Container(
                                         child: Icon(
                                           Icons.wb_sunny,
-                                          color: theme.appColorTheme.colorWhite,
+                                          color: theme.appColorTheme.thirdColor,
                                         ),
                                       )
                                     ],
