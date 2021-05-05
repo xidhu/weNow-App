@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 
-class SelectPageComponents {
+class LocationViewComponents {
   late Size size;
   late AppTheme theme;
-  SelectPageComponents({required Size size, required AppTheme theme}) {
+  LocationViewComponents({required Size size, required AppTheme theme}) {
     this.size = size;
     this.theme = theme;
   }

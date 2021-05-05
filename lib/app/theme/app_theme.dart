@@ -45,11 +45,11 @@ class AppColorTheme {
     secondaryColor = Color(0x00000000);
     greyButtonColor = Color(0x00000000);
     greyButtonInsideColor = Color(0x00000000);
-    color1 = Color(0xFF525893);
-    color2 = Color(0xFF535568);
-    color3 = Color(0xFF7A7FB9);
-    colorWhite = Color(0xFFFFFFFF);
-    shadowColor1 = Color(0x20616161);
+    color1 = Color(0x00000000);
+    color2 = Color(0x00000000);
+    color3 = Color(0x00000000);
+    colorWhite = Color(0x00000000);
+    shadowColor1 = Color(0x00000000);
     shadowMild = BoxShadow(
         offset: Offset(2, 2),
         blurRadius: 10,
