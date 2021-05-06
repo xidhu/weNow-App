@@ -51,7 +51,7 @@ class SwitcherView extends GetView<HomeController> {
                                   ? controller
                                       .theme.value.appColorTheme.primaryColor
                                   : controller
-                                      .theme.value.appColorTheme.secondaryColor,
+                                      .theme.value.appColorTheme.graphColor,
                             ),
                           ],
                         ),
@@ -94,7 +94,7 @@ class SwitcherView extends GetView<HomeController> {
                                   ? controller
                                       .theme.value.appColorTheme.primaryColor
                                   : controller
-                                      .theme.value.appColorTheme.secondaryColor,
+                                      .theme.value.appColorTheme.graphColor,
                             ),
                           ],
                         ),
