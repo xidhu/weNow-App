@@ -3,7 +3,6 @@ import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
-import 'package:we_now/app/theme/app_theme.dart';
 
 class TemperatureChart extends GetView<HomeController> {
   List<TemperatureData> data = [
@@ -115,7 +114,7 @@ class TemperatureChart extends GetView<HomeController> {
                   .copyWith(fontSize: 10),
             ),
             Text(
-              "feels like " + (data.temp - 5).toString() + "°c",
+              "Sunny",
               style: controller.theme.value.appTextTheme.txt18grey
                   .copyWith(fontSize: 10),
             )

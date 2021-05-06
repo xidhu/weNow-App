@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';

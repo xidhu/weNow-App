@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
 import 'package:we_now/app/modules/home/views/period_chooser_view.dart';
 import 'package:we_now/app/modules/home/views/switcher_view.dart';
-import 'package:we_now/app/widgets/homeview_components.dart';
 
 class ForeGroundDownView extends GetView<HomeController> {
   @override

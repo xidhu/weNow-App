@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
-import 'package:we_now/app/theme/app_theme.dart';
 
 class PeriodChooserView extends GetView<HomeController> {
   late List<bool> state;
