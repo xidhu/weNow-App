@@ -221,7 +221,7 @@ class LocationViewComponents {
                                       Container(
                                         child: Icon(
                                           Icons.wb_sunny,
-                                          color: theme.appColorTheme.thirdColor,
+                                          color: Colors.white.withOpacity(0.8),
                                         ),
                                       )
                                     ],

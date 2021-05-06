@@ -19,6 +19,9 @@ class LocationSelectController extends GetxController {
 
   @override
   void onInit() {
+    Get.mediaQuery.platformBrightness == Brightness.dark
+        ? appData.write('isDarkModeEnable', true)
+        : appData.write('isDarkModeEnable', false);
     appData.writeIfNull('isDarkModeEnable', false);
     isDarkModeOn = (appData.read('isDarkModeEnable') as bool).obs;
     size = Get.size.obs;

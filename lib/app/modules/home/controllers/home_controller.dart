@@ -28,6 +28,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
+    Get.mediaQuery.platformBrightness == Brightness.dark
+        ? appData.write('isDarkModeEnable', true)
+        : appData.write('isDarkModeEnable', false);
     appData.writeIfNull('isDarkModeEnable', false);
     isDrawerOpen = false.obs;
     isDarkModeOn = (appData.read('isDarkModeEnable') as bool).obs;
