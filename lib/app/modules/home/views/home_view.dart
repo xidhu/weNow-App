@@ -132,8 +132,10 @@ class HomeView extends GetView<HomeController> {
                                             )),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(14),
+                                              borderRadius: controller
+                                                      .isDrawerOpen.isTrue
+                                                  ? BorderRadius.circular(14)
+                                                  : BorderRadius.zero,
                                               color: controller
                                                           .theme
                                                           .value
