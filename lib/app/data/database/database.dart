@@ -1,4 +1,4 @@
-/*import 'dart:async';
+import 'dart:async';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/sembast_io.dart';
 import 'package:path/path.dart';
@@ -31,17 +31,15 @@ class AppDatabase {
   static const String LOCATION_STORE = 'locations';
   final _location_store = intMapStoreFactory.store(LOCATION_STORE);
 
-  Future<Location> findLocation(Location location) async {
+  Future findLocation(Location location) async {
     final finder = Finder(filter: Filter.byKey(location.locId));
     final finded = await _location_store.findFirst(await _db, finder: finder);
-    return finded != null
-        ? Location.fromJSON(finded.value)
-        : Location(locId: -1, cityName: "Not Found", countryName: "Nill");
+    return finded != null ? Location.fromDatabase(finded.value) : null;
   }
 
   Future<bool> addLocation(Location location) async {
     if ((await findLocation(location)) != null) {
-      await _location_store.add(await _db, location.toJSON());
+      await _location_store.add(await _db, location.toDatabase());
       return true;
     } else
       return false;
@@ -49,7 +47,7 @@ class AppDatabase {
 
   Future<List<Location>> getAllLocations() async {
     return (await _location_store.find(await _db))
-        .map((e) => Location.fromJSON(e.value))
+        .map((e) => Location.fromDatabase(e.value))
         .toList();
   }
 
@@ -62,4 +60,3 @@ class AppDatabase {
     return _location_store.count(await _db);
   }
 }
-*/
