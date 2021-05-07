@@ -2,27 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:we_now/app/data/models/temperature_model.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
 
 class TemperatureChart extends GetView<HomeController> {
-  List<TemperatureData> data = [
-    TemperatureData('00:00', 28),
-    TemperatureData('01:00', 34),
-    TemperatureData('02:00', 25),
-    TemperatureData('03:00', 32),
-    TemperatureData('04:00', 40),
-    TemperatureData('05:00', 40),
-  ];
+  late List<TemperatureData> data;
 
   @override
   Widget build(BuildContext context) {
     data = [
-      TemperatureData('00:00', 28),
-      TemperatureData('01:00', 34),
-      TemperatureData('02:00', 25),
-      TemperatureData('03:00', 32),
-      TemperatureData('04:00', 40),
-      TemperatureData('05:00', 40),
+      TemperatureData(
+          time: DateTime.parse("1620801000"),
+          temperature: 30,
+          weather: "Sunny",
+          weatherIcon: "sd")
     ];
     return GetBuilder<HomeController>(builder: (controller) {
       return SfCartesianChart(
@@ -72,8 +65,9 @@ class TemperatureChart extends GetView<HomeController> {
                     controller.theme.value.appColorTheme.graphBorderColor,
                 color: controller.theme.value.appColorTheme.graphColor,
                 dataSource: data,
-                xValueMapper: (TemperatureData temp, _) => temp.time,
-                yValueMapper: (TemperatureData temp, _) => temp.temp,
+                xValueMapper: (TemperatureData temp, _) =>
+                    temp.time.hour.toString(),
+                yValueMapper: (TemperatureData temp, _) => temp.temperature,
                 markerSettings: MarkerSettings(isVisible: false),
                 // Enable data label
                 dataLabelSettings: DataLabelSettings(
@@ -103,7 +97,7 @@ class TemperatureChart extends GetView<HomeController> {
             Container(
               margin: EdgeInsets.only(top: 30),
               child: Text(
-                data.temp.toString() + "°c",
+                data.temperature.toString() + "°c",
                 style: controller.theme.value.appTextTheme.txt18grey
                     .copyWith(fontSize: 32, height: 0.1),
               ),
@@ -123,11 +117,4 @@ class TemperatureChart extends GetView<HomeController> {
       ),
     );
   }
-}
-
-class TemperatureData {
-  final String time;
-  final int temp;
-
-  TemperatureData(this.time, this.temp);
 }

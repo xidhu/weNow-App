@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:we_now/app/data/database/database.dart';
+import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
@@ -26,7 +28,7 @@ class HomeController extends GetxController {
   late Rx<bool> switcherState;
 
   @override
-  void onInit() {
+  void onInit() async {
     /*Get.mediaQuery.platformBrightness == Brightness.dark
         ? appData.write('isDarkModeEnable', true)
         : appData.write('isDarkModeEnable', false);*/
@@ -69,7 +71,7 @@ class HomeController extends GetxController {
     update();
   }
 
-  void closeDrawer() {
+  void closeDrawer() async {
     isDrawerOpen = false.obs;
     update();
   }
