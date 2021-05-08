@@ -22,7 +22,7 @@ class Location {
 
   bool isDataAvailable = false;
 
-  Location.fromLocation(Map<String, dynamic> data) {
+  Location.fromAPI(Map<String, dynamic> data) {
     this.locId = data["locId"].toString();
     this.cityName = data["cityName"];
     this.countryName = data["countryName"];
@@ -42,8 +42,8 @@ class Location {
       'currentPrecipitation': currentPrecipitation,
       'currentWind': currentWind,
       'currentHumidity': currentHumidity,
-      'dayChartData': dayChartData.map((e) => e.toJSON()),
-      'weekChartData': weekChartData.map((e) => e.toJSON()),
+      'dayChartData': dayChartData.map((e) => e.toJSON()).toList(),
+      'weekChartData': weekChartData.map((e) => e.toJSON()).toList(),
       'lon': longitude,
       'lat': latitude,
       'isCurrentLocation': isCurrentLocation,
@@ -68,20 +68,24 @@ class Location {
     this.currentPrecipitation = data["currentPrecipitation"];
     this.currentHumidity = data["currentHumidity"];
     this.currentWind = data["currentWind"];
-    this.dayChartData = data["hourlyData"].map((hours) {
-      return TemperatureData(
-          time: hours["time"],
-          temperature: hours["temperature"],
-          weather: hours["weather"],
-          weatherIcon: hours["weatherIcon"]);
-    });
-    this.weekChartData = data["dailyData"].map((day) {
-      return TemperatureData(
-          time: day["time"],
-          temperature: day["temperature"],
-          weather: day["weather"],
-          weatherIcon: day["weatherIcon"]);
-    });
+    this.dayChartData = data["hourlyData"] != null
+        ? data["hourlyData"].map((hours) {
+            return TemperatureData(
+                time: hours["time"],
+                temperature: hours["temperature"],
+                weather: hours["weather"],
+                weatherIcon: hours["weatherIcon"]);
+          })
+        : [];
+    this.weekChartData = data["dailyData"] != null
+        ? data["dailyData"].map((day) {
+            return TemperatureData(
+                time: day["time"],
+                temperature: day["temperature"],
+                weather: day["weather"],
+                weatherIcon: day["weatherIcon"]);
+          })
+        : [];
   }
 
   void setWeather(Map<String, dynamic> data) {

@@ -13,44 +13,51 @@ class LocationSelectView extends GetView<LocationSelectController> {
         color: controller.theme.value.appColorTheme.colorBackground,
         child: Stack(
           children: [
-            Container(
-                child: Scrollbar(
-              controller: controller.scrollController,
-              child: ListView(
-                controller: controller.scrollController,
-                physics: BouncingScrollPhysics(),
-                children: [
-                  ListView.builder(
-                      itemCount: 1,
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int currLocCount) {
-                        return controller.components.value.locationBuilder(
-                            currLocCount: currLocCount,
-                            onClick: () {
-                              Get.offAndToNamed(AppPages.INITIAL);
-                            });
-                      }),
-                  ListView.builder(
-                      itemCount: 6,
-                      physics: ClampingScrollPhysics(),
-                      shrinkWrap: true,
-                      itemBuilder: (BuildContext context, int currLocCount) {
-                        return controller.components.value.locationBuilder(
-                            currLocCount: currLocCount,
-                            isCurr: false,
-                            onClick: () {
-                              Get.offAndToNamed(AppPages.INITIAL);
-                            });
-                      })
-                ],
-              ),
-            )),
+            controller.locations != null
+                ? Container(
+                    child: Scrollbar(
+                    controller: controller.scrollController,
+                    child: ListView(
+                      controller: controller.scrollController,
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        ListView.builder(
+                            itemCount: 1,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (BuildContext context, int currLocCount) {
+                              return controller.components.value
+                                  .locationBuilder(
+                                      currLocCount: currLocCount,
+                                      onClick: () {
+                                        Get.offAndToNamed(AppPages.INITIAL);
+                                      });
+                            }),
+                        ListView.builder(
+                            itemCount: 6,
+                            physics: ClampingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder:
+                                (BuildContext context, int currLocCount) {
+                              return controller.components.value
+                                  .locationBuilder(
+                                      currLocCount: currLocCount,
+                                      isCurr: false,
+                                      onClick: () {
+                                        Get.offAndToNamed(AppPages.INITIAL);
+                                      });
+                            })
+                      ],
+                    ),
+                  ))
+                : Container(),
             Container(
               child: controller.components.value.buildAppbar(
                   offset: controller.scrollOffset.value,
                   onClickBack: () {
-                    Get.offAndToNamed(AppPages.INITIAL);
+                    //Get.offAndToNamed(AppPages.INITIAL);
+                    controller.addLocation();
                   }),
             ),
           ],

@@ -1,6 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:sembast/sembast.dart';
+import 'package:we_now/app/data/Api/weather_api.dart';
+import 'package:we_now/app/data/database/database.dart';
+import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/locationview_components.dart';
 
@@ -9,6 +13,8 @@ class LocationSelectController extends GetxController {
   var appData = GetStorage();
   ScrollController scrollController =
       ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
+  late AppDatabase database;
+  RxList<Location>? locations;
 
   //global variables
   late Rx<LocationViewComponents> components;
@@ -18,7 +24,7 @@ class LocationSelectController extends GetxController {
   Rx<double> scrollOffset = 0.0.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     /* Get.mediaQuery.platformBrightness == Brightness.dark
         ? appData.write('isDarkModeEnable', true)
         : appData.write('isDarkModeEnable', false);
@@ -35,8 +41,22 @@ class LocationSelectController extends GetxController {
         scrollOffset = scrollController.offset < 100
             ? scrollController.offset.obs
             : 100.0.obs;
+
       update();
     });
+
     super.onInit();
   }
+
+  void addLocation() async {}
+}
+
+dynamic sampleLocationData() {
+  return {
+    "locId": 1262302,
+    "cityName": "Nadapuram",
+    "countryName": "India",
+    "lon": 75.666672,
+    "lat": 11.7
+  };
 }

@@ -8,7 +8,7 @@ import 'package:we_now/app/modules/location_select/views/location_select_view.da
 part 'app_routes.dart';
 
 class AppPages {
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.LOCATION_SELECT;
   static const LOCATION = Routes.LOCATION_SELECT;
 
   static final routes = [

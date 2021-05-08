@@ -38,7 +38,7 @@ class AppDatabase {
   }
 
   Future<bool> addLocation(Location location) async {
-    if ((await findLocation(location)) != null) {
+    if ((await findLocation(location)) == null) {
       await _location_store.add(await _db, location.toDatabase());
       return true;
     } else
@@ -47,8 +47,13 @@ class AppDatabase {
 
   Future<List<Location>> getAllLocations() async {
     return (await _location_store.find(await _db))
+        .toList()
         .map((e) => Location.fromDatabase(e.value))
         .toList();
+  }
+
+  Future printAllLocations() async {
+    (await _location_store.find(await _db)).toList().map((e) => null);
   }
 
   Future<bool> clearLocations() async {
@@ -58,5 +63,10 @@ class AppDatabase {
 
   Future<int> getLocationCount() async {
     return _location_store.count(await _db);
+  }
+
+  Future closeDatabase() async {
+    (await _db).close();
+    _isOpen = false;
   }
 }
