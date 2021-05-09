@@ -80,7 +80,7 @@ class AppColorTheme {
         offset: Offset(2, 2),
         blurRadius: 10,
         spreadRadius: 2,
-        color: shadowColor1);
+        color: shadowColor1.withOpacity(0.1));
     shadowMedium = BoxShadow(
         offset: Offset(1, 1),
         blurRadius: 2,
@@ -112,7 +112,7 @@ class AppColorTheme {
         offset: Offset(2, 2),
         blurRadius: 10,
         spreadRadius: 2,
-        color: Colors.black12);
+        color: shadowColor1.withOpacity(0.04));
     shadowMedium = BoxShadow(
         offset: Offset(1, 1),
         blurRadius: 2,
@@ -134,6 +134,7 @@ class AppSvgImages {
   var precipitation;
   var wind;
   var temp;
+  var locSelect;
 
   AppSvgImages.lightTheme() {
     background1 = src + "images/background1.svg";
@@ -142,6 +143,7 @@ class AppSvgImages {
     precipitation = src + "icons/precipitation.svg";
     wind = src + "icons/wind.svg";
     temp = src + "icons/temp.svg";
+    locSelect = src + "vectors/location_select.svg";
   }
 
   AppSvgImages.darkTheme() {
@@ -151,6 +153,7 @@ class AppSvgImages {
     precipitation = src + "icons/precipitation.svg";
     wind = src + "icons/wind.svg";
     temp = src + "icons/temp.svg";
+    locSelect = src + "vectors/location_select.svg";
   }
 }
 
@@ -168,4 +171,9 @@ class AppTheme {
     appTextTheme = AppTextTheme.darkTheme();
     appColorTheme = AppColorTheme.darkTheme();
   }
+}
+
+class GifImages {
+  //static const src = "lib/assets/images/gif/";
+  //static const String infinityLoading = src + "inf_loading.gif";
 }

@@ -32,7 +32,7 @@ class AppDatabase {
   final _location_store = intMapStoreFactory.store(LOCATION_STORE);
 
   Future findLocation(Location location) async {
-    final finder = Finder(filter: Filter.byKey(location.locId));
+    final finder = Finder(filter: Filter.equals('locId', location.locId));
     final finded = await _location_store.findFirst(await _db, finder: finder);
     return finded != null ? Location.fromDatabase(finded.value) : null;
   }
@@ -40,6 +40,15 @@ class AppDatabase {
   Future<bool> addLocation(Location location) async {
     if ((await findLocation(location)) == null) {
       await _location_store.add(await _db, location.toDatabase());
+      return true;
+    } else
+      return false;
+  }
+
+  Future<bool> deleteLocation(Location location) async {
+    if ((await findLocation(location)) != null) {
+      final finder = Finder(filter: Filter.equals('locId', location.locId));
+      await _location_store.delete(await _db, finder: finder);
       return true;
     } else
       return false;
@@ -53,7 +62,7 @@ class AppDatabase {
   }
 
   Future printAllLocations() async {
-    (await _location_store.find(await _db)).toList().map((e) => null);
+    print((await _location_store.find(await _db)).toList());
   }
 
   Future<bool> clearLocations() async {

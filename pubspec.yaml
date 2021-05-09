@@ -35,6 +35,8 @@ dependencies:
   sembast: ^3.0.2
   get_storage: ^2.0.2
   http: ^0.13.3
+  geolocator: ^7.0.3
+  shared_preferences: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +61,7 @@ flutter:
     - lib/assets/images/svg/icons/
     - lib/assets/images/svg/images/
     - lib/assets/images/svg/vectors/
+    - lib/assets/images/gif/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

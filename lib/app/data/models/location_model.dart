@@ -9,7 +9,7 @@ class Location {
 
   DateTime date = DateTime.now();
   double currentTemperature = 0.0;
-  String currentWhether = "";
+  String currentWeather = "";
   String weatherIcon = "";
   double currentPrecipitation = 0.0;
   double currentWind = 0.0;
@@ -17,17 +17,14 @@ class Location {
   List<TemperatureData> dayChartData = [];
   List<TemperatureData> weekChartData = [];
 
-  bool isCurrentLocation = false;
-  bool isRecentLocation = false;
-
   bool isDataAvailable = false;
 
   Location.fromAPI(Map<String, dynamic> data) {
     this.locId = data["locId"].toString();
     this.cityName = data["cityName"];
     this.countryName = data["countryName"];
-    this.longitude = data["lon"];
-    this.latitude = data["lat"];
+    this.longitude = data["lon"].toDouble();
+    this.latitude = data["lat"].toDouble();
   }
 
   Map<String, dynamic> toDatabase() {
@@ -37,7 +34,7 @@ class Location {
       'cityName': cityName,
       'countryName': countryName,
       'currentTemperature': currentTemperature,
-      'currentWhether': currentWhether,
+      'currentWeather': currentWeather,
       'weatherIcon': weatherIcon,
       'currentPrecipitation': currentPrecipitation,
       'currentWind': currentWind,
@@ -46,15 +43,11 @@ class Location {
       'weekChartData': weekChartData.map((e) => e.toJSON()).toList(),
       'lon': longitude,
       'lat': latitude,
-      'isCurrentLocation': isCurrentLocation,
-      'isRecentLocation': isRecentLocation,
       'isDataAvailable': isDataAvailable
     };
   }
 
   Location.fromDatabase(Map<String, dynamic> data) {
-    this.isCurrentLocation = data["isCurrentLocation"];
-    this.isRecentLocation = data["isRecentLocation"];
     this.isDataAvailable = data["isDataAvailable"];
     this.latitude = data["lat"];
     this.longitude = data["lon"];
@@ -62,7 +55,7 @@ class Location {
     this.locId = data["locId"].toString();
     this.cityName = data["cityName"];
     this.countryName = data["countryName"];
-    this.currentWhether = data["currentWhether"];
+    this.currentWeather = data["currentWeather"];
     this.weatherIcon = data["weatherIcon"];
     this.currentTemperature = data["currentTemperature"];
     this.currentPrecipitation = data["currentPrecipitation"];
@@ -93,32 +86,36 @@ class Location {
     locId = data["locId"].toString();
     cityName = data["cityName"];
     countryName = data["countryName"];
-    currentWhether = data["currentWhether"];
+    currentWeather = data["currentWeather"];
     weatherIcon = data["weatherIcon"];
-    currentTemperature = data["currentTemperature"];
+    currentTemperature = data["currentTemperature"].toDouble();
   }
 
   void setFullWeather(Map<String, dynamic> data) {
     date = DateTime.parse(data["date"].toString());
-    currentWhether = data["currentWhether"];
+    currentWeather = data["currentWeather"];
     weatherIcon = data["weatherIcon"];
     currentTemperature = data["currentTemperature"];
     currentPrecipitation = data["currentPrecipitation"];
     currentHumidity = data["currentHumidity"];
     currentWind = data["currentWind"];
-    dayChartData = data["hourlyData"].map((hours) {
-      return TemperatureData(
-          time: hours["time"],
-          temperature: hours["temperature"],
-          weather: hours["weather"],
-          weatherIcon: hours["weatherIcon"]);
-    });
-    weekChartData = data["dailyData"].map((day) {
-      return TemperatureData(
-          time: day["time"],
-          temperature: day["temperature"],
-          weather: day["weather"],
-          weatherIcon: day["weatherIcon"]);
-    });
+    dayChartData = data["hourlyData"] != null
+        ? data["hourlyData"].map((hours) {
+            return TemperatureData(
+                time: hours["time"],
+                temperature: hours["temperature"],
+                weather: hours["weather"],
+                weatherIcon: hours["weatherIcon"]);
+          })
+        : [];
+    weekChartData = data["dailyData"] != null
+        ? data["dailyData"].map((day) {
+            return TemperatureData(
+                time: day["time"],
+                temperature: day["temperature"],
+                weather: day["weather"],
+                weatherIcon: day["weatherIcon"]);
+          })
+        : [];
   }
 }
