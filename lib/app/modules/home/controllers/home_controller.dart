@@ -31,7 +31,7 @@ class HomeController extends GetxController {
   ChartSeriesController? chartController;
 
   //Data variables
-  late Location data;
+  late Location data, fullData;
   String currentLocation = "";
   var locations;
   late List<TemperatureChartData> chartData = [];
@@ -67,8 +67,16 @@ class HomeController extends GetxController {
         appMemoryData.read('currentLocationId');
     database = AppDatabase.instance;
     data = (await database.getLocation(currentLocation));
-    data.setFullWeather(
-        (await api.getFullWeather(data.longitude, data.latitude)));
+    if (!data.isDataAvailable ||
+        !(DateTime.now().day == data.date.day &&
+            DateTime.now().hour == data.date.hour &&
+            DateTime.now().month == data.date.month &&
+            DateTime.now().year == data.date.year)) {
+      data.setFullWeather(
+          (await api.getFullWeather(data.longitude, data.latitude)));
+      data.isDataAvailable = true;
+      await database.updateLocation(data);
+    }
     locations = (await database.getAllLocations());
     periodChooserState = [true, false, false].obs;
     switcherState = true.obs;
@@ -155,7 +163,10 @@ class HomeController extends GetxController {
     update();
   }
 
-  void openDrawer() {
+  void openDrawer() async {
+    database = AppDatabase.instance;
+    (await database.printAllLocations());
+
     isDrawerOpen = true.obs;
     update();
   }

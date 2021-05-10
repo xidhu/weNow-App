@@ -43,6 +43,12 @@ class AppDatabase {
     return finded != null ? Location.fromDatabase(finded.value) : null;
   }
 
+  Future updateLocation(Location location) async {
+    final finder = Finder(filter: Filter.equals('locId', location.locId));
+    await _location_store.update(await _db, location.toDatabase(),
+        finder: finder);
+  }
+
   Future<bool> addLocation(Location location) async {
     if ((await findLocation(location)) == null) {
       await _location_store.add(await _db, location.toDatabase());

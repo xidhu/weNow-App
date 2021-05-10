@@ -122,7 +122,7 @@ class ForeGroundDownView extends GetView<HomeController> {
                     )
                   : Container(),
               Container(
-                margin: EdgeInsets.only(top: 8),
+                margin: EdgeInsets.only(top: 2),
                 child: SwitcherView(),
               )
             ]),

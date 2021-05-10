@@ -11,7 +11,7 @@ class TemperatureData {
       required this.weatherIcon});
   Map<String, dynamic> toJSON() {
     return {
-      'time': time,
+      'time': time.toString(),
       'temperature': temperature,
       'weather': weather,
       'weatherIcon': weatherIcon

@@ -30,7 +30,7 @@ class Location {
 
   Map<String, dynamic> toDatabase() {
     return {
-      'date': date.toUtc().toString(),
+      'date': date.toString(),
       'locId': locId,
       'cityName': cityName,
       'countryName': countryName,
@@ -63,23 +63,23 @@ class Location {
     this.currentPrecipitation = data["currentPrecipitation"];
     this.currentHumidity = data["currentHumidity"];
     this.currentWind = data["currentWind"];
-    this.dayChartData = data["hourlyData"] != null
-        ? data["hourlyData"].map((hours) {
+    this.dayChartData = data["dayChartData"] != null
+        ? data["dayChartData"].map((hours) {
             return TemperatureData(
-                time: DateTime.parse(hours["date"]),
+                time: DateTime.parse(hours["time"]),
                 temperature: hours["temperature"],
                 weather: hours["weather"],
                 weatherIcon: hours["weatherIcon"]);
-          })
+          }).toList()
         : [];
-    this.weekChartData = data["dailyData"] != null
-        ? data["dailyData"].map((day) {
+    this.weekChartData = data["weekChartData"] != null
+        ? data["weekChartData"].map((day) {
             return TemperatureData(
-                time: DateTime.parse(day["date"]),
+                time: DateTime.parse(day["time"]),
                 temperature: day["temperature"],
                 weather: day["weather"],
                 weatherIcon: day["weatherIcon"]);
-          })
+          }).toList()
         : [];
     this.tommorrowData = data["tommorowData"];
   }
@@ -98,10 +98,10 @@ class Location {
     date = DateTime.fromMillisecondsSinceEpoch(data["date"] * 1000);
     currentWeather = data["currentWeather"];
     weatherIcon = data["weatherIcon"];
-    currentTemperature = data["currentTemperature"];
+    currentTemperature = data["currentTemperature"].toDouble();
     currentPrecipitation = data["currentPrecipitation"].toDouble();
     currentHumidity = data["currentHumidity"].toDouble();
-    currentWind = data["currentWind"];
+    currentWind = data["currentWind"].toDouble();
     dayChartData = data["hourlyData"] != null
         ? data["hourlyData"].map((hours) {
             return TemperatureData(
