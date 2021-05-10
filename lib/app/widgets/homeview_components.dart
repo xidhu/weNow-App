@@ -37,7 +37,12 @@ class HomeViewComponents {
     );
   }
 
-  Widget squareButton({required Color color}) {
+  Widget squareButton(
+      {required Color color,
+      required String title,
+      required icon,
+      required String value,
+      required String unit}) {
     return FittedBox(
       child: Container(
         margin: EdgeInsets.all(5),
@@ -57,7 +62,7 @@ class HomeViewComponents {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Precipitation",
+                    title,
                     style: theme.appTextTheme.txt12white,
                   ),
                   SizedBox(
@@ -65,12 +70,12 @@ class HomeViewComponents {
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset(theme.appSvgImages.droplet),
+                      SvgPicture.asset(icon),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
-                        "8%",
+                        value + unit,
                         style: theme.appTextTheme.txt18white,
                       ),
                     ],
@@ -84,7 +89,7 @@ class HomeViewComponents {
     );
   }
 
-  Widget locationBuilder({required int count}) {
+  Widget locationBuilder({required int index, required data}) {
     return Column(children: [
       FittedBox(
         child: Container(
@@ -129,14 +134,14 @@ class HomeViewComponents {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Kozhikode",
+                              data[index].cityName,
                               style: theme.appTextTheme.txt12white,
                             ),
                             SizedBox(
                               height: 8,
                             ),
                             Text(
-                              "India",
+                              data[index].countryName,
                               style: theme.appTextTheme.txt12white
                                   .copyWith(color: Colors.white30, fontSize: 8),
                             ),

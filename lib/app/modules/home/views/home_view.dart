@@ -84,140 +84,181 @@ class HomeView extends GetView<HomeController> {
                         child: AbsorbPointer(
                           absorbing: controller.isDrawerOpen.isTrue,
                           child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  controller
-                                      .theme.value.appColorTheme.shadowMediumUp
-                                ]),
-                            child: Stack(
-                              overflow: Overflow.clip,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: controller.theme.value.appColorTheme
-                                        .colorBackground,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                ),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    height: controller.size.value.height / 1.6,
-                                    child: Stack(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: controller.theme.value.appColorTheme
+                                      .colorBackground,
+                                  boxShadow: [
+                                    controller.theme.value.appColorTheme
+                                        .shadowMediumUp
+                                  ]),
+                              child: !controller.loadingState.value
+                                  ? Stack(
                                       overflow: Overflow.clip,
                                       children: [
-                                        AnimatedContainer(
-                                            duration:
-                                                Duration(milliseconds: 200),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: controller.theme.value
+                                                .appColorTheme.colorBackground,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        Container(
                                             decoration: BoxDecoration(
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
                                             height:
                                                 controller.size.value.height /
                                                     1.6,
-                                            child: ClipRRect(
-                                              borderRadius: controller
-                                                      .isDrawerOpen.isTrue
-                                                  ? BorderRadius.circular(20)
-                                                  : BorderRadius.zero,
-                                              child: SvgPicture.asset(
-                                                controller.theme.value
-                                                    .appSvgImages.background1,
-                                                fit: BoxFit.cover,
-                                                width:
-                                                    controller.size.value.width,
-                                              ),
+                                            child: Stack(
+                                              overflow: Overflow.clip,
+                                              children: [
+                                                AnimatedContainer(
+                                                    duration: Duration(
+                                                        milliseconds: 200),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20)),
+                                                    height: controller
+                                                            .size.value.height /
+                                                        1.6,
+                                                    child: ClipRRect(
+                                                      borderRadius: controller
+                                                              .isDrawerOpen
+                                                              .isTrue
+                                                          ? BorderRadius
+                                                              .circular(20)
+                                                          : BorderRadius.zero,
+                                                      child: SvgPicture.asset(
+                                                        controller
+                                                            .theme
+                                                            .value
+                                                            .appSvgImages
+                                                            .background1,
+                                                        fit: BoxFit.cover,
+                                                        width: controller
+                                                            .size.value.width,
+                                                      ),
+                                                    )),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: controller
+                                                              .isDrawerOpen
+                                                              .isTrue
+                                                          ? BorderRadius
+                                                              .circular(14)
+                                                          : BorderRadius.zero,
+                                                      color: controller
+                                                                  .theme
+                                                                  .value
+                                                                  .appColorTheme
+                                                                  .colorBackground
+                                                                  .value ==
+                                                              0xFF212121
+                                                          ? controller
+                                                              .theme
+                                                              .value
+                                                              .appColorTheme
+                                                              .colorBackground
+                                                              .withOpacity(0.3)
+                                                          : Colors.black
+                                                              .withOpacity(
+                                                                  0.06)),
+                                                ),
+                                                ForeGroundUpView()
+                                              ],
                                             )),
                                         Container(
                                           decoration: BoxDecoration(
-                                              borderRadius: controller
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Stack(
+                                              overflow: Overflow.clip,
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: controller.size.value
+                                                              .height /
+                                                          4),
+                                                  child: SvgPicture.asset(
+                                                    controller
+                                                        .theme
+                                                        .value
+                                                        .appSvgImages
+                                                        .mainVector,
+                                                    fit: BoxFit.fill,
+                                                    width: controller
+                                                        .size.value.width,
+                                                  ),
+                                                ),
+                                                Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: controller.size
+                                                              .value.height /
+                                                          2.4,
+                                                    ),
+                                                    ForeGroundDownView()
+                                                  ],
+                                                ),
+                                              ]),
+                                        ),
+                                        AnimatedContainer(
+                                          duration: Duration(milliseconds: 200),
+                                          margin: EdgeInsets.only(
+                                              top:
+                                                  controller.size.value.height *
+                                                      0.04),
+                                          child: controller.isDrawerOpen.isTrue
+                                              ? Container()
+                                              : controller.components.value
+                                                  .menuButton(
+                                                      onClick: () {
+                                                        controller.openDrawer();
+                                                      },
+                                                      color: Colors.transparent,
+                                                      icon: Icon(
+                                                        Icons.menu_rounded,
+                                                        color: controller
+                                                            .theme
+                                                            .value
+                                                            .appColorTheme
+                                                            .colorBlack,
+                                                      )),
+                                        ),
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          child: Container(
+                                              child: controller
                                                       .isDrawerOpen.isTrue
-                                                  ? BorderRadius.circular(14)
-                                                  : BorderRadius.zero,
-                                              color: controller
-                                                          .theme
-                                                          .value
-                                                          .appColorTheme
-                                                          .colorBackground
-                                                          .value ==
-                                                      0xFF212121
-                                                  ? controller
-                                                      .theme
-                                                      .value
-                                                      .appColorTheme
-                                                      .colorBackground
-                                                      .withOpacity(0.3)
-                                                  : Colors.black
-                                                      .withOpacity(0.06)),
-                                        ),
-                                        ForeGroundUpView()
+                                                  ? BackdropFilter(
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 1.0,
+                                                          sigmaY: 1.0),
+                                                      child: Container(
+                                                          width: controller
+                                                              .size.value.width,
+                                                          height: controller
+                                                              .size
+                                                              .value
+                                                              .height,
+                                                          color: Colors
+                                                              .transparent),
+                                                    )
+                                                  : Container()),
+                                        )
                                       ],
-                                    )),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child:
-                                      Stack(overflow: Overflow.clip, children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                          top:
-                                              controller.size.value.height / 4),
-                                      child: SvgPicture.asset(
-                                        controller.theme.value.appSvgImages
-                                            .mainVector,
-                                        fit: BoxFit.fill,
-                                        width: controller.size.value.width,
+                                    )
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      child: RefreshProgressIndicator(
+                                        backgroundColor: controller.theme.value
+                                            .appColorTheme.colorBackground,
                                       ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        SizedBox(
-                                          height: controller.size.value.height /
-                                              2.4,
-                                        ),
-                                        ForeGroundDownView()
-                                      ],
-                                    ),
-                                  ]),
-                                ),
-                                AnimatedContainer(
-                                  duration: Duration(milliseconds: 200),
-                                  margin: EdgeInsets.only(
-                                      top: controller.size.value.height * 0.04),
-                                  child: controller.isDrawerOpen.isTrue
-                                      ? Container()
-                                      : controller.components.value.menuButton(
-                                          onClick: () {
-                                            controller.openDrawer();
-                                          },
-                                          color: Colors.transparent,
-                                          icon: Icon(
-                                            Icons.menu_rounded,
-                                            color: controller.theme.value
-                                                .appColorTheme.colorBlack,
-                                          )),
-                                ),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Container(
-                                      child: controller.isDrawerOpen.isTrue
-                                          ? BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 1.0, sigmaY: 1.0),
-                                              child: Container(
-                                                  width: controller
-                                                      .size.value.width,
-                                                  height: controller
-                                                      .size.value.height,
-                                                  color: Colors.transparent),
-                                            )
-                                          : Container()),
-                                )
-                              ],
-                            ),
-                          ),
+                                    )),
                         ),
                       ),
                     ],

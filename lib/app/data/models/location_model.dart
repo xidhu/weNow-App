@@ -14,8 +14,9 @@ class Location {
   double currentPrecipitation = 0.0;
   double currentWind = 0.0;
   double currentHumidity = 0.0;
-  List<TemperatureData> dayChartData = [];
-  List<TemperatureData> weekChartData = [];
+  var dayChartData = [];
+  var weekChartData = [];
+  Map<String, dynamic> tommorrowData = {};
 
   bool isDataAvailable = false;
 
@@ -29,7 +30,7 @@ class Location {
 
   Map<String, dynamic> toDatabase() {
     return {
-      'date': date.toString(),
+      'date': date.toUtc().toString(),
       'locId': locId,
       'cityName': cityName,
       'countryName': countryName,
@@ -43,7 +44,8 @@ class Location {
       'weekChartData': weekChartData.map((e) => e.toJSON()).toList(),
       'lon': longitude,
       'lat': latitude,
-      'isDataAvailable': isDataAvailable
+      'isDataAvailable': isDataAvailable,
+      'tommorowData': tommorrowData
     };
   }
 
@@ -51,7 +53,7 @@ class Location {
     this.isDataAvailable = data["isDataAvailable"];
     this.latitude = data["lat"];
     this.longitude = data["lon"];
-    this.date = DateTime.parse(data["date"].toString());
+    this.date = DateTime.parse(data["date"]);
     this.locId = data["locId"].toString();
     this.cityName = data["cityName"];
     this.countryName = data["countryName"];
@@ -64,7 +66,7 @@ class Location {
     this.dayChartData = data["hourlyData"] != null
         ? data["hourlyData"].map((hours) {
             return TemperatureData(
-                time: hours["time"],
+                time: DateTime.parse(hours["date"]),
                 temperature: hours["temperature"],
                 weather: hours["weather"],
                 weatherIcon: hours["weatherIcon"]);
@@ -73,16 +75,17 @@ class Location {
     this.weekChartData = data["dailyData"] != null
         ? data["dailyData"].map((day) {
             return TemperatureData(
-                time: day["time"],
+                time: DateTime.parse(day["date"]),
                 temperature: day["temperature"],
                 weather: day["weather"],
                 weatherIcon: day["weatherIcon"]);
           })
         : [];
+    this.tommorrowData = data["tommorowData"];
   }
 
   void setWeather(Map<String, dynamic> data) {
-    date = DateTime.parse(data["date"].toString());
+    date = DateTime.fromMillisecondsSinceEpoch(data["date"] * 1000);
     locId = data["locId"].toString();
     cityName = data["cityName"];
     countryName = data["countryName"];
@@ -92,30 +95,31 @@ class Location {
   }
 
   void setFullWeather(Map<String, dynamic> data) {
-    date = DateTime.parse(data["date"].toString());
+    date = DateTime.fromMillisecondsSinceEpoch(data["date"] * 1000);
     currentWeather = data["currentWeather"];
     weatherIcon = data["weatherIcon"];
     currentTemperature = data["currentTemperature"];
-    currentPrecipitation = data["currentPrecipitation"];
-    currentHumidity = data["currentHumidity"];
+    currentPrecipitation = data["currentPrecipitation"].toDouble();
+    currentHumidity = data["currentHumidity"].toDouble();
     currentWind = data["currentWind"];
     dayChartData = data["hourlyData"] != null
         ? data["hourlyData"].map((hours) {
             return TemperatureData(
-                time: hours["time"],
-                temperature: hours["temperature"],
+                time: DateTime.fromMillisecondsSinceEpoch(hours["time"] * 1000),
+                temperature: hours["temperature"].toDouble(),
                 weather: hours["weather"],
                 weatherIcon: hours["weatherIcon"]);
-          })
+          }).toList()
         : [];
     weekChartData = data["dailyData"] != null
         ? data["dailyData"].map((day) {
             return TemperatureData(
-                time: day["time"],
-                temperature: day["temperature"],
+                time: DateTime.fromMillisecondsSinceEpoch(day["time"] * 1000),
+                temperature: day["temperature"].toDouble(),
                 weather: day["weather"],
                 weatherIcon: day["weatherIcon"]);
-          })
+          }).toList()
         : [];
+    tommorrowData = data["tommorrowData"];
   }
 }

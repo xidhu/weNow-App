@@ -31,6 +31,12 @@ class AppDatabase {
   static const String LOCATION_STORE = 'locations';
   final _location_store = intMapStoreFactory.store(LOCATION_STORE);
 
+  Future getLocation(String locId) async {
+    final finder = Finder(filter: Filter.equals('locId', locId));
+    final finded = await _location_store.findFirst(await _db, finder: finder);
+    return finded != null ? Location.fromDatabase(finded.value) : null;
+  }
+
   Future findLocation(Location location) async {
     final finder = Finder(filter: Filter.equals('locId', location.locId));
     final finded = await _location_store.findFirst(await _db, finder: finder);

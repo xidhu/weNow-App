@@ -15,17 +15,17 @@ class PeriodChooserView extends GetView<HomeController> {
             child: Row(
               children: [
                 SizedBox(
-                  width: controller.size.value.width * 0.06,
+                  width: controller.size.value.width * 0.1,
                 ),
-                buttonChooser(title: "Day", index: 0),
+                buttonChooser(title: "Today", index: 0),
                 SizedBox(
                   width: 10,
                 ),
-                buttonChooser(title: "Week", index: 1),
+                buttonChooser(title: "Tommorrow", index: 1),
                 SizedBox(
                   width: 10,
                 ),
-                buttonChooser(title: "Month", index: 2),
+                buttonChooser(title: "Week", index: 2),
                 Spacer(),
               ],
             ),

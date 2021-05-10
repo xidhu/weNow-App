@@ -7,6 +7,7 @@ import 'package:we_now/app/Utils/geolocator.dart';
 import 'package:we_now/app/data/Api/weather_api.dart';
 import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
+import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/locationview_components.dart';
 
@@ -168,7 +169,9 @@ class LocationSelectController extends GetxController {
       typingState = false.obs;
       loadingState = false.obs;
       update();
-    } else {}
+    } else {
+      if (currentLocation >= 0) Get.offAndToNamed(AppPages.INITIAL);
+    }
   }
 
   void addLocation(int index) async {
@@ -227,6 +230,9 @@ class LocationSelectController extends GetxController {
   void onLocationClicked(int index) {
     currentLocation = index;
     appData.setInt('currentLocation', index);
+    appData.setString('currentLocationId', locations[index].locId);
+    appMemoryData.write('currentLocationId', locations[index].locId);
     update();
+    Get.offAndToNamed(AppPages.INITIAL);
   }
 }

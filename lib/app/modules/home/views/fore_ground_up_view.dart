@@ -24,12 +24,12 @@ class ForeGroundUpView extends GetView<HomeController> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            "Kozhikode",
+                            controller.data.cityName,
                             style:
                                 controller.theme.value.appTextTheme.txt32white,
                           ),
                           Text(
-                            "India",
+                            controller.data.countryName,
                             style: controller.theme.value.appTextTheme.txt18grey
                                 .copyWith(color: Color(0xFF7B5959)),
                           ),
@@ -54,7 +54,16 @@ class ForeGroundUpView extends GetView<HomeController> {
                             Column(
                               children: [
                                 Text(
-                                  "35°",
+                                  ((controller.switcherState.value
+                                                  ? controller
+                                                      .data.currentTemperature
+                                                  : controller
+                                                          .data.tommorrowData[
+                                                      "temperature"]) -
+                                              273.75)
+                                          .ceil()
+                                          .toString() +
+                                      "°",
                                   style: controller
                                       .theme.value.appTextTheme.txt60white
                                       .copyWith(height: 0.1),
@@ -67,7 +76,20 @@ class ForeGroundUpView extends GetView<HomeController> {
                                       Column(
                                         children: [
                                           Text(
-                                            "35°",
+                                            (((controller.switcherState.value
+                                                                    ? controller
+                                                                        .data
+                                                                        .currentTemperature
+                                                                    : controller
+                                                                            .data
+                                                                            .tommorrowData[
+                                                                        "temperature"]) -
+                                                                273.75) *
+                                                            (9 / 5) +
+                                                        32)
+                                                    .ceil()
+                                                    .toString() +
+                                                "°",
                                             style: controller.theme.value
                                                 .appTextTheme.txt18white
                                                 .copyWith(
@@ -105,7 +127,9 @@ class ForeGroundUpView extends GetView<HomeController> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 20),
                           child: Text(
-                            "Sunny",
+                            controller.switcherState.value
+                                ? controller.data.currentWeather
+                                : controller.data.tommorrowData["weather"],
                             style:
                                 controller.theme.value.appTextTheme.txt32white,
                           ),

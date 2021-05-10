@@ -6,19 +6,10 @@ import 'package:we_now/app/data/models/temperature_model.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
 
 class TemperatureChart extends GetView<HomeController> {
-  late List<TemperatureData> data;
-
   @override
   Widget build(BuildContext context) {
-    data = [
-      TemperatureData(
-          time: DateTime.parse("1620801000"),
-          temperature: 30,
-          weather: "Sunny",
-          weatherIcon: "sd")
-    ];
     return GetBuilder<HomeController>(builder: (controller) {
-      return SfCartesianChart(
+      final chart = SfCartesianChart(
           plotAreaBorderWidth: 0,
           tooltipBehavior: TooltipBehavior(
             color: controller.theme.value.appColorTheme.colorBackground,
@@ -31,12 +22,12 @@ class TemperatureChart extends GetView<HomeController> {
           primaryXAxis: CategoryAxis(
               labelStyle: controller.theme.value.appTextTheme.txt12white
                   .copyWith(
-                      fontSize: 10,
+                      fontSize: 8,
                       fontFamily: 'ReemKufi',
                       color: controller
                           .theme.value.appColorTheme.greyButtonInsideColor,
-                      height: 2),
-              crossesAt: -30,
+                      height: 1.4),
+              crossesAt: (controller.lowestTemperature - 273),
               majorGridLines: MajorGridLines(width: 0),
               minorGridLines: MinorGridLines(width: 0),
               majorTickLines: MajorTickLines(size: 0),
@@ -50,24 +41,27 @@ class TemperatureChart extends GetView<HomeController> {
             ),
             majorGridLines: MajorGridLines(width: 0, color: Colors.transparent),
             minorGridLines: MinorGridLines(width: 0, color: Colors.transparent),
-            minimum: -30,
-            maximum: 80,
+            minimum: (controller.lowestTemperature - 273),
+            maximum: (controller.highestTemperature - 273) + 10,
             axisLine: AxisLine(width: 0),
             edgeLabelPlacement: EdgeLabelPlacement.shift,
-            labelFormat: '{value}°F',
+            labelFormat: '{value}°C',
             majorTickLines: MajorTickLines(size: 0),
           ),
-          series: <ChartSeries<TemperatureData, String>>[
-            SplineAreaSeries<TemperatureData, String>(
+          series: <ChartSeries<TemperatureChartData, String>>[
+            SplineAreaSeries<TemperatureChartData, String>(
+                onRendererCreated: (chartController) {
+                  controller.chartController = chartController;
+                },
                 animationDuration: 5000,
                 borderWidth: 4,
                 borderColor:
                     controller.theme.value.appColorTheme.graphBorderColor,
                 color: controller.theme.value.appColorTheme.graphColor,
-                dataSource: data,
-                xValueMapper: (TemperatureData temp, _) =>
-                    temp.time.hour.toString(),
-                yValueMapper: (TemperatureData temp, _) => temp.temperature,
+                dataSource: controller.chartData,
+                xValueMapper: (TemperatureChartData temp, _) => temp.time,
+                yValueMapper: (TemperatureChartData temp, _) =>
+                    (temp.temperature - 273).floorToDouble(),
                 markerSettings: MarkerSettings(isVisible: false),
                 // Enable data label
                 dataLabelSettings: DataLabelSettings(
@@ -76,10 +70,11 @@ class TemperatureChart extends GetView<HomeController> {
                       .copyWith(fontFamily: 'ReemKufi', fontSize: 12),
                 )),
           ]);
+      return chart;
     });
   }
 
-  Widget indicator({required TemperatureData data}) {
+  Widget indicator({required TemperatureChartData data}) {
     return FittedBox(
       child: Container(
         padding: EdgeInsets.all(10),
@@ -90,14 +85,14 @@ class TemperatureChart extends GetView<HomeController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.wb_sunny,
-              color: Colors.amber,
+            Image.network(
+              data.weatherIcon,
+              width: 30,
             ),
             Container(
               margin: EdgeInsets.only(top: 30),
               child: Text(
-                data.temperature.toString() + "°c",
+                (data.temperature - 273).floor().toString() + "°c",
                 style: controller.theme.value.appTextTheme.txt18grey
                     .copyWith(fontSize: 32, height: 0.1),
               ),
@@ -106,11 +101,13 @@ class TemperatureChart extends GetView<HomeController> {
               data.time.toString(),
               style: controller.theme.value.appTextTheme.txt18grey
                   .copyWith(fontSize: 10),
+              textAlign: TextAlign.center,
             ),
             Text(
-              "Sunny",
+              data.weather,
               style: controller.theme.value.appTextTheme.txt18grey
                   .copyWith(fontSize: 10),
+              textAlign: TextAlign.center,
             )
           ],
         ),
