@@ -112,6 +112,8 @@ class ForeGroundDownView extends GetView<HomeController> {
                               ? FittedBox(
                                   child: controller.components.value
                                       .locationBuilder(
+                                  onClick: () =>
+                                      controller.onLocationClicked(index),
                                   data: controller.locations,
                                   index: index,
                                 ))

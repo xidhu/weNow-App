@@ -53,7 +53,7 @@ class TemperatureChart extends GetView<HomeController> {
                 onRendererCreated: (chartController) {
                   controller.chartController = chartController;
                 },
-                animationDuration: 5000,
+                animationDuration: 600,
                 borderWidth: 4,
                 borderColor:
                     controller.theme.value.appColorTheme.graphBorderColor,

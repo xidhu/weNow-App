@@ -89,7 +89,8 @@ class HomeViewComponents {
     );
   }
 
-  Widget locationBuilder({required int index, required data}) {
+  Widget locationBuilder(
+      {required int index, required data, required Function onClick}) {
     return Column(children: [
       FittedBox(
         child: Container(
@@ -123,7 +124,7 @@ class HomeViewComponents {
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
+                    onTap: () => onClick(),
                     child: Container(
                       width: double.infinity,
                       height: double.infinity,

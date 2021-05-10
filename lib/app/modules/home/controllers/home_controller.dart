@@ -8,6 +8,7 @@ import 'package:we_now/app/data/Api/weather_api.dart';
 import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/data/models/temperature_model.dart';
+import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
@@ -165,7 +166,6 @@ class HomeController extends GetxController {
 
   void openDrawer() async {
     database = AppDatabase.instance;
-    (await database.printAllLocations());
 
     isDrawerOpen = true.obs;
     update();
@@ -174,5 +174,13 @@ class HomeController extends GetxController {
   void closeDrawer() async {
     isDrawerOpen = false.obs;
     update();
+  }
+
+  void onLocationClicked(int index) {
+    appData.setInt('currentLocation', index);
+    appData.setString('currentLocationId', locations[index].locId);
+    appMemoryData.write('currentLocationId', locations[index].locId);
+    update();
+    Get.offAndToNamed(AppPages.INITIAL);
   }
 }
