@@ -17,10 +17,10 @@ class HomeView extends GetView<HomeController> {
             builder: (controller) {
               return GestureDetector(
                 onTap: () {
-                  if (controller.isDrawerOpen.value) controller.closeDrawer();
+                  if (controller.isDrawerOpen) controller.closeDrawer();
                 },
                 child: Container(
-                  color: controller.theme.value.appColorTheme.colorBackground,
+                  color: controller.theme.appColorTheme.colorBackground,
                   child: Stack(
                     overflow: Overflow.clip,
                     children: [
@@ -29,43 +29,39 @@ class HomeView extends GetView<HomeController> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            controller.components.value.menuButton(
+                            controller.components.menuButton(
                                 onClick: () {
                                   controller.closeDrawer();
                                 },
-                                shadow: controller
-                                    .theme.value.appColorTheme.shadowMedium,
+                                shadow:
+                                    controller.theme.appColorTheme.shadowMedium,
                                 icon: Icon(
                                   Icons.menu_open_rounded,
-                                  color: controller.theme.value.appColorTheme
+                                  color: controller.theme.appColorTheme
                                       .greyButtonInsideColor,
                                 ),
-                                color: controller
-                                    .theme.value.appColorTheme.colorWhite),
+                                color:
+                                    controller.theme.appColorTheme.colorWhite),
                             SizedBox(
-                              height: controller.size.value.height * 0.1,
+                              height: controller.size.height * 0.1,
                             ),
-                            controller.components.value.menuItem(
+                            controller.components.menuItem(
                                 title: "Location",
                                 onClick: () {
-                                  Get.offAndToNamed(AppPages.LOCATION);
-                                  controller.closeDrawer();
+                                  controller.onLocationPageClicked();
                                 },
                                 icon: Icons.location_on_rounded),
                             SizedBox(
-                              height: controller.size.value.height * 0.03,
+                              height: controller.size.height * 0.03,
                             ),
-                            controller.components.value.menuItem(
+                            controller.components.menuItem(
                                 title: "Settings",
-                                onClick: () {
-                                  controller.switchTheme(
-                                      !controller.isDarkModeOn.value);
-                                },
+                                onClick: () {},
                                 icon: Icons.settings),
                             SizedBox(
-                              height: controller.size.value.height * 0.03,
+                              height: controller.size.height * 0.03,
                             ),
-                            controller.components.value.menuItem(
+                            controller.components.menuItem(
                                 title: "App Info",
                                 onClick: () {},
                                 icon: Icons.info_rounded),
@@ -77,28 +73,28 @@ class HomeView extends GetView<HomeController> {
                       ),
                       AnimatedPositioned(
                         duration: Duration(milliseconds: 200),
-                        left: controller.isDrawerOpen.isTrue ? 200 : 0,
-                        top: controller.isDrawerOpen.isTrue ? 50 : 0,
-                        right: controller.isDrawerOpen.isTrue ? -200 : 0,
-                        bottom: controller.isDrawerOpen.isTrue ? -50 : 0,
+                        left: controller.isDrawerOpen ? 200 : 0,
+                        top: controller.isDrawerOpen ? 50 : 0,
+                        right: controller.isDrawerOpen ? -200 : 0,
+                        bottom: controller.isDrawerOpen ? -50 : 0,
                         child: AbsorbPointer(
-                          absorbing: controller.isDrawerOpen.isTrue,
+                          absorbing: controller.isDrawerOpen,
                           child: Container(
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: controller.theme.value.appColorTheme
-                                      .colorBackground,
+                                  color: controller
+                                      .theme.appColorTheme.colorBackground,
                                   boxShadow: [
-                                    controller.theme.value.appColorTheme
-                                        .shadowMediumUp
+                                    controller
+                                        .theme.appColorTheme.shadowMediumUp
                                   ]),
-                              child: !controller.loadingState.value
+                              child: !controller.loadingState
                                   ? Stack(
                                       overflow: Overflow.clip,
                                       children: [
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: controller.theme.value
+                                            color: controller.theme
                                                 .appColorTheme.colorBackground,
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -109,8 +105,7 @@ class HomeView extends GetView<HomeController> {
                                                 borderRadius:
                                                     BorderRadius.circular(20)),
                                             height:
-                                                controller.size.value.height /
-                                                    1.6,
+                                                controller.size.height / 1.6,
                                             child: Stack(
                                               overflow: Overflow.clip,
                                               children: [
@@ -121,45 +116,39 @@ class HomeView extends GetView<HomeController> {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(20)),
-                                                    height: controller
-                                                            .size.value.height /
-                                                        1.6,
+                                                    height:
+                                                        controller.size.height /
+                                                            1.6,
                                                     child: ClipRRect(
                                                       borderRadius: controller
                                                               .isDrawerOpen
-                                                              .isTrue
                                                           ? BorderRadius
                                                               .circular(20)
                                                           : BorderRadius.zero,
                                                       child: SvgPicture.asset(
                                                         controller
                                                             .theme
-                                                            .value
                                                             .appSvgImages
                                                             .background1,
                                                         fit: BoxFit.cover,
                                                         width: controller
-                                                            .size.value.width,
+                                                            .size.width,
                                                       ),
                                                     )),
                                                 Container(
                                                   decoration: BoxDecoration(
                                                       borderRadius: controller
                                                               .isDrawerOpen
-                                                              .isTrue
                                                           ? BorderRadius
                                                               .circular(14)
                                                           : BorderRadius.zero,
                                                       color: controller
                                                                   .theme
-                                                                  .value
                                                                   .appColorTheme
-                                                                  .colorBackground
-                                                                  .value ==
+                                                                  .colorBackground ==
                                                               0xFF212121
                                                           ? controller
                                                               .theme
-                                                              .value
                                                               .appColorTheme
                                                               .colorBackground
                                                               .withOpacity(0.3)
@@ -179,25 +168,24 @@ class HomeView extends GetView<HomeController> {
                                               children: [
                                                 Container(
                                                   margin: EdgeInsets.only(
-                                                      top: controller.size.value
-                                                              .height /
+                                                      top: controller
+                                                              .size.height /
                                                           4),
                                                   child: SvgPicture.asset(
                                                     controller
                                                         .theme
-                                                        .value
                                                         .appSvgImages
                                                         .mainVector,
                                                     fit: BoxFit.fill,
-                                                    width: controller
-                                                        .size.value.width,
+                                                    width:
+                                                        controller.size.width,
                                                   ),
                                                 ),
                                                 Column(
                                                   children: [
                                                     SizedBox(
-                                                      height: controller.size
-                                                              .value.height /
+                                                      height: controller
+                                                              .size.height /
                                                           2.4,
                                                     ),
                                                     ForeGroundDownView()
@@ -208,12 +196,11 @@ class HomeView extends GetView<HomeController> {
                                         AnimatedContainer(
                                           duration: Duration(milliseconds: 200),
                                           margin: EdgeInsets.only(
-                                              top:
-                                                  controller.size.value.height *
-                                                      0.04),
-                                          child: controller.isDrawerOpen.isTrue
+                                              top: controller.size.height *
+                                                  0.04),
+                                          child: controller.isDrawerOpen
                                               ? Container()
-                                              : controller.components.value
+                                              : controller.components
                                                   .menuButton(
                                                       onClick: () {
                                                         controller.openDrawer();
@@ -223,7 +210,6 @@ class HomeView extends GetView<HomeController> {
                                                         Icons.menu_rounded,
                                                         color: controller
                                                             .theme
-                                                            .value
                                                             .appColorTheme
                                                             .colorBlack,
                                                       )),
@@ -232,19 +218,16 @@ class HomeView extends GetView<HomeController> {
                                           borderRadius:
                                               BorderRadius.circular(20),
                                           child: Container(
-                                              child: controller
-                                                      .isDrawerOpen.isTrue
+                                              child: controller.isDrawerOpen
                                                   ? BackdropFilter(
                                                       filter: ImageFilter.blur(
                                                           sigmaX: 1.0,
                                                           sigmaY: 1.0),
                                                       child: Container(
                                                           width: controller
-                                                              .size.value.width,
+                                                              .size.width,
                                                           height: controller
-                                                              .size
-                                                              .value
-                                                              .height,
+                                                              .size.height,
                                                           color: Colors
                                                               .transparent),
                                                     )
@@ -255,7 +238,7 @@ class HomeView extends GetView<HomeController> {
                                   : Container(
                                       alignment: Alignment.center,
                                       child: RefreshProgressIndicator(
-                                        backgroundColor: controller.theme.value
+                                        backgroundColor: controller.theme
                                             .appColorTheme.colorBackground,
                                       ),
                                     )),

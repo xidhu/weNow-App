@@ -9,24 +9,40 @@ class AppDatabase {
   static final _singleton = AppDatabase._();
   static AppDatabase get instance => _singleton;
 
-  late Completer _openDbCompleter;
-  bool _isOpen = false;
+  var _openDbCompleter;
 
   AppDatabase._();
 
   Future get database async {
-    if (!_isOpen) {
+    if (_openDbCompleter == null) {
       _openDbCompleter = Completer();
       final dir = await getApplicationDocumentsDirectory();
       final dbPath = join(dir.path, "location.db");
       final db = await databaseFactoryIo.openDatabase(dbPath);
-      _isOpen = true;
       _openDbCompleter.complete(db);
     }
     return _openDbCompleter.future;
   }
 
   Future<Database> get _db async => await AppDatabase.instance.database;
+
+  static const String SETTINGS = 'settings';
+  final _settings = intMapStoreFactory.store(SETTINGS);
+
+  Future setSettings(Map<String, dynamic> settings) async {
+    int count = await _settings.count(await _db);
+    if (count == 0) {
+      await _settings.add(await _db, settings);
+    } else {
+      final finder = Finder(filter: Filter.equals('id', '1'));
+      await _settings.update(await _db, settings, finder: finder);
+    }
+  }
+
+  Future getSettings() async {
+    final finder = Finder(filter: Filter.equals('id', '1'));
+    return await _settings.findFirst(await _db, finder: finder);
+  }
 
   static const String LOCATION_STORE = 'locations';
   final _location_store = intMapStoreFactory.store(LOCATION_STORE);
@@ -88,6 +104,5 @@ class AppDatabase {
 
   Future closeDatabase() async {
     (await _db).close();
-    _isOpen = false;
   }
 }

@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/modules/location_select/controllers/location_select_controller.dart';
 import 'package:we_now/app/theme/app_theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:we_now/app/utils/connectivity.dart';
 
 class LocationViewComponents {
   late Size size;
@@ -43,7 +45,7 @@ class LocationViewComponents {
       ),
       margin: EdgeInsets.all(10),
       child: Material(
-        color: theme.appColorTheme.colorBackground.value != 0xFF212121
+        color: theme.appColorTheme.colorBackground != 0xFF212121
             ? Color.fromRGBO(
                 235 + (offset / 100).toInt() * 20,
                 235 + (offset / 100).toInt() * 20,
@@ -84,7 +86,7 @@ class LocationViewComponents {
         width: size.width * 0.8,
         decoration: BoxDecoration(
             boxShadow: offset > 100 ? [theme.appColorTheme.shadowMild] : null,
-            color: theme.appColorTheme.colorBackground.value != 0xFF212121
+            color: theme.appColorTheme.colorBackground != 0xFF212121
                 ? Color.fromRGBO(
                     235 + (offset / 100).toInt() * 20,
                     235 + (offset / 100).toInt() * 20,
@@ -148,6 +150,7 @@ class LocationViewComponents {
   Widget locationBuilder(
       {required int currLocCount,
       required Location location,
+      required bool isOnline,
       bool isCurr = true,
       required int count,
       required int currLoc,
@@ -203,7 +206,7 @@ class LocationViewComponents {
                         height: size.height * 0.2,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            color: theme.appColorTheme.colorBackground.value ==
+                            color: theme.appColorTheme.colorBackground ==
                                     0xFF212121
                                 ? theme.appColorTheme.colorBackground
                                     .withOpacity(0.2)
@@ -256,10 +259,26 @@ class LocationViewComponents {
                                                 )
                                               ],
                                             ),
-                                            Container(
-                                              child: Image.network(
-                                                  location.weatherIcon),
-                                            )
+                                            isOnline
+                                                ? Container(
+                                                    child: CachedNetworkImage(
+                                                      imageUrl:
+                                                          location.weatherIcon,
+                                                      placeholder:
+                                                          (context, url) =>
+                                                              Icon(
+                                                        Icons.wb_sunny_rounded,
+                                                        color: Colors.white,
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Icon(
+                                                        Icons.wb_sunny_rounded,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container()
                                           ],
                                         ),
                                       ),
@@ -312,13 +331,13 @@ class LocationViewComponents {
                   borderRadius: BorderRadius.circular(10),
                   onTap: () => onClick(),
                   child: Container(
-                    width: controller.size.value.width * 0.8,
+                    width: controller.size.width * 0.8,
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
                     child: Text(
                       controller.locationList![index].cityName +
                           "," +
                           controller.locationList![index].countryName,
-                      style: controller.theme.value.appTextTheme.txt18grey,
+                      style: controller.theme.appTextTheme.txt18grey,
                     ),
                   ),
                 ),
@@ -329,7 +348,7 @@ class LocationViewComponents {
             margin: EdgeInsets.only(top: 8),
             width: double.infinity,
             height: 1,
-            color: controller.theme.value.appColorTheme.greyButtonColor,
+            color: controller.theme.appColorTheme.greyButtonColor,
           )
         ],
       ),
@@ -348,37 +367,35 @@ class LocationViewComponents {
       alignment: Alignment.center,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        width: controller.size.value.width * 0.8,
-        height: controller.size.value.height * 0.22,
+        width: controller.size.width * 0.8,
+        height: controller.size.height * 0.22,
         decoration: BoxDecoration(
-            color: controller.theme.value.appColorTheme.colorBackground,
+            color: controller.theme.appColorTheme.colorBackground,
             borderRadius: BorderRadius.circular(15),
-            boxShadow: [controller.theme.value.appColorTheme.shadowMedium]),
+            boxShadow: [controller.theme.appColorTheme.shadowMedium]),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Text(
               title,
-              style: controller.theme.value.appTextTheme.txt32grey,
+              style: controller.theme.appTextTheme.txt32grey,
             ),
             Text(
               description,
-              style: controller.theme.value.appTextTheme.txt18grey,
+              style: controller.theme.appTextTheme.txt18grey,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
-                  width: controller.size.value.width * 0.3,
-                  height: controller.size.value.height * 0.04,
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
                   decoration: BoxDecoration(
                       color: controller
-                          .theme.value.appColorTheme.greyButtonInsideColor
+                          .theme.appColorTheme.greyButtonInsideColor
                           .withOpacity(0.4),
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        controller.theme.value.appColorTheme.shadowMild
-                      ]),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -392,21 +409,19 @@ class LocationViewComponents {
                         height: double.infinity,
                         child: Text(
                           negetive,
-                          style: controller.theme.value.appTextTheme.txt12white,
+                          style: controller.theme.appTextTheme.txt12white,
                         ),
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  width: controller.size.value.width * 0.3,
-                  height: controller.size.value.height * 0.04,
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
                   decoration: BoxDecoration(
-                      color: controller.theme.value.appColorTheme.color3,
+                      color: controller.theme.appColorTheme.color3,
                       borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        controller.theme.value.appColorTheme.shadowMild
-                      ]),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
@@ -420,7 +435,7 @@ class LocationViewComponents {
                         height: double.infinity,
                         child: Text(
                           positive,
-                          style: controller.theme.value.appTextTheme.txt12white,
+                          style: controller.theme.appTextTheme.txt12white,
                         ),
                       ),
                     ),

@@ -1,9 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:we_now/app/Utils/geolocator.dart';
+import 'package:we_now/app/settings/settings.dart';
+import 'package:we_now/app/utils/connectivity.dart';
+import 'package:we_now/app/utils/geolocator.dart';
 import 'package:we_now/app/data/Api/weather_api.dart';
 import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
@@ -13,26 +15,28 @@ import 'package:we_now/app/widgets/locationview_components.dart';
 
 class LocationSelectController extends GetxController {
   //statc variables
-  GetStorage appMemoryData = GetStorage();
   final WeatherApi api = WeatherApi();
   ScrollController scrollController =
       ScrollController(initialScrollOffset: 0.0, keepScrollOffset: true);
   TextEditingController searchTextConroller = TextEditingController();
-  late SharedPreferences appData;
   FocusNode focusNode = FocusNode();
 
   //global variables
-  late Rx<LocationViewComponents> components;
-  late Rx<AppTheme> theme;
-  late Rx<Size> size;
+  late LocationViewComponents components;
+  late AppTheme theme;
+  late Size size;
   late AppDatabase database;
+  late ConnectionStatusSingleton connectionStatus;
+  late StreamSubscription connectionChangeStream;
+  late Settings appSettings;
 
   //State Variables
-  Rx<bool> isDarkModeOn = false.obs;
-  Rx<double> scrollOffset = 0.0.obs;
-  Rx<bool> typingState = false.obs;
-  Rx<bool> loadingState = false.obs;
-  Rx<bool> locationsAvailable = false.obs;
+  double scrollOffset = 0.0;
+  bool typingState = false;
+  bool loadingState = false;
+  bool locationsAvailable = false;
+  bool isSnackbarOn = false;
+  bool isOnline = false;
 
   //Data variables
   var locations;
@@ -41,78 +45,125 @@ class LocationSelectController extends GetxController {
 
   @override
   void onInit() async {
-    Get.mediaQuery.platformBrightness == Brightness.dark
-        ? appMemoryData.write('isDarkModeEnable', true)
-        : appMemoryData.write('isDarkModeEnable', false);
-    appMemoryData.writeIfNull('isDarkModeEnable', false);
-    isDarkModeOn = (appMemoryData.read('isDarkModeEnable') as bool).obs;
-    size = Get.size.obs;
-    theme = isDarkModeOn.value
-        ? AppTheme.darkTheme().obs
-        : AppTheme.lightTheme().obs;
-    components =
-        LocationViewComponents(size: size.value, theme: theme.value).obs;
-    scrollController.addListener(() {
-      if (scrollController.offset >= 0)
-        scrollOffset = scrollController.offset < 100
-            ? scrollController.offset.obs
-            : 100.0.obs;
+    database = AppDatabase.instance;
+    appSettings = Settings.instance;
+    appSettings.loadData();
+
+    connectionStatus = ConnectionStatusSingleton.getInstance();
+    connectionStatus.initialize();
+    connectionChangeStream = connectionStatus.connectionChange.listen((status) {
+      isOnline = status;
+      if (isOnline) {
+        showSnackBar(
+            title: "Connection", description: "Internet Connection Available");
+      } else {
+        showSnackBar(
+            title: "Connection", description: "No Internet Connection");
+      }
       update();
     });
-    database = AppDatabase.instance;
+
+    setTheme();
+
+    size = Get.size;
+    components = LocationViewComponents(size: size, theme: theme);
+    scrollController.addListener(() {
+      if (scrollController.offset >= 0)
+        scrollOffset =
+            scrollController.offset < 100 ? scrollController.offset : 100.0;
+      update();
+    });
+
     locations = (await database.getAllLocations());
-    appData = await SharedPreferences.getInstance();
     if (locations.length > 0) {
-      locationsAvailable = true.obs;
-      currentLocation = appData.getInt('currentLocation') ?? -1;
+      locationsAvailable = true;
+      currentLocation = appSettings.currentLocation;
       update();
     }
     super.onInit();
   }
 
-  void onSearchBarTextChanged(String value) async {
-    if (value == '') {
-      typingState = false.obs;
-      loadingState = false.obs;
+  void setTheme() {
+    if (appSettings.isdefaultTheme) {
+      theme = Get.mediaQuery.platformBrightness == Brightness.dark
+          ? AppTheme.darkTheme()
+          : AppTheme.lightTheme();
     } else {
-      loadingState = true.obs;
-      typingState = true.obs;
-      update();
-      locationList = ((await api.getCities(value))
-          .toList()
-          .map((city) => Location.fromAPI(city))).toList();
-      loadingState = false.obs;
+      theme =
+          appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();
     }
-    update();
+  }
+
+  void showSnackBar({required String title, required String description}) {
+    Get.snackbar(title, description,
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: theme.appColorTheme.greyButtonInsideColor,
+        isDismissible: true,
+        dismissDirection: SnackDismissDirection.HORIZONTAL,
+        backgroundColor: theme.appColorTheme.colorBackground,
+        borderRadius: 10,
+        boxShadows: [theme.appColorTheme.shadowMedium],
+        animationDuration: Duration(milliseconds: 200));
+    isSnackbarOn = true;
+  }
+
+  void onSearchBarTextChanged(String value) async {
+    if (await connectionStatus.checkConnection()) {
+      isSnackbarOn = false;
+      if (value == '') {
+        typingState = false;
+        loadingState = false;
+      } else {
+        loadingState = true;
+        typingState = true;
+        update();
+        locationList = ((await api.getCities(value))
+            .toList()
+            .map((city) => Location.fromAPI(city))).toList();
+        loadingState = false;
+      }
+      update();
+    } else {
+      searchTextConroller.clear();
+      if (!isSnackbarOn) {
+        showSnackBar(
+            title: "Connection", description: "No Internet Connection");
+      }
+    }
   }
 
   void getLocationFromGps() async {
-    loadingState = true.obs;
-    update();
-    await determinePosition()
-        .then((value) => getLocationFromCoord(value.latitude, value.longitude))
-        .onError((error, stackTrace) => locatorError(error));
+    if (await connectionStatus.checkConnection()) {
+      loadingState = true;
+      update();
+      await determinePosition()
+          .then(
+              (value) => getLocationFromCoord(value.latitude, value.longitude))
+          .onError((error, stackTrace) => locatorError(error));
+    } else {
+      showSnackBar(title: "Connection", description: "No Internet Connection");
+    }
   }
 
   Future<void> onRefresh() async {
-    loadingState = true.obs;
+    loadingState = true;
     update();
     database = AppDatabase.instance;
     locations = (await database.getAllLocations());
     if (locations.length > 0) {
-      locationsAvailable = true.obs;
+      locationsAvailable = true;
     }
     await Future.delayed(Duration(seconds: 1));
-    loadingState = false.obs;
+    loadingState = false;
     update();
   }
 
   void locatorError(error) {
-    loadingState = false.obs;
+    loadingState = false;
     Get.dialog(
         Material(
           color: Colors.grey.withOpacity(0.4),
-          child: components.value.dialogBox(
+          child: components.dialogBox(
               controller: this,
               title: "Location",
               description: error == LocatorStatus.LOCATION_OFF
@@ -155,19 +206,21 @@ class LocationSelectController extends GetxController {
   }
 
   void getLocationFromCoord(double lat, double lon) async {
-    locationList = ((await api.getCitiesByLocation(lon, lat))
-        .toList()
-        .map((city) => Location.fromAPI(city))).toList();
-    loadingState = false.obs;
-    typingState = true.obs;
-    update();
+    if (await connectionStatus.checkConnection()) {
+      locationList = ((await api.getCitiesByLocation(lon, lat))
+          .toList()
+          .map((city) => Location.fromAPI(city))).toList();
+      loadingState = false;
+      typingState = true;
+      update();
+    }
   }
 
   void backClicked() async {
-    if (typingState.value) {
+    if (typingState) {
       searchTextConroller.text = '';
-      typingState = false.obs;
-      loadingState = false.obs;
+      typingState = false;
+      loadingState = false;
       update();
     } else {
       if (currentLocation >= 0) Get.offAndToNamed(AppPages.INITIAL);
@@ -175,18 +228,22 @@ class LocationSelectController extends GetxController {
   }
 
   void addLocation(int index) async {
-    loadingState = true.obs;
-    update();
-    database = AppDatabase.instance;
-    Location loc = locationList[index];
-    loc.setWeather(await api.getWeather(locationList[index].locId));
-    await database.addLocation(loc);
-    locations = (await database.getAllLocations());
-    searchTextConroller.text = '';
-    typingState = false.obs;
-    loadingState = false.obs;
-    locationsAvailable = true.obs;
-    update();
+    if (await connectionStatus.checkConnection()) {
+      loadingState = true;
+      update();
+      database = AppDatabase.instance;
+      Location loc = locationList[index];
+      loc.setWeather(await api.getWeather(locationList[index].locId));
+      await database.addLocation(loc);
+      locations = (await database.getAllLocations());
+      searchTextConroller.text = '';
+      typingState = false;
+      loadingState = false;
+      locationsAvailable = true;
+      update();
+    } else {
+      showSnackBar(title: "Connection", description: "No Internet Connection");
+    }
   }
 
   void deleteLocation(int index) {
@@ -195,27 +252,28 @@ class LocationSelectController extends GetxController {
     Get.dialog(
         Material(
           color: Colors.grey.withOpacity(0.4),
-          child: components.value.dialogBox(
+          child: components.dialogBox(
               controller: this,
               title: "Delete Location",
               description: "Do you want to delete this location?",
               onNegetive: () => Get.back(),
               onPositive: () async {
-                loadingState = true.obs;
+                loadingState = true;
                 update();
                 await database.deleteLocation(loc);
                 locations = (await database.getAllLocations());
                 if (locations.length > 0) {
-                  locationsAvailable = true.obs;
+                  locationsAvailable = true;
                 } else {
-                  locationsAvailable = false.obs;
+                  locationsAvailable = false;
                 }
                 if (index == currentLocation)
                   currentLocation = -1;
                 else
                   currentLocation--;
-                appData.setInt('currentLocation', currentLocation);
-                loadingState = false.obs;
+                appSettings.currentLocation = currentLocation;
+                appSettings.saveData();
+                loadingState = false;
                 Get.back();
                 update();
               },
@@ -227,12 +285,18 @@ class LocationSelectController extends GetxController {
     focusNode.unfocus();
   }
 
-  void onLocationClicked(int index) {
+  void onLocationClicked(int index) async {
+    database = AppDatabase.instance;
     currentLocation = index;
-    appData.setInt('currentLocation', index);
-    appData.setString('currentLocationId', locations[index].locId);
-    appMemoryData.write('currentLocationId', locations[index].locId);
+    appSettings.currentLocation = index;
+    appSettings.currentLocationId = locations[index].locId;
+    appSettings.saveData();
     update();
-    Get.offAndToNamed(AppPages.INITIAL);
+    if (await connectionStatus.checkConnection() ||
+        locations[index].isDataAvailable) {
+      Get.offAndToNamed(AppPages.INITIAL);
+    } else {
+      showSnackBar(title: "Connection", description: "No Internet Connection");
+    }
   }
 }

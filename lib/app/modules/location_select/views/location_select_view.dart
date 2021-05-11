@@ -11,15 +11,15 @@ class LocationSelectView extends GetView<LocationSelectController> {
     return Scaffold(
         body: GetBuilder<LocationSelectController>(builder: (controller) {
       return Container(
-        color: controller.theme.value.appColorTheme.colorBackground,
+        color: controller.theme.appColorTheme.colorBackground,
         child: Stack(
           children: [
-            !controller.loadingState.value
-                ? !controller.typingState.value
-                    ? controller.locationsAvailable.value
+            !controller.loadingState
+                ? !controller.typingState
+                    ? controller.locationsAvailable
                         ? Container(
                             margin: EdgeInsets.only(
-                                top: controller.size.value.height * 0.09),
+                                top: controller.size.height * 0.09),
                             child: Scrollbar(
                               controller: controller.scrollController,
                               child: RefreshIndicator(
@@ -37,7 +37,8 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                     controller.currentLocation > -1 &&
                                             controller.currentLocation <
                                                 controller.locations?.length
-                                        ? controller.components.value.locationBuilder(
+                                        ? controller.components.locationBuilder(
+                                            isOnline: controller.isOnline,
                                             count: 1,
                                             currLoc: controller.currentLocation,
                                             onLongPress: () =>
@@ -59,8 +60,9 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                         physics: ClampingScrollPhysics(),
                                         itemBuilder: (BuildContext context,
                                             int currLocCount) {
-                                          return controller.components.value
+                                          return controller.components
                                               .locationBuilder(
+                                                  isOnline: controller.isOnline,
                                                   count: controller
                                                       .locations?.length,
                                                   currLoc: controller
@@ -86,53 +88,51 @@ class LocationSelectView extends GetView<LocationSelectController> {
                               children: [
                                 Spacer(),
                                 SvgPicture.asset(
-                                  controller.theme.value.appSvgImages.locSelect,
+                                  controller.theme.appSvgImages.locSelect,
                                   alignment: Alignment.center,
-                                  width: controller.size.value.width / 4,
-                                  height: controller.size.value.height / 4,
+                                  width: controller.size.width / 4,
+                                  height: controller.size.height / 4,
                                 ),
                                 SizedBox(
-                                  height: controller.size.value.width / 10,
+                                  height: controller.size.width / 10,
                                 ),
                                 Text(
                                   "Please Add a Location",
-                                  style: controller
-                                      .theme.value.appTextTheme.txt32grey,
+                                  style:
+                                      controller.theme.appTextTheme.txt32grey,
                                 ),
                                 Spacer()
                               ],
                             ))
                     : Container(
-                        color: controller
-                            .theme.value.appColorTheme.colorBackground,
-                        margin: EdgeInsets.only(
-                            top: controller.size.value.height * 0.09),
+                        color: controller.theme.appColorTheme.colorBackground,
+                        margin:
+                            EdgeInsets.only(top: controller.size.height * 0.09),
                         child: ListView.builder(
                             physics: BouncingScrollPhysics(),
                             itemCount: controller.locationList == null
                                 ? 0
                                 : controller.locationList?.length,
                             itemBuilder: (context, index) {
-                              return controller.components.value
-                                  .locationSelector(controller, index,
-                                      onClick: () =>
-                                          controller.addLocation(index));
+                              return controller.components.locationSelector(
+                                  controller, index,
+                                  onClick: () => controller.addLocation(index));
                             }),
                       )
                 : Container(
                     alignment: Alignment.center,
                     child: RefreshProgressIndicator(
                       backgroundColor:
-                          controller.theme.value.appColorTheme.colorBackground,
+                          controller.theme.appColorTheme.colorBackground,
                     ),
                   ),
             Container(
-              child: controller.components.value.buildAppbar(
+              child: controller.components.buildAppbar(
                   node: controller.focusNode,
                   onLocationIconClicked: () => controller.getLocationFromGps(),
                   onTextChanged: (value) =>
                       controller.onSearchBarTextChanged(value),
-                  offset: controller.scrollOffset.value,
+                  offset: controller.scrollOffset,
                   controller: controller,
                   onClickBack: () => controller.backClicked()),
             ),
@@ -147,6 +147,6 @@ class LocationSelectView extends GetView<LocationSelectController> {
                     alignment: Alignment.center,
                     child: Image.asset(
                       GifImages.infinityLoading,
-                      width: controller.size.value.width / 4,
+                      width: controller.size.width / 4,
                     ),
                   )*/

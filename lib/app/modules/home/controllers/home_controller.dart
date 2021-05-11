@@ -1,9 +1,10 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:we_now/app/Utils/day_converter.dart';
+import 'package:we_now/app/settings/settings.dart';
+import 'package:we_now/app/utils/connectivity.dart';
+import 'package:we_now/app/utils/day_converter.dart';
 import 'package:we_now/app/data/Api/weather_api.dart';
 import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
@@ -15,80 +16,121 @@ import 'package:we_now/app/widgets/temperature_chart.dart';
 
 class HomeController extends GetxController {
   //Static Variables
-  GetStorage appMemoryData = GetStorage();
-  late SharedPreferences appData;
   final WeatherApi api = WeatherApi();
 
   //Global Variables
   late AppDatabase database;
-  late Rx<HomeViewComponents> components;
-  late Rx<AppTheme> theme;
+  late HomeViewComponents components;
+  late AppTheme theme;
+  late ConnectionStatusSingleton connectionStatus;
+  late StreamSubscription connectionChangeStream;
+  late Settings appSettings;
 
   //State Variables
-  late Rx<bool> isDrawerOpen;
-  late Rx<Size> size;
-  late Rx<bool> isDarkModeOn;
-  Rx<bool> loadingState = false.obs;
+  late bool isDrawerOpen;
+  late Size size;
+  bool loadingState = false;
   ChartSeriesController? chartController;
+  bool isOnline = false;
 
   //Data variables
-  late Location data, fullData;
+  late Location data;
   String currentLocation = "";
   var locations;
   late List<TemperatureChartData> chartData = [];
-  double highestTemperature = 0.0;
-  double lowestTemperature = 273.0;
+  double highestTemperature = -273.0;
+  double lowestTemperature = 1000.0;
 
   //ForegroundDown View
   late TemperatureChart chart;
 
   //PeriodChooser View
-  late RxList<bool> periodChooserState;
+  late List<bool> periodChooserState;
 
   //Switcher View
-  late Rx<bool> switcherState;
+  late bool switcherState;
 
   @override
   void onInit() async {
-    /*Get.mediaQuery.platformBrightness == Brightness.dark
-        ? appData.write('isDarkModeEnable', true)
-        : appData.write('isDarkModeEnable', false);*/
-    appMemoryData.writeIfNull('isDarkModeEnable', false);
-    isDrawerOpen = false.obs;
-    isDarkModeOn = (appMemoryData.read('isDarkModeEnable') as bool).obs;
-    size = Get.size.obs;
-    theme = isDarkModeOn.value
-        ? AppTheme.darkTheme().obs
-        : AppTheme.lightTheme().obs;
-    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
-    loadingState = true.obs;
-    update();
-    appData = await SharedPreferences.getInstance();
-    currentLocation = appData.getString('currentLocationId') ??
-        appMemoryData.read('currentLocationId');
     database = AppDatabase.instance;
+    appSettings = Settings.instance;
+
+    connectionStatus = ConnectionStatusSingleton.getInstance();
+    connectionStatus.initialize();
+    connectionChangeStream = connectionStatus.connectionChange.listen((status) {
+      isOnline = status;
+      if (isOnline) {
+        showSnackBar(
+            title: "Connection", description: "Internet Connection Available");
+      } else {
+        showSnackBar(
+            title: "Connection", description: "No Internet Connection");
+      }
+      update();
+    });
+
+    isDrawerOpen = false;
+
+    size = Get.size;
+    setTheme();
+    components = HomeViewComponents(size: size, theme: theme);
+    loadingState = true;
+    update();
+    await appSettings.loadData();
+    currentLocation = appSettings.currentLocationId;
+
     data = (await database.getLocation(currentLocation));
+
     if (!data.isDataAvailable ||
-        !(DateTime.now().day == data.date.day &&
-            DateTime.now().hour == data.date.hour &&
-            DateTime.now().month == data.date.month &&
-            DateTime.now().year == data.date.year)) {
-      data.setFullWeather(
-          (await api.getFullWeather(data.longitude, data.latitude)));
-      data.isDataAvailable = true;
-      await database.updateLocation(data);
+        !(DateTime.now().day != data.date.day &&
+            DateTime.now().hour != data.date.hour &&
+            DateTime.now().month != data.date.month &&
+            DateTime.now().year != data.date.year)) {
+      if (await connectionStatus.checkConnection()) {
+        data.setFullWeather(
+            (await api.getFullWeather(data.longitude, data.latitude)));
+        data.isDataAvailable = true;
+        await database.updateLocation(data);
+      } else {
+        showSnackBar(
+            title: "Connection", description: "No Internet Connection");
+        Get.offAndToNamed(AppPages.LOCATION);
+      }
     }
     locations = (await database.getAllLocations());
-    periodChooserState = [true, false, false].obs;
-    switcherState = true.obs;
+    periodChooserState = [true, false, false];
+    switcherState = true;
     setData(data);
     super.onInit();
   }
 
+  void setTheme() {
+    if (appSettings.isdefaultTheme) {
+      theme = Get.mediaQuery.platformBrightness == Brightness.dark
+          ? AppTheme.darkTheme()
+          : AppTheme.lightTheme();
+    } else {
+      theme =
+          appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();
+    }
+  }
+
+  void showSnackBar({required String title, required String description}) {
+    Get.snackbar(title, description,
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: theme.appColorTheme.greyButtonInsideColor,
+        isDismissible: true,
+        dismissDirection: SnackDismissDirection.HORIZONTAL,
+        backgroundColor: theme.appColorTheme.colorBackground,
+        borderRadius: 10,
+        boxShadows: [theme.appColorTheme.shadowMedium],
+        animationDuration: Duration(milliseconds: 200));
+  }
+
   void setData(Location data) {
     chartData.clear();
-    highestTemperature = 0.0;
-    lowestTemperature = 273.0;
+    highestTemperature = -273.0;
+    lowestTemperature = 1000.0;
     if (periodChooserState[0]) {
       data.dayChartData.forEach((hour) {
         if (DateTime.now().day == hour.time.day) {
@@ -138,28 +180,18 @@ class HomeController extends GetxController {
       });
     }
     chart = TemperatureChart();
-    loadingState = false.obs;
-    update();
-  }
-
-  void switchTheme(bool setDarkModeEnable) {
-    appMemoryData.write('isDarkModeEnable', setDarkModeEnable);
-    isDarkModeOn = setDarkModeEnable.obs;
-    theme = setDarkModeEnable
-        ? AppTheme.darkTheme().obs
-        : AppTheme.lightTheme().obs;
-    components = HomeViewComponents(size: size.value, theme: theme.value).obs;
+    loadingState = false;
     update();
   }
 
   void changePeriodChooserState(List<bool> state) {
-    periodChooserState = state.obs;
+    periodChooserState = state;
     setData(data);
     update();
   }
 
   void changeSwitcherState(bool state) {
-    switcherState = state.obs;
+    switcherState = state;
     setData(data);
     update();
   }
@@ -167,20 +199,26 @@ class HomeController extends GetxController {
   void openDrawer() async {
     database = AppDatabase.instance;
 
-    isDrawerOpen = true.obs;
+    isDrawerOpen = true;
     update();
   }
 
   void closeDrawer() async {
-    isDrawerOpen = false.obs;
+    isDrawerOpen = false;
     update();
   }
 
-  void onLocationClicked(int index) {
-    appData.setInt('currentLocation', index);
-    appData.setString('currentLocationId', locations[index].locId);
-    appMemoryData.write('currentLocationId', locations[index].locId);
+  void onLocationClicked(int index) async {
+    appSettings.currentLocation = index;
+    appSettings.currentLocationId = locations[index].locId;
+    await appSettings.saveData();
     update();
-    Get.offAndToNamed(AppPages.INITIAL);
+    onInit();
+  }
+
+  void onLocationPageClicked() async {
+    await appSettings.saveData();
+    closeDrawer();
+    Get.offAndToNamed(AppPages.LOCATION);
   }
 }

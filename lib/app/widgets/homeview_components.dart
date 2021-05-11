@@ -75,8 +75,14 @@ class HomeViewComponents {
                         width: 5,
                       ),
                       Text(
-                        value + unit,
+                        value,
                         style: theme.appTextTheme.txt18white,
+                      ),
+                      Text(
+                        unit,
+                        style:
+                            theme.appTextTheme.txt12white.copyWith(fontSize: 8),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   )

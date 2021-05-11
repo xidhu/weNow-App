@@ -31,13 +31,9 @@ class SwitcherView extends GetView<HomeController> {
                               child: Text(
                                 "Today",
                                 textAlign: TextAlign.center,
-                                style: controller
-                                    .theme.value.appTextTheme.txt12white
+                                style: controller.theme.appTextTheme.txt12white
                                     .copyWith(
-                                        color: controller
-                                            .theme
-                                            .value
-                                            .appColorTheme
+                                        color: controller.theme.appColorTheme
                                             .greyButtonInsideColor),
                               ),
                             ),
@@ -45,13 +41,11 @@ class SwitcherView extends GetView<HomeController> {
                               height: 5,
                             ),
                             Container(
-                              width: controller.size.value.width / 3.5,
+                              width: controller.size.width / 3.5,
                               height: 5,
-                              color: controller.switcherState.value
-                                  ? controller
-                                      .theme.value.appColorTheme.primaryColor
-                                  : controller
-                                      .theme.value.appColorTheme.graphColor,
+                              color: controller.switcherState
+                                  ? controller.theme.appColorTheme.primaryColor
+                                  : controller.theme.appColorTheme.graphColor,
                             ),
                           ],
                         ),
@@ -74,13 +68,9 @@ class SwitcherView extends GetView<HomeController> {
                               child: Text(
                                 "Tommorrow",
                                 textAlign: TextAlign.center,
-                                style: controller
-                                    .theme.value.appTextTheme.txt12white
+                                style: controller.theme.appTextTheme.txt12white
                                     .copyWith(
-                                        color: controller
-                                            .theme
-                                            .value
-                                            .appColorTheme
+                                        color: controller.theme.appColorTheme
                                             .greyButtonInsideColor),
                               ),
                             ),
@@ -88,13 +78,11 @@ class SwitcherView extends GetView<HomeController> {
                               height: 5,
                             ),
                             Container(
-                              width: controller.size.value.width / 3.5,
+                              width: controller.size.width / 3.5,
                               height: 5,
-                              color: !controller.switcherState.value
-                                  ? controller
-                                      .theme.value.appColorTheme.primaryColor
-                                  : controller
-                                      .theme.value.appColorTheme.graphColor,
+                              color: !controller.switcherState
+                                  ? controller.theme.appColorTheme.primaryColor
+                                  : controller.theme.appColorTheme.graphColor,
                             ),
                           ],
                         ),

@@ -15,69 +15,61 @@ class ForeGroundDownView extends GetView<HomeController> {
             color: Colors.transparent,
             child: Column(children: [
               Container(
-                padding:
-                    EdgeInsets.only(left: controller.size.value.width * 0.01),
+                padding: EdgeInsets.only(left: controller.size.width * 0.01),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    controller.components.value.squareButton(
-                        title: "Precipitation",
-                        icon: controller.theme.value.appSvgImages.precipitation,
-                        value: ((controller.switcherState.value
-                                    ? controller.data.currentPrecipitation
-                                    : controller
-                                        .data.tommorrowData["precipitation"]) *
-                                100 /
-                                (controller.switcherState.value
-                                    ? controller.data.currentTemperature
-                                    : controller
-                                        .data.tommorrowData["temperature"]))
-                            .floorToDouble()
+                    controller.components.squareButton(
+                        title: "Uv index",
+                        icon: controller.theme.appSvgImages.uvi,
+                        value: ((controller.switcherState
+                                ? controller.data.uvi
+                                : controller.data.tommorrowData["uvi"]))
+                            .ceilToDouble()
                             .toString(),
-                        unit: "%",
-                        color: controller.theme.value.appColorTheme.color1),
-                    controller.components.value.squareButton(
+                        unit: "mW/sqm",
+                        color: controller.theme.appColorTheme.color1),
+                    controller.components.squareButton(
                         title: "Wind",
-                        icon: controller.theme.value.appSvgImages.wind,
-                        value: controller.switcherState.value
+                        icon: controller.theme.appSvgImages.wind,
+                        value: controller.switcherState
                             ? controller.data.currentWind.toString()
                             : controller.data.tommorrowData["wind"].toString(),
                         unit: "km/h",
-                        color: controller.theme.value.appColorTheme.color2),
-                    controller.components.value.squareButton(
+                        color: controller.theme.appColorTheme.color2),
+                    controller.components.squareButton(
                         title: "Humidity",
-                        icon: controller.theme.value.appSvgImages.droplet,
-                        value: controller.switcherState.value
+                        icon: controller.theme.appSvgImages.droplet,
+                        value: controller.switcherState
                             ? controller.data.currentHumidity.toString()
                             : controller.data.tommorrowData["humidity"]
                                 .toString(),
                         unit: "g.m",
-                        color: controller.theme.value.appColorTheme.color3),
+                        color: controller.theme.appColorTheme.color3),
                   ],
                 ),
               ),
               Container(
                 margin: EdgeInsets.only(top: 10),
                 height: controller.locations.length > 1
-                    ? (controller.size.value.aspectRatio < 0.7
-                        ? controller.size.value.height *
-                            controller.size.value.height *
+                    ? (controller.size.aspectRatio < 0.7
+                        ? controller.size.height *
+                            controller.size.height *
                             0.00034
-                        : controller.size.value.height * 0.27)
-                    : controller.size.value.height * 0.39,
+                        : controller.size.height * 0.27)
+                    : controller.size.height * 0.39,
                 child: Row(
                   children: [
                     Expanded(child: chart),
                     FittedBox(
-                        child: controller.components.value.squareButton(
+                        child: controller.components.squareButton(
                             title: "Highest Temperature",
-                            icon: controller.theme.value.appSvgImages.temp,
+                            icon: controller.theme.appSvgImages.temp,
                             value: (controller.highestTemperature - 273)
                                 .ceilToDouble()
                                 .toString(),
                             unit: "°C",
-                            color: controller
-                                .theme.value.appColorTheme.thirdColor)),
+                            color: controller.theme.appColorTheme.thirdColor)),
                   ],
                 ),
               ),
@@ -87,22 +79,22 @@ class ForeGroundDownView extends GetView<HomeController> {
                   ? Container(
                       margin: EdgeInsets.only(
                           left: 10,
-                          top: controller.size.value.height / 40,
-                          bottom: controller.size.value.height / 100),
+                          top: controller.size.height / 40,
+                          bottom: controller.size.height / 100),
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "Recent Locations",
-                        style: controller.theme.value.appTextTheme.txt12white
+                        style: controller.theme.appTextTheme.txt12white
                             .copyWith(
-                                color: controller.theme.value.appColorTheme
-                                    .greyButtonInsideColor),
+                                color: controller
+                                    .theme.appColorTheme.greyButtonInsideColor),
                       ),
                     )
                   : Container(),
               controller.locations.length > 1
                   ? Container(
                       width: double.infinity,
-                      height: controller.size.value.height * 0.07,
+                      height: controller.size.height * 0.07,
                       child: ListView.builder(
                         physics: BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
@@ -110,8 +102,7 @@ class ForeGroundDownView extends GetView<HomeController> {
                           return controller.locations[index].locId !=
                                   controller.currentLocation
                               ? FittedBox(
-                                  child: controller.components.value
-                                      .locationBuilder(
+                                  child: controller.components.locationBuilder(
                                   onClick: () =>
                                       controller.onLocationClicked(index),
                                   data: controller.locations,

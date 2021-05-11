@@ -11,7 +11,7 @@ class Location {
   double currentTemperature = 0.0;
   String currentWeather = "";
   String weatherIcon = "";
-  double currentPrecipitation = 0.0;
+  double uvi = 0.0;
   double currentWind = 0.0;
   double currentHumidity = 0.0;
   var dayChartData = [];
@@ -37,7 +37,7 @@ class Location {
       'currentTemperature': currentTemperature,
       'currentWeather': currentWeather,
       'weatherIcon': weatherIcon,
-      'currentPrecipitation': currentPrecipitation,
+      'uvi': uvi,
       'currentWind': currentWind,
       'currentHumidity': currentHumidity,
       'dayChartData': dayChartData.map((e) => e.toJSON()).toList(),
@@ -60,7 +60,7 @@ class Location {
     this.currentWeather = data["currentWeather"];
     this.weatherIcon = data["weatherIcon"];
     this.currentTemperature = data["currentTemperature"];
-    this.currentPrecipitation = data["currentPrecipitation"];
+    this.uvi = data["uvi"];
     this.currentHumidity = data["currentHumidity"];
     this.currentWind = data["currentWind"];
     this.dayChartData = data["dayChartData"] != null
@@ -99,7 +99,7 @@ class Location {
     currentWeather = data["currentWeather"];
     weatherIcon = data["weatherIcon"];
     currentTemperature = data["currentTemperature"].toDouble();
-    currentPrecipitation = data["currentPrecipitation"].toDouble();
+    uvi = data["uvi"].toDouble();
     currentHumidity = data["currentHumidity"].toDouble();
     currentWind = data["currentWind"].toDouble();
     dayChartData = data["hourlyData"] != null

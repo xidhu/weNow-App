@@ -131,7 +131,7 @@ class AppSvgImages {
   var background1;
   var mainVector;
   var droplet;
-  var precipitation;
+  var uvi;
   var wind;
   var temp;
   var locSelect;
@@ -140,7 +140,7 @@ class AppSvgImages {
     background1 = src + "images/background1.svg";
     mainVector = src + "vectors/main_page_vector.svg";
     droplet = src + "icons/droplet.svg";
-    precipitation = src + "icons/precipitation.svg";
+    uvi = src + "icons/uvi.svg";
     wind = src + "icons/wind.svg";
     temp = src + "icons/temp.svg";
     locSelect = src + "vectors/location_select.svg";
@@ -150,7 +150,7 @@ class AppSvgImages {
     background1 = src + "images/background1.svg";
     mainVector = src + "vectors/main_page_vector_dark.svg";
     droplet = src + "icons/droplet.svg";
-    precipitation = src + "icons/precipitation.svg";
+    uvi = src + "icons/uvi.svg";
     wind = src + "icons/wind.svg";
     temp = src + "icons/temp.svg";
     locSelect = src + "vectors/location_select.svg";
@@ -171,9 +171,4 @@ class AppTheme {
     appTextTheme = AppTextTheme.darkTheme();
     appColorTheme = AppColorTheme.darkTheme();
   }
-}
-
-class GifImages {
-  //static const src = "lib/assets/images/gif/";
-  //static const String infinityLoading = src + "inf_loading.gif";
 }

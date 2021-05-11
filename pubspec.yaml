@@ -36,7 +36,8 @@ dependencies:
   get_storage: ^2.0.2
   http: ^0.13.3
   geolocator: ^7.0.3
-  shared_preferences: ^2.0.5
+  connectivity: ^3.0.3
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:
