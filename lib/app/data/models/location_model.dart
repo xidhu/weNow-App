@@ -1,4 +1,5 @@
 import 'package:we_now/app/data/models/temperature_model.dart';
+import 'package:we_now/app/data/models/tommorrow_model.dart';
 
 class Location {
   late String locId;
@@ -16,7 +17,7 @@ class Location {
   double currentHumidity = 0.0;
   var dayChartData = [];
   var weekChartData = [];
-  Map<String, dynamic> tommorrowData = {};
+  TommorrowData tommorrowData = TommorrowData();
 
   bool isDataAvailable = false;
 
@@ -45,7 +46,7 @@ class Location {
       'lon': longitude,
       'lat': latitude,
       'isDataAvailable': isDataAvailable,
-      'tommorowData': tommorrowData
+      'tommorrowData': tommorrowData.toJSON()
     };
   }
 
@@ -81,7 +82,7 @@ class Location {
                 weatherIcon: day["weatherIcon"]);
           }).toList()
         : [];
-    this.tommorrowData = data["tommorowData"];
+    this.tommorrowData = TommorrowData.fromJSON(data["tommorrowData"]);
   }
 
   void setWeather(Map<String, dynamic> data) {
@@ -101,7 +102,7 @@ class Location {
     currentTemperature = data["currentTemperature"].toDouble();
     uvi = data["uvi"].toDouble();
     currentHumidity = data["currentHumidity"].toDouble();
-    currentWind = data["currentWind"].toDouble();
+    currentWind = (data["currentWind"].toDouble() * 3.6).ceilToDouble();
     dayChartData = data["hourlyData"] != null
         ? data["hourlyData"].map((hours) {
             return TemperatureData(
@@ -120,6 +121,6 @@ class Location {
                 weatherIcon: day["weatherIcon"]);
           }).toList()
         : [];
-    tommorrowData = data["tommorrowData"];
+    tommorrowData = TommorrowData.fromJSON(data["tommorrowData"]);
   }
 }

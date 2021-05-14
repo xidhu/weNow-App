@@ -20,30 +20,32 @@ class ForeGroundDownView extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     controller.components.squareButton(
+                        controller: controller,
                         title: "Uv index",
                         icon: controller.theme.appSvgImages.uvi,
                         value: ((controller.switcherState
                                 ? controller.data.uvi
-                                : controller.data.tommorrowData["uvi"]))
+                                : controller.data.tommorrowData.uvi))
                             .ceilToDouble()
                             .toString(),
                         unit: "mW/sqm",
                         color: controller.theme.appColorTheme.color1),
                     controller.components.squareButton(
+                        controller: controller,
                         title: "Wind",
                         icon: controller.theme.appSvgImages.wind,
                         value: controller.switcherState
                             ? controller.data.currentWind.toString()
-                            : controller.data.tommorrowData["wind"].toString(),
+                            : controller.data.tommorrowData.wind.toString(),
                         unit: "km/h",
                         color: controller.theme.appColorTheme.color2),
                     controller.components.squareButton(
+                        controller: controller,
                         title: "Humidity",
                         icon: controller.theme.appSvgImages.droplet,
                         value: controller.switcherState
                             ? controller.data.currentHumidity.toString()
-                            : controller.data.tommorrowData["humidity"]
-                                .toString(),
+                            : controller.data.tommorrowData.humidity.toString(),
                         unit: "g.m",
                         color: controller.theme.appColorTheme.color3),
                   ],
@@ -63,12 +65,18 @@ class ForeGroundDownView extends GetView<HomeController> {
                     Expanded(child: chart),
                     FittedBox(
                         child: controller.components.squareButton(
+                            controller: controller,
                             title: "Highest Temperature",
                             icon: controller.theme.appSvgImages.temp,
-                            value: (controller.highestTemperature - 273)
+                            value: (controller.appSettings.isCelciuis
+                                    ? (controller.highestTemperature - 273)
+                                    : (controller.highestTemperature - 273) *
+                                            (9 / 5) +
+                                        32)
                                 .ceilToDouble()
                                 .toString(),
-                            unit: "°C",
+                            unit:
+                                controller.appSettings.isCelciuis ? "°C" : "°F",
                             color: controller.theme.appColorTheme.thirdColor)),
                   ],
                 ),
@@ -103,6 +111,7 @@ class ForeGroundDownView extends GetView<HomeController> {
                                   controller.currentLocation
                               ? FittedBox(
                                   child: controller.components.locationBuilder(
+                                  controller: controller,
                                   onClick: () =>
                                       controller.onLocationClicked(index),
                                   data: controller.locations,

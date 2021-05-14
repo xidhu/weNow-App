@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:we_now/app/settings/settings.dart';
@@ -11,8 +13,10 @@ import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/data/models/temperature_model.dart';
 import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
+import 'package:we_now/app/widgets/common_components.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeController extends GetxController {
   //Static Variables
@@ -31,7 +35,7 @@ class HomeController extends GetxController {
   late Size size;
   bool loadingState = false;
   ChartSeriesController? chartController;
-  bool isOnline = false;
+  bool isSettingsOpen = false;
 
   //Data variables
   late Location data;
@@ -57,44 +61,35 @@ class HomeController extends GetxController {
 
     connectionStatus = ConnectionStatusSingleton.getInstance();
     connectionStatus.initialize();
-    connectionChangeStream = connectionStatus.connectionChange.listen((status) {
-      isOnline = status;
-      if (isOnline) {
-        showSnackBar(
-            title: "Connection", description: "Internet Connection Available");
-      } else {
-        showSnackBar(
-            title: "Connection", description: "No Internet Connection");
-      }
-      update();
-    });
 
     isDrawerOpen = false;
 
     size = Get.size;
     setTheme();
-    components = HomeViewComponents(size: size, theme: theme);
+    components = HomeViewComponents();
     loadingState = true;
     update();
     await appSettings.loadData();
     currentLocation = appSettings.currentLocationId;
 
     data = (await database.getLocation(currentLocation));
-
-    if (!data.isDataAvailable ||
-        !(DateTime.now().day != data.date.day &&
-            DateTime.now().hour != data.date.hour &&
-            DateTime.now().month != data.date.month &&
-            DateTime.now().year != data.date.year)) {
+    if (!data.isDataAvailable || checkTime()) {
       if (await connectionStatus.checkConnection()) {
-        data.setFullWeather(
-            (await api.getFullWeather(data.longitude, data.latitude)));
-        data.isDataAvailable = true;
-        await database.updateLocation(data);
+        (await api
+            .getFullWeather(data.longitude, data.latitude)
+            .then((value) async {
+          data.isDataAvailable = true;
+          data.setFullWeather(value);
+          await database.updateLocation(data);
+        }).onError((error, stackTrace) {
+          data.isDataAvailable = false;
+        }));
       } else {
         showSnackBar(
             title: "Connection", description: "No Internet Connection");
+
         Get.offAndToNamed(AppPages.LOCATION);
+        onClose();
       }
     }
     locations = (await database.getAllLocations());
@@ -102,6 +97,30 @@ class HomeController extends GetxController {
     switcherState = true;
     setData(data);
     super.onInit();
+  }
+
+  bool checkTime() {
+    DateTime currTime = DateTime.now();
+    if (!((data.date.day == currTime.day) &&
+        (data.date.month == currTime.month) &&
+        (data.date.year == currTime.year))) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void onRefresh() {
+    onInit();
+  }
+
+  Future<bool> isOnline() async {
+    return (await connectionStatus.checkConnection());
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
   }
 
   void setTheme() {
@@ -113,6 +132,7 @@ class HomeController extends GetxController {
       theme =
           appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();
     }
+    update();
   }
 
   void showSnackBar({required String title, required String description}) {
@@ -209,16 +229,92 @@ class HomeController extends GetxController {
   }
 
   void onLocationClicked(int index) async {
-    appSettings.currentLocation = index;
-    appSettings.currentLocationId = locations[index].locId;
-    await appSettings.saveData();
-    update();
-    onInit();
+    if (locations[index].isDataAvailable ||
+        (await connectionStatus.checkConnection())) {
+      appSettings.currentLocation = index;
+      appSettings.currentLocationId = locations[index].locId;
+      await appSettings.saveData();
+      onInit();
+    } else {
+      showSnackBar(title: "Connection", description: "No Internet Connection");
+    }
   }
 
   void onLocationPageClicked() async {
     await appSettings.saveData();
     closeDrawer();
+    update();
+    onClose();
     Get.offAndToNamed(AppPages.LOCATION);
+  }
+
+  void onSettingsSaveClicked() async {
+    await appSettings.saveData();
+    await appSettings.loadData();
+    isSettingsOpen = false;
+    update();
+  }
+
+  void settingsOptionClicked() {
+    isSettingsOpen = true;
+    isDrawerOpen = false;
+    update();
+  }
+
+  void settingsBackClicked() {
+    isSettingsOpen = false;
+    update();
+  }
+
+  void onAppInfoClicked() {
+    Get.dialog(
+        Material(
+          color: Colors.grey.withOpacity(0.4),
+          child: dialogBox(
+              controller: this,
+              title: "",
+              description: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    theme.appSvgImages.logo,
+                    width: 50,
+                  ),
+                  Text(
+                    "WeNow",
+                    style: theme.appTextTheme.txt18grey,
+                  ),
+                  Text(
+                    "v1.0.0",
+                    style: theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "by Xidhu",
+                    style: theme.appTextTheme.txt12white,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              ),
+              negetive: "API Doc",
+              positive: "Ok",
+              onNegetive: () async {
+                if ((await connectionStatus.checkConnection())) {
+                  const url = "https://we-now.herokuapp.com";
+                  if (await canLaunch(url)) await launch(url);
+                }
+                Get.back();
+              },
+              onPositive: () {
+                Get.back();
+              }),
+        ),
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        transitionDuration: Duration(milliseconds: 200));
   }
 }
