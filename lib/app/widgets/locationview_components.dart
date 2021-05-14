@@ -150,7 +150,8 @@ class LocationViewComponents {
   Widget locationBuilder(
       {required int currLocCount,
       required Location location,
-      required bool isOnline,
+      required Future isOnline,
+      required bool isCelcius,
       bool isCurr = true,
       required int count,
       required int currLoc,
@@ -191,7 +192,7 @@ class LocationViewComponents {
                   child: Stack(
                     children: [
                       Container(
-                        height: size.height * 0.2,
+                        height: size.height * 0.15,
                         width: double.infinity,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(14),
@@ -203,18 +204,18 @@ class LocationViewComponents {
                       ),
                       Container(
                         width: double.infinity,
-                        height: size.height * 0.2,
+                        height: size.height * 0.15,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
                             color: theme.appColorTheme.colorBackground ==
                                     0xFF212121
                                 ? theme.appColorTheme.colorBackground
-                                    .withOpacity(0.2)
+                                    .withOpacity(0.22)
                                 : Colors.transparent),
                       ),
                       Container(
                         width: double.infinity,
-                        height: size.height * 0.2,
+                        height: size.height * 0.15,
                         child: Material(
                           color: Colors.transparent,
                           child: InkWell(
@@ -240,8 +241,14 @@ class LocationViewComponents {
                                             Row(
                                               children: [
                                                 Text(
-                                                  (location.currentTemperature -
-                                                              273.0)
+                                                  (isCelcius
+                                                              ? (location
+                                                                      .currentTemperature -
+                                                                  273.0)
+                                                              : (location.currentTemperature -
+                                                                          273.0) *
+                                                                      (9 / 5) +
+                                                                  32)
                                                           .ceil()
                                                           .toString() +
                                                       "°",
@@ -252,33 +259,39 @@ class LocationViewComponents {
                                                   padding: EdgeInsets.only(
                                                       bottom: 10),
                                                   child: Text(
-                                                    "C",
+                                                    isCelcius ? "C" : "F",
                                                     style: theme.appTextTheme
                                                         .txt18white,
                                                   ),
                                                 )
                                               ],
                                             ),
-                                            isOnline
-                                                ? Container(
-                                                    child: CachedNetworkImage(
+                                            FutureBuilder(
+                                                future: isOnline,
+                                                builder: (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    return CachedNetworkImage(
                                                       imageUrl:
                                                           location.weatherIcon,
                                                       placeholder:
                                                           (context, url) =>
                                                               Icon(
                                                         Icons.wb_sunny_rounded,
-                                                        color: Colors.white,
+                                                        color: Colors.yellow,
                                                       ),
                                                       errorWidget: (context,
                                                               url, error) =>
                                                           Icon(
                                                         Icons.wb_sunny_rounded,
-                                                        color: Colors.white,
+                                                        color: Colors.yellow,
                                                       ),
-                                                    ),
-                                                  )
-                                                : Container()
+                                                    );
+                                                  } else {
+                                                    return Container();
+                                                  }
+                                                })
                                           ],
                                         ),
                                       ),
@@ -351,100 +364,6 @@ class LocationViewComponents {
             color: controller.theme.appColorTheme.greyButtonColor,
           )
         ],
-      ),
-    );
-  }
-
-  Widget dialogBox(
-      {required LocationSelectController controller,
-      required String title,
-      required String description,
-      required String negetive,
-      required String positive,
-      required Function onNegetive,
-      required Function onPositive}) {
-    return Container(
-      alignment: Alignment.center,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-        width: controller.size.width * 0.8,
-        height: controller.size.height * 0.22,
-        decoration: BoxDecoration(
-            color: controller.theme.appColorTheme.colorBackground,
-            borderRadius: BorderRadius.circular(15),
-            boxShadow: [controller.theme.appColorTheme.shadowMedium]),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              title,
-              style: controller.theme.appTextTheme.txt32grey,
-            ),
-            Text(
-              description,
-              style: controller.theme.appTextTheme.txt18grey,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Container(
-                  width: controller.size.width * 0.3,
-                  height: controller.size.height * 0.04,
-                  decoration: BoxDecoration(
-                      color: controller
-                          .theme.appColorTheme.greyButtonInsideColor
-                          .withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
-                      onTap: () {
-                        onNegetive();
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Text(
-                          negetive,
-                          style: controller.theme.appTextTheme.txt12white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  width: controller.size.width * 0.3,
-                  height: controller.size.height * 0.04,
-                  decoration: BoxDecoration(
-                      color: controller.theme.appColorTheme.color3,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
-                      onTap: () {
-                        onPositive();
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: Text(
-                          positive,
-                          style: controller.theme.appTextTheme.txt12white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          ],
-        ),
       ),
     );
   }

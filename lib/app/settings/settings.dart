@@ -28,11 +28,13 @@ class Settings {
 
   Future loadData() async {
     db = AppDatabase.instance;
-    var data = (await db.getSettings()).value;
-    isDarkMode = data['isDarkMode'];
-    isCelciuis = data['isCelciuis'];
-    isdefaultTheme = data['isdefaultTheme'];
-    currentLocation = data['currentLocation'];
-    currentLocationId = data['currentLocationId'];
+    var data = (await db.getSettings());
+    if (data != null) {
+      isDarkMode = data.value['isDarkMode'];
+      isCelciuis = data.value['isCelciuis'];
+      isdefaultTheme = data.value['isdefaultTheme'];
+      currentLocation = data.value['currentLocation'];
+      currentLocationId = data.value['currentLocationId'];
+    }
   }
 }

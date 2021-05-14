@@ -11,6 +11,7 @@ import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
+import 'package:we_now/app/widgets/common_components.dart';
 import 'package:we_now/app/widgets/locationview_components.dart';
 
 class LocationSelectController extends GetxController {
@@ -36,7 +37,6 @@ class LocationSelectController extends GetxController {
   bool loadingState = false;
   bool locationsAvailable = false;
   bool isSnackbarOn = false;
-  bool isOnline = false;
 
   //Data variables
   var locations;
@@ -51,17 +51,6 @@ class LocationSelectController extends GetxController {
 
     connectionStatus = ConnectionStatusSingleton.getInstance();
     connectionStatus.initialize();
-    connectionChangeStream = connectionStatus.connectionChange.listen((status) {
-      isOnline = status;
-      if (isOnline) {
-        showSnackBar(
-            title: "Connection", description: "Internet Connection Available");
-      } else {
-        showSnackBar(
-            title: "Connection", description: "No Internet Connection");
-      }
-      update();
-    });
 
     setTheme();
 
@@ -92,6 +81,10 @@ class LocationSelectController extends GetxController {
       theme =
           appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();
     }
+  }
+
+  Future<bool> isOnline() async {
+    return (await connectionStatus.checkConnection());
   }
 
   void showSnackBar({required String title, required String description}) {
@@ -163,16 +156,19 @@ class LocationSelectController extends GetxController {
     Get.dialog(
         Material(
           color: Colors.grey.withOpacity(0.4),
-          child: components.dialogBox(
+          child: dialogBox(
               controller: this,
               title: "Location",
-              description: error == LocatorStatus.LOCATION_OFF
-                  ? "Please Turn On Your Location"
-                  : error == LocatorStatus.PERMISSIONS_DISABLED
-                      ? "Location Access Denied"
-                      : error == LocatorStatus.PERMISSIONS_DISABLED_FOREVER
-                          ? "App Location Permissions Disabled"
-                          : "Can't Fetch Location",
+              description: Text(
+                error == LocatorStatus.LOCATION_OFF
+                    ? "Please Turn On Your Location"
+                    : error == LocatorStatus.PERMISSIONS_DISABLED
+                        ? "Location Access Denied"
+                        : error == LocatorStatus.PERMISSIONS_DISABLED_FOREVER
+                            ? "App Location Permissions Disabled"
+                            : "Can't Fetch Location",
+                style: theme.appTextTheme.txt18grey,
+              ),
               negetive: "Cancel",
               positive: error == LocatorStatus.LOCATION_OFF
                   ? "Turn On"
@@ -202,6 +198,8 @@ class LocationSelectController extends GetxController {
         barrierColor: Colors.transparent,
         transitionDuration: Duration(milliseconds: 200));
     focusNode.unfocus();
+    loadingState = false;
+    typingState = false;
     update();
   }
 
@@ -229,6 +227,7 @@ class LocationSelectController extends GetxController {
 
   void addLocation(int index) async {
     if (await connectionStatus.checkConnection()) {
+      typingState = false;
       loadingState = true;
       update();
       database = AppDatabase.instance;
@@ -237,7 +236,6 @@ class LocationSelectController extends GetxController {
       await database.addLocation(loc);
       locations = (await database.getAllLocations());
       searchTextConroller.text = '';
-      typingState = false;
       loadingState = false;
       locationsAvailable = true;
       update();
@@ -252,10 +250,13 @@ class LocationSelectController extends GetxController {
     Get.dialog(
         Material(
           color: Colors.grey.withOpacity(0.4),
-          child: components.dialogBox(
+          child: dialogBox(
               controller: this,
               title: "Delete Location",
-              description: "Do you want to delete this location?",
+              description: Text(
+                "Do you want to delete this location?",
+                style: theme.appTextTheme.txt18grey,
+              ),
               onNegetive: () => Get.back(),
               onPositive: () async {
                 loadingState = true;
@@ -286,14 +287,13 @@ class LocationSelectController extends GetxController {
   }
 
   void onLocationClicked(int index) async {
-    database = AppDatabase.instance;
-    currentLocation = index;
-    appSettings.currentLocation = index;
-    appSettings.currentLocationId = locations[index].locId;
-    appSettings.saveData();
-    update();
     if (await connectionStatus.checkConnection() ||
         locations[index].isDataAvailable) {
+      currentLocation = index;
+      appSettings.currentLocation = index;
+      appSettings.currentLocationId = locations[index].locId;
+      await appSettings.saveData();
+      update();
       Get.offAndToNamed(AppPages.INITIAL);
     } else {
       showSnackBar(title: "Connection", description: "No Internet Connection");

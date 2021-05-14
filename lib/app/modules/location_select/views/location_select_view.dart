@@ -38,7 +38,9 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                             controller.currentLocation <
                                                 controller.locations?.length
                                         ? controller.components.locationBuilder(
-                                            isOnline: controller.isOnline,
+                                            isCelcius: controller
+                                                .appSettings.isCelciuis,
+                                            isOnline: controller.isOnline(),
                                             count: 1,
                                             currLoc: controller.currentLocation,
                                             onLongPress: () =>
@@ -62,7 +64,9 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                             int currLocCount) {
                                           return controller.components
                                               .locationBuilder(
-                                                  isOnline: controller.isOnline,
+                                                  isCelcius: controller
+                                                      .appSettings.isCelciuis,
+                                                  isOnline: controller.isOnline(),
                                                   count: controller
                                                       .locations?.length,
                                                   currLoc: controller
@@ -142,11 +146,3 @@ class LocationSelectView extends GetView<LocationSelectController> {
     }));
   }
 }
-
-/*Container(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      GifImages.infinityLoading,
-                      width: controller.size.width / 4,
-                    ),
-                  )*/

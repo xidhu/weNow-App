@@ -25,8 +25,7 @@ class ForeGroundUpView extends GetView<HomeController> {
                         children: [
                           Text(
                             controller.data.cityName,
-                            style:
-                                controller.theme.appTextTheme.txt32white,
+                            style: controller.theme.appTextTheme.txt32white,
                           ),
                           Text(
                             controller.data.countryName,
@@ -54,13 +53,25 @@ class ForeGroundUpView extends GetView<HomeController> {
                             Column(
                               children: [
                                 Text(
-                                  ((controller.switcherState
-                                                  ? controller
-                                                      .data.currentTemperature
-                                                  : controller
-                                                          .data.tommorrowData[
-                                                      "temperature"]) -
-                                              273.75)
+                                  (controller.appSettings.isCelciuis
+                                              ? ((controller.switcherState
+                                                      ? controller.data
+                                                          .currentTemperature
+                                                      : controller
+                                                          .data
+                                                          .tommorrowData
+                                                          .temperature) -
+                                                  273.75)
+                                              : ((controller.switcherState
+                                                              ? controller.data
+                                                                  .currentTemperature
+                                                              : controller
+                                                                  .data
+                                                                  .tommorrowData
+                                                                  .temperature) -
+                                                          273.75) *
+                                                      (9 / 5) +
+                                                  32)
                                           .ceil()
                                           .toString() +
                                       "°",
@@ -76,22 +87,33 @@ class ForeGroundUpView extends GetView<HomeController> {
                                       Column(
                                         children: [
                                           Text(
-                                            (((controller.switcherState
-                                                                    ? controller
-                                                                        .data
-                                                                        .currentTemperature
-                                                                    : controller
+                                            (controller.appSettings.isCelciuis
+                                                        ? (((controller.switcherState
+                                                                        ? controller
                                                                             .data
-                                                                            .tommorrowData[
-                                                                        "temperature"]) -
-                                                                273.75) *
-                                                            (9 / 5) +
-                                                        32)
+                                                                            .currentTemperature
+                                                                        : controller
+                                                                            .data
+                                                                            .tommorrowData
+                                                                            .temperature) -
+                                                                    273.75) *
+                                                                (9 / 5) +
+                                                            32)
+                                                        : ((controller
+                                                                    .switcherState
+                                                                ? controller
+                                                                    .data
+                                                                    .currentTemperature
+                                                                : controller
+                                                                    .data
+                                                                    .tommorrowData
+                                                                    .temperature) -
+                                                            273.75))
                                                     .ceil()
                                                     .toString() +
                                                 "°",
-                                            style: controller.theme
-                                                .appTextTheme.txt18white
+                                            style: controller
+                                                .theme.appTextTheme.txt18white
                                                 .copyWith(
                                                     height: 0.1,
                                                     color: Colors.white54),
@@ -101,9 +123,11 @@ class ForeGroundUpView extends GetView<HomeController> {
                                       Padding(
                                         padding: EdgeInsets.only(bottom: 20),
                                         child: Text(
-                                          "F",
-                                          style: controller.theme
-                                              .appTextTheme.txt18white
+                                          !controller.appSettings.isCelciuis
+                                              ? "C"
+                                              : "F",
+                                          style: controller
+                                              .theme.appTextTheme.txt18white
                                               .copyWith(
                                                   fontSize: 12,
                                                   color: Colors.white54),
@@ -117,9 +141,9 @@ class ForeGroundUpView extends GetView<HomeController> {
                             Padding(
                               padding: EdgeInsets.only(bottom: 90),
                               child: Text(
-                                "C",
-                                style: controller
-                                    .theme.appTextTheme.txt18white,
+                                controller.appSettings.isCelciuis ? "C" : "F",
+                                style: controller.theme.appTextTheme.txt18white
+                                    .copyWith(color: Colors.white),
                               ),
                             )
                           ],
@@ -129,9 +153,8 @@ class ForeGroundUpView extends GetView<HomeController> {
                           child: Text(
                             controller.switcherState
                                 ? controller.data.currentWeather
-                                : controller.data.tommorrowData["weather"],
-                            style:
-                                controller.theme.appTextTheme.txt32white,
+                                : controller.data.tommorrowData.weather,
+                            style: controller.theme.appTextTheme.txt32white,
                           ),
                         ),
                       ],

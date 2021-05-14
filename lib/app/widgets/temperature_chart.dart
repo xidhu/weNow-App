@@ -16,7 +16,8 @@ class TemperatureChart extends GetView<HomeController> {
             color: controller.theme.appColorTheme.colorBackground,
             enable: true,
             builder: (data, point, series, pointIndex, seriesIndex) {
-              return indicator(data: data, controller: controller);
+              return indicator(
+                  data: data, controller: controller, context: context);
             },
           ),
           enableSideBySideSeriesPlacement: false,
@@ -26,7 +27,11 @@ class TemperatureChart extends GetView<HomeController> {
                   fontFamily: 'ReemKufi',
                   color: controller.theme.appColorTheme.greyButtonInsideColor,
                   height: 1.4),
-              crossesAt: (controller.lowestTemperature - 273).ceil() - 5,
+              crossesAt: controller.appSettings.isCelciuis
+                  ? (controller.lowestTemperature - 273).ceil() - 5
+                  : ((controller.lowestTemperature - 273) * (9 / 5) + 32)
+                          .ceil() -
+                      5,
               majorGridLines: MajorGridLines(width: 0),
               minorGridLines: MinorGridLines(width: 0),
               majorTickLines: MajorTickLines(size: 0),
@@ -40,12 +45,22 @@ class TemperatureChart extends GetView<HomeController> {
             ),
             majorGridLines: MajorGridLines(width: 0, color: Colors.transparent),
             minorGridLines: MinorGridLines(width: 0, color: Colors.transparent),
-            minimum: (controller.lowestTemperature - 273).ceil().toDouble() - 5,
-            maximum:
-                (controller.highestTemperature - 273).ceil().toDouble() + 5,
+            minimum: controller.appSettings.isCelciuis
+                ? (controller.lowestTemperature - 273).ceil().toDouble() - 5
+                : ((controller.lowestTemperature - 273) * (9 / 5) + 32)
+                        .ceil()
+                        .toDouble() -
+                    5,
+            maximum: controller.appSettings.isCelciuis
+                ? (controller.highestTemperature - 273).ceil().toDouble() + 5
+                : ((controller.highestTemperature - 273) * (9 / 5) + 32)
+                        .ceil()
+                        .toDouble() +
+                    5,
             axisLine: AxisLine(width: 0),
             edgeLabelPlacement: EdgeLabelPlacement.shift,
-            labelFormat: '{value}°C',
+            labelFormat:
+                controller.appSettings.isCelciuis ? '{value}°C' : '{value}°F',
             majorTickLines: MajorTickLines(size: 0),
           ),
           series: <ChartSeries<TemperatureChartData, String>>[
@@ -59,8 +74,10 @@ class TemperatureChart extends GetView<HomeController> {
                 color: controller.theme.appColorTheme.graphColor,
                 dataSource: controller.chartData,
                 xValueMapper: (TemperatureChartData temp, _) => temp.time,
-                yValueMapper: (TemperatureChartData temp, _) =>
-                    (temp.temperature - 273).ceilToDouble(),
+                yValueMapper: (TemperatureChartData temp, _) => controller
+                        .appSettings.isCelciuis
+                    ? (temp.temperature - 273).ceilToDouble()
+                    : ((temp.temperature - 273) * (9 / 5) + 32).ceilToDouble(),
                 markerSettings: MarkerSettings(isVisible: false),
                 // Enable data label
                 dataLabelSettings: DataLabelSettings(
@@ -75,7 +92,8 @@ class TemperatureChart extends GetView<HomeController> {
 
   Widget indicator(
       {required TemperatureChartData data,
-      required HomeController controller}) {
+      required HomeController controller,
+      required BuildContext context}) {
     return FittedBox(
       child: Container(
         padding: EdgeInsets.all(10),
@@ -86,23 +104,34 @@ class TemperatureChart extends GetView<HomeController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            controller.isOnline
-                ? CachedNetworkImage(
-                    imageUrl: data.weatherIcon,
-                    placeholder: (context, url) => Icon(
-                      Icons.wb_sunny_rounded,
-                      color: Colors.yellow,
-                    ),
-                    errorWidget: (context, url, error) => Icon(
-                      Icons.wb_sunny_rounded,
-                      color: Colors.yellow,
-                    ),
-                  )
-                : Container(),
+            FutureBuilder(
+                future: controller.isOnline(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return CachedNetworkImage(
+                      imageUrl: data.weatherIcon,
+                      placeholder: (context, url) => Icon(
+                        Icons.wb_sunny_rounded,
+                        color: Colors.yellow,
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.wb_sunny_rounded,
+                        color: Colors.yellow,
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
             Container(
               margin: EdgeInsets.only(top: 30),
               child: Text(
-                (data.temperature - 273).ceil().toString() + "°c",
+                controller.appSettings.isCelciuis
+                    ? (data.temperature - 273).ceil().toString() + "°c"
+                    : ((data.temperature - 273) * (9 / 5) + 32)
+                            .ceil()
+                            .toString() +
+                        "°f",
                 style: controller.theme.appTextTheme.txt18grey
                     .copyWith(fontSize: 32, height: 0.1),
               ),

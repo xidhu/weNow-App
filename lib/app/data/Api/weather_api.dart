@@ -42,9 +42,22 @@ class WeatherApi {
 
     Map<String, dynamic> data = {"lon": lon, "lat": lat};
 
-    var resp = await http.post(Uri.parse(url),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode(data).toString());
-    return jsonDecode(resp.body);
+    var resp;
+
+    await http
+        .post(Uri.parse(url),
+            headers: {"Content-Type": "application/json"},
+            body: jsonEncode(data).toString())
+        .then((value) {
+      resp = jsonDecode(value.body);
+    }).onError((error, stackTrace) {
+      resp = null;
+    });
+
+    if (resp == null) {
+      return Future.error(0);
+    } else {
+      return resp;
+    }
   }
 }
