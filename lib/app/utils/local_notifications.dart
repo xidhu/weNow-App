@@ -22,7 +22,7 @@ class LocalNotifications {
         importance: Importance.max, priority: Priority.high);
     var platformChannelSpecifics =
         new NotificationDetails(android: androidPlatformChannelSpecifics);
-    await notificationsPlugin.show(
+    await notificationsPlugin.schedule(
       100,
       location.currentWeather + " in " + location.cityName,
       (isCelcius
@@ -34,6 +34,7 @@ class LocalNotifications {
           " with wind " +
           (location.currentWind).toString() +
           " km/h",
+      DateTime.now().add(Duration(minutes: 1)),
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );

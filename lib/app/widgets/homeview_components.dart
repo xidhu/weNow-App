@@ -111,7 +111,7 @@ class HomeViewComponents {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: SvgPicture.asset(
-                      controller.theme.appSvgImages.background1,
+                      controller.theme.appSvgImages.getAnImage(index),
                       fit: BoxFit.cover,
                     ),
                   ),

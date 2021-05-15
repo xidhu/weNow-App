@@ -128,7 +128,6 @@ class AppColorTheme {
 
 class AppSvgImages {
   var src = "lib/assets/images/svg/";
-  var background1;
   var mainVector;
   var droplet;
   var uvi;
@@ -139,7 +138,6 @@ class AppSvgImages {
 
   AppSvgImages.lightTheme() {
     logo = src + "icons/logo.svg";
-    background1 = src + "images/background1.svg";
     mainVector = src + "vectors/main_page_vector.svg";
     droplet = src + "icons/droplet.svg";
     uvi = src + "icons/uvi.svg";
@@ -150,13 +148,19 @@ class AppSvgImages {
 
   AppSvgImages.darkTheme() {
     logo = src + "icons/logo.svg";
-    background1 = src + "images/background1.svg";
     mainVector = src + "vectors/main_page_vector_dark.svg";
     droplet = src + "icons/droplet.svg";
     uvi = src + "icons/uvi.svg";
     wind = src + "icons/wind.svg";
     temp = src + "icons/temp.svg";
     locSelect = src + "vectors/location_select.svg";
+  }
+
+  String getAnImage(int index) {
+    if (0 <= index)
+      return src + "images/" + ((index % 9) + 1).toString() + ".svg";
+    else
+      return src + "images/1.svg";
   }
 }
 

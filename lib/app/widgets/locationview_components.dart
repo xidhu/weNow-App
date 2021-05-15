@@ -197,7 +197,7 @@ class LocationViewComponents {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(14),
                           child: SvgPicture.asset(
-                            theme.appSvgImages.background1,
+                            theme.appSvgImages.getAnImage(currLocCount),
                             fit: BoxFit.cover,
                           ),
                         ),
