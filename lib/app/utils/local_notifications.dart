@@ -22,7 +22,7 @@ class LocalNotifications {
         importance: Importance.max, priority: Priority.high);
     var platformChannelSpecifics =
         new NotificationDetails(android: androidPlatformChannelSpecifics);
-    await notificationsPlugin.schedule(
+    await notificationsPlugin.show(
       100,
       location.currentWeather + " in " + location.cityName,
       (isCelcius
@@ -34,22 +34,6 @@ class LocalNotifications {
           " with wind " +
           (location.currentWind).toString() +
           " km/h",
-      DateTime.now().add(Duration(minutes: 1)),
-      platformChannelSpecifics,
-      payload: 'Default_Sound',
-    );
-  }
-
-  Future dummyNotification() async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-        '2067', 'we_now_channel', 'we_now_app_notifcation',
-        importance: Importance.max, priority: Priority.high);
-    var platformChannelSpecifics =
-        new NotificationDetails(android: androidPlatformChannelSpecifics);
-    await notificationsPlugin.show(
-      100,
-      "Hi",
-      "hello",
       platformChannelSpecifics,
       payload: 'Default_Sound',
     );
