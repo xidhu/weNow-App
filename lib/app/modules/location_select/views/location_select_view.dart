@@ -66,7 +66,8 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                               .locationBuilder(
                                                   isCelcius: controller
                                                       .appSettings.isCelciuis,
-                                                  isOnline: controller.isOnline(),
+                                                  isOnline:
+                                                      controller.isOnline(),
                                                   count: controller
                                                       .locations?.length,
                                                   currLoc: controller
@@ -100,10 +101,12 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                 SizedBox(
                                   height: controller.size.width / 10,
                                 ),
-                                Text(
-                                  "Please Add a Location",
-                                  style:
-                                      controller.theme.appTextTheme.txt32grey,
+                                FittedBox(
+                                  child: Text(
+                                    "Please Add a Location",
+                                    style:
+                                        controller.theme.appTextTheme.txt32grey,
+                                  ),
                                 ),
                                 Spacer()
                               ],

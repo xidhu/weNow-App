@@ -66,7 +66,7 @@ flutter:
     - lib/assets/images/svg/images/
     - lib/assets/images/svg/vectors/
     - lib/assets/images/gif/
-    - lib/assets/images/png/
+    - lib/assets/images/png/weather_icons/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

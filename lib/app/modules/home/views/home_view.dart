@@ -133,7 +133,12 @@ class HomeView extends GetView<HomeController> {
                                                             ? BorderRadius
                                                                 .circular(20)
                                                             : BorderRadius.zero,
-                                                        child: SvgPicture.asset(),
+                                                        child: SvgPicture.asset(
+                                                          controller.theme
+                                                              .appSvgImages
+                                                              .getAnImage(controller
+                                                                  .appSettings
+                                                                  .currentLocation),
                                                           fit: BoxFit.cover,
                                                           width: controller
                                                               .size.width,

@@ -17,20 +17,24 @@ class ForeGroundUpView extends GetView<HomeController> {
                     height: controller.size.height * 0.15,
                   ),
                   Spacer(),
-                  Container(
-                    padding: EdgeInsets.only(right: 20, top: 40),
-                    child: FittedBox(
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(right: 20, top: 40),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(
-                            controller.data.cityName,
-                            style: controller.theme.appTextTheme.txt32white,
+                          FittedBox(
+                            child: Text(
+                              controller.data.cityName,
+                              style: controller.theme.appTextTheme.txt32white,
+                            ),
                           ),
-                          Text(
-                            controller.data.countryName,
-                            style: controller.theme.appTextTheme.txt18grey
-                                .copyWith(color: Color(0xFF7B5959)),
+                          FittedBox(
+                            child: Text(
+                              controller.data.countryName,
+                              style: controller.theme.appTextTheme.txt18grey
+                                  .copyWith(color: Color(0xFF7B5959)),
+                            ),
                           ),
                         ],
                       ),
@@ -149,13 +153,26 @@ class ForeGroundUpView extends GetView<HomeController> {
                           ],
                         ),
                         Padding(
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Text(
-                            controller.switcherState
-                                ? controller.data.currentWeather
-                                : controller.data.tommorrowData.weather,
-                            style: controller.theme.appTextTheme.txt32white,
-                          ),
+                          padding: EdgeInsets.only(bottom: 50),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Image.asset(
+                                  controller.theme.appPngImages.getWeatherIcon(
+                                      controller.data.weatherIcon),
+                                  height: 40,
+                                ),
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  controller.switcherState
+                                      ? controller.data.currentWeather
+                                      : controller.data.tommorrowData.weather,
+                                  style:
+                                      controller.theme.appTextTheme.txt32white,
+                                ),
+                              ]),
                         ),
                       ],
                     ),

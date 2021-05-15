@@ -273,33 +273,36 @@ class HomeController extends GetxController {
           color: Colors.grey.withOpacity(0.4),
           child: dialogBox(
               controller: this,
-              title: "",
-              description: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset(
-                    theme.appSvgImages.logo,
-                    width: 50,
-                  ),
-                  Text(
-                    "WeNow",
-                    style: theme.appTextTheme.txt18grey,
-                  ),
-                  Text(
-                    "v1.0.0",
-                    style: theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "by Xidhu",
-                    style: theme.appTextTheme.txt12white,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
+              title: " ",
+              description: Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset(
+                      theme.appSvgImages.logo,
+                      width: 50,
+                    ),
+                    Text(
+                      "WeNow",
+                      style: theme.appTextTheme.txt18grey,
+                    ),
+                    Text(
+                      "v1.0.0",
+                      style:
+                          theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "by Xidhu",
+                      style: theme.appTextTheme.txt12white,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
               negetive: "API Doc",
               positive: "Ok",

@@ -158,7 +158,7 @@ class AppSvgImages {
 
   String getAnImage(int index) {
     if (0 <= index)
-      return src + "images/" + ((index % 9) + 1).toString() + ".svg";
+      return src + "images/" + ((index % 8) + 1).toString() + ".svg";
     else
       return src + "images/1.svg";
   }
@@ -167,9 +167,9 @@ class AppSvgImages {
 class AppPngImages {
   var src = "lib/assets/images/png/";
 
-  AppPngImages.lightTheme() {}
-
-  AppPngImages.darkTheme() {}
+  String getWeatherIcon(String weatherIcon) {
+    return (src + "weather_icons/" + weatherIcon + "@2x.png");
+  }
 }
 
 class AppTheme {
@@ -181,12 +181,12 @@ class AppTheme {
     appSvgImages = AppSvgImages.lightTheme();
     appColorTheme = AppColorTheme.lightTheme();
     appTextTheme = AppTextTheme.lightTheme();
-    appPngImages = AppPngImages.lightTheme();
+    appPngImages = AppPngImages();
   }
   AppTheme.darkTheme() {
     appSvgImages = AppSvgImages.darkTheme();
     appTextTheme = AppTextTheme.darkTheme();
     appColorTheme = AppColorTheme.darkTheme();
-    appPngImages = AppPngImages.darkTheme();
+    appPngImages = AppPngImages();
   }
 }

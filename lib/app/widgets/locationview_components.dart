@@ -266,54 +266,45 @@ class LocationViewComponents {
                                                 )
                                               ],
                                             ),
-                                            FutureBuilder(
-                                                future: isOnline,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    return CachedNetworkImage(
-                                                      imageUrl:
-                                                          location.weatherIcon,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Icon(
-                                                        Icons.wb_sunny_rounded,
-                                                        color: Colors.yellow,
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(
-                                                        Icons.wb_sunny_rounded,
-                                                        color: Colors.yellow,
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return Container();
-                                                  }
-                                                })
+                                            Image.asset(
+                                              theme.appPngImages.getWeatherIcon(
+                                                  location.weatherIcon),
+                                              height: 60,
+                                            )
                                           ],
                                         ),
                                       ),
                                     ),
                                   ),
                                   Spacer(),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      SizedBox(
-                                        height: 50,
+                                  Expanded(
+                                    child: FittedBox(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          SizedBox(
+                                            height: 50,
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              location.cityName,
+                                              style:
+                                                  theme.appTextTheme.txt32white,
+                                            ),
+                                          ),
+                                          FittedBox(
+                                            child: Text(
+                                              location.countryName,
+                                              style:
+                                                  theme.appTextTheme.txt18white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        location.cityName,
-                                        style: theme.appTextTheme.txt32white,
-                                      ),
-                                      Text(
-                                        location.countryName,
-                                        style: theme.appTextTheme.txt18white,
-                                      ),
-                                    ],
+                                    ),
                                   ),
                                 ],
                               ),
