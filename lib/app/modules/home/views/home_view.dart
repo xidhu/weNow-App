@@ -120,6 +120,10 @@ class HomeView extends GetView<HomeController> {
                                                       duration: Duration(
                                                           milliseconds: 200),
                                                       decoration: BoxDecoration(
+                                                          color: controller
+                                                              .theme
+                                                              .appColorTheme
+                                                              .graphColor,
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(

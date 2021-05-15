@@ -61,7 +61,9 @@ class ForeGroundDownView extends GetView<HomeController> {
                                 ? 0.0003
                                 : 0.00033)
                         : controller.size.height * 0.27)
-                    : controller.size.height * 0.394,
+                    : Get.context!.textScaleFactor > 1.0
+                        ? controller.size.height * 0.37
+                        : controller.size.height * 0.394,
                 child: Row(
                   children: [
                     Expanded(child: chart),

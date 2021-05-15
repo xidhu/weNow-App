@@ -219,195 +219,192 @@ class HomeViewComponents {
             color: controller.theme.appColorTheme.colorBackground,
             borderRadius: BorderRadius.circular(15),
             boxShadow: [controller.theme.appColorTheme.shadowMild]),
-        child: Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              FittedBox(
-                child: Text(
-                  "Settings",
-                  style: controller.theme.appTextTheme.txt32grey,
-                ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            FittedBox(
+              child: Text(
+                "Settings",
+                style: controller.theme.appTextTheme.txt32grey,
               ),
-              FittedBox(
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          "Temperature Unit",
-                          style: controller.theme.appTextTheme.txt18grey,
-                        ),
-                        Row(
-                          children: [
-                            Radio(
-                                activeColor: controller
-                                    .theme.appColorTheme.graphBorderColor,
-                                value: "degree",
-                                groupValue: controller.appSettings.isCelciuis
-                                    ? "degree"
-                                    : "farenheit",
-                                onChanged: (value) {
-                                  controller.appSettings.isCelciuis = true;
-                                  controller.update();
-                                }),
-                            Text(
-                              "°C",
-                              style: controller.theme.appTextTheme.txt18grey
-                                  .copyWith(fontSize: 14),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Radio(
-                                activeColor: controller
-                                    .theme.appColorTheme.graphBorderColor,
-                                value: "farenheit",
-                                groupValue: controller.appSettings.isCelciuis
-                                    ? "degree"
-                                    : "farenheit",
-                                onChanged: (value) {
-                                  controller.appSettings.isCelciuis = false;
-                                  controller.update();
-                                }),
-                            Text(
-                              "°F",
-                              style: controller.theme.appTextTheme.txt18grey
-                                  .copyWith(fontSize: 14),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          "Theme",
-                          style: controller.theme.appTextTheme.txt18grey,
-                          textAlign: TextAlign.left,
-                        ),
-                        SizedBox(
-                          width: 30,
-                        ),
-                        DropdownButton<String>(
-                          dropdownColor:
-                              controller.theme.appColorTheme.colorBackground,
-                          icon: Icon(
-                            Icons.brightness_medium_rounded,
-                            color: controller
-                                .theme.appColorTheme.greyButtonInsideColor,
-                          ),
-                          underline: Container(),
-                          value: controller.appSettings.isDarkMode
-                              ? "dark"
-                              : "light",
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                "Light",
-                                style: controller.theme.appTextTheme.txt18grey,
-                              ),
-                              value: "light",
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                "Dark",
-                                style: controller.theme.appTextTheme.txt18grey,
-                              ),
-                              value: "dark",
-                            ),
-                            DropdownMenuItem(
-                                child: Text(
-                                  "System Default",
-                                  style:
-                                      controller.theme.appTextTheme.txt18grey,
-                                ),
-                                value: "sys_def"),
-                          ],
-                          onChanged: (value) {
-                            if (value == "light") {
-                              controller.appSettings.isDarkMode = false;
-                              controller.appSettings.isdefaultTheme = false;
-                            } else if (value == "dark") {
-                              controller.appSettings.isDarkMode = true;
-                              controller.appSettings.isdefaultTheme = false;
-                            } else {
-                              controller.appSettings.isDarkMode = false;
-                              controller.appSettings.isdefaultTheme = true;
-                            }
-                            controller.setTheme();
-                          },
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ),
+            FittedBox(
+              child: Column(
                 children: [
-                  Container(
-                    width: controller.size.width * 0.3,
-                    height: controller.size.height * 0.04,
-                    decoration: BoxDecoration(
-                        color: controller
-                            .theme.appColorTheme.greyButtonInsideColor
-                            .withOpacity(0.4),
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [controller.theme.appColorTheme.shadowMild]),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(15),
-                        onTap: () {
-                          controller.settingsBackClicked();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Text(
-                            "Cancel",
-                            style: controller.theme.appTextTheme.txt12white,
-                          ),
-                        ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Temperature Unit",
+                        style: controller.theme.appTextTheme.txt18grey,
                       ),
-                    ),
-                  ),
-                  Container(
-                    width: controller.size.width * 0.3,
-                    height: controller.size.height * 0.04,
-                    decoration: BoxDecoration(
-                        color: controller.theme.appColorTheme.color3,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [controller.theme.appColorTheme.shadowMild]),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(15),
-                        onTap: () {
-                          controller.onSettingsSaveClicked();
-                          controller.settingsBackClicked();
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Text(
-                            "Save",
-                            style: controller.theme.appTextTheme.txt12white,
+                      Row(
+                        children: [
+                          Radio(
+                              activeColor: controller
+                                  .theme.appColorTheme.graphBorderColor,
+                              value: "degree",
+                              groupValue: controller.appSettings.isCelciuis
+                                  ? "degree"
+                                  : "farenheit",
+                              onChanged: (value) {
+                                controller.appSettings.isCelciuis = true;
+                                controller.update();
+                              }),
+                          Text(
+                            "°C",
+                            style: controller.theme.appTextTheme.txt18grey
+                                .copyWith(fontSize: 14),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
+                      Row(
+                        children: [
+                          Radio(
+                              activeColor: controller
+                                  .theme.appColorTheme.graphBorderColor,
+                              value: "farenheit",
+                              groupValue: controller.appSettings.isCelciuis
+                                  ? "degree"
+                                  : "farenheit",
+                              onChanged: (value) {
+                                controller.appSettings.isCelciuis = false;
+                                controller.update();
+                              }),
+                          Text(
+                            "°F",
+                            style: controller.theme.appTextTheme.txt18grey
+                                .copyWith(fontSize: 14),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Theme",
+                        style: controller.theme.appTextTheme.txt18grey,
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      DropdownButton<String>(
+                        dropdownColor:
+                            controller.theme.appColorTheme.colorBackground,
+                        icon: Icon(
+                          Icons.brightness_medium_rounded,
+                          color: controller
+                              .theme.appColorTheme.greyButtonInsideColor,
+                        ),
+                        underline: Container(),
+                        value: controller.appSettings.isDarkMode
+                            ? "dark"
+                            : "light",
+                        items: [
+                          DropdownMenuItem(
+                            child: Text(
+                              "Light",
+                              style: controller.theme.appTextTheme.txt18grey,
+                            ),
+                            value: "light",
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                              "Dark",
+                              style: controller.theme.appTextTheme.txt18grey,
+                            ),
+                            value: "dark",
+                          ),
+                          DropdownMenuItem(
+                              child: Text(
+                                "System Default",
+                                style: controller.theme.appTextTheme.txt18grey,
+                              ),
+                              value: "sys_def"),
+                        ],
+                        onChanged: (value) {
+                          if (value == "light") {
+                            controller.appSettings.isDarkMode = false;
+                            controller.appSettings.isdefaultTheme = false;
+                          } else if (value == "dark") {
+                            controller.appSettings.isDarkMode = true;
+                            controller.appSettings.isdefaultTheme = false;
+                          } else {
+                            controller.appSettings.isDarkMode = false;
+                            controller.appSettings.isdefaultTheme = true;
+                          }
+                          controller.setTheme();
+                        },
+                      )
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
+                  decoration: BoxDecoration(
+                      color: controller
+                          .theme.appColorTheme.greyButtonInsideColor
+                          .withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        controller.settingsBackClicked();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Text(
+                          "Cancel",
+                          style: controller.theme.appTextTheme.txt12white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
+                  decoration: BoxDecoration(
+                      color: controller.theme.appColorTheme.color3,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        controller.onSettingsSaveClicked();
+                        controller.settingsBackClicked();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Text(
+                          "Save",
+                          style: controller.theme.appTextTheme.txt12white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
