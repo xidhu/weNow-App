@@ -7,7 +7,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:we_now/app/data/Api/weather_api.dart';
 
 import 'package:we_now/main.dart';
 
-void main() {}
+void main() {
+  test("check", () async {
+    print(await WeatherApi().getFullWeather(46.0, 42.0));
+  });
+}

@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:we_now/app/modules/home/controllers/home_controller.dart';
 import 'package:we_now/app/theme/app_theme.dart';
 
 class HomeViewComponents {
-  late Size size;
-
-  HomeViewComponents({required Size size}) {
-    this.size = size;
-  }
-
   Widget menuButton(
       {required Function onClick, required icon, required color, shadow}) {
     return Container(
@@ -36,14 +30,20 @@ class HomeViewComponents {
     );
   }
 
-  Widget squareButton({required Color color}) {
+  Widget squareButton(
+      {required Color color,
+      required HomeController controller,
+      required String title,
+      required icon,
+      required String value,
+      required String unit}) {
     return FittedBox(
       child: Container(
         margin: EdgeInsets.all(5),
         decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [AppTheme.shadowMedium]),
+            boxShadow: [controller.theme.appColorTheme.shadowMedium]),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -56,21 +56,27 @@ class HomeViewComponents {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Precipitation",
-                    style: AppTextTheme.txt12white,
+                    title,
+                    style: controller.theme.appTextTheme.txt12white,
                   ),
                   SizedBox(
                     height: 6,
                   ),
                   Row(
                     children: [
-                      SvgPicture.asset(SvgImages.droplet),
+                      SvgPicture.asset(icon),
                       SizedBox(
                         width: 5,
                       ),
                       Text(
-                        "8%",
-                        style: AppTextTheme.txt18white,
+                        value,
+                        style: controller.theme.appTextTheme.txt18white,
+                      ),
+                      Text(
+                        unit,
+                        style: controller.theme.appTextTheme.txt12white
+                            .copyWith(fontSize: 8),
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   )
@@ -83,33 +89,48 @@ class HomeViewComponents {
     );
   }
 
-  Widget locationBuilder({required int count}) {
+  Widget locationBuilder({
+    required int index,
+    required data,
+    required Function onClick,
+    required HomeController controller,
+  }) {
     return Column(children: [
       FittedBox(
         child: Container(
             margin: EdgeInsets.all(5),
-            width: size.width / 3.5,
-            height: size.height / 15,
+            width: controller.size.width / 3.5,
+            height: controller.size.height / 15,
             decoration: BoxDecoration(
-                color: AppTheme.color1,
+                color: controller.theme.appColorTheme.color1,
                 borderRadius: BorderRadius.circular(12),
-                boxShadow: [AppTheme.shadowMedium]),
+                boxShadow: [controller.theme.appColorTheme.shadowMedium]),
             child: Stack(
               children: [
                 Container(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: SvgPicture.asset(
-                      SvgImages.background1,
+                      controller.theme.appSvgImages.getAnImage(index),
                       fit: BoxFit.cover,
                     ),
                   ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      color: controller
+                                  .theme.appColorTheme.colorBackground.value ==
+                              0xFF212121
+                          ? controller.theme.appColorTheme.colorBackground
+                              .withOpacity(0.3)
+                          : Colors.black.withOpacity(0.06)),
                 ),
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: () {},
+                    onTap: () => onClick(),
                     child: Container(
                       width: double.infinity,
                       height: double.infinity,
@@ -120,15 +141,15 @@ class HomeViewComponents {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                              "Kozhikode",
-                              style: AppTextTheme.txt12white,
+                              data[index].cityName,
+                              style: controller.theme.appTextTheme.txt12white,
                             ),
                             SizedBox(
                               height: 8,
                             ),
                             Text(
-                              "India",
-                              style: AppTextTheme.txt12white
+                              data[index].countryName,
+                              style: controller.theme.appTextTheme.txt12white
                                   .copyWith(color: Colors.white30, fontSize: 8),
                             ),
                           ],
@@ -144,13 +165,16 @@ class HomeViewComponents {
   }
 
   Widget menuItem(
-      {required String title, required Function onClick, required icon}) {
+      {required String title,
+      required Function onClick,
+      required icon,
+      required HomeController controller}) {
     return Container(
-      margin: EdgeInsets.only(left: size.width * 0.03),
+      margin: EdgeInsets.only(left: controller.size.width * 0.03),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [AppTheme.shadowMedium],
-          color: AppTheme.colorWhite),
+          boxShadow: [controller.theme.appColorTheme.shadowMedium],
+          color: controller.theme.appColorTheme.colorWhite),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -164,13 +188,15 @@ class HomeViewComponents {
                     padding: EdgeInsets.only(right: 10, bottom: 0),
                     child: Icon(
                       icon,
-                      color: AppTheme.greyButtonInsideColor.withOpacity(0.5),
+                      color: controller
+                          .theme.appColorTheme.greyButtonInsideColor
+                          .withOpacity(0.5),
                       size: 20,
                     ),
                   ),
                   Text(
                     title,
-                    style: AppTextTheme.txt18grey,
+                    style: controller.theme.appTextTheme.txt18grey,
                   ),
                 ],
               )),
@@ -178,187 +204,207 @@ class HomeViewComponents {
       ),
     );
   }
-}
 
-class Switcher extends StatefulWidget {
-  late Size size;
-  Switcher({required Size size}) {
-    this.size = size;
-  }
-  @override
-  _SwitcherState createState() => _SwitcherState();
-}
-
-class _SwitcherState extends State<Switcher> {
-  bool today = true;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget settingsMenu({
+    required HomeController controller,
+  }) {
     return Container(
+      alignment: Alignment.center,
+      color: Colors.black12,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        width: controller.size.width * 0.8,
+        height: controller.size.height * 0.3,
+        decoration: BoxDecoration(
+            color: controller.theme.appColorTheme.colorBackground,
+            borderRadius: BorderRadius.circular(15),
+            boxShadow: [controller.theme.appColorTheme.shadowMild]),
         child: Column(
-      children: [
-        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Spacer(),
-            Container(
-              alignment: Alignment.center,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      today = true;
-                    });
-                  },
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 20,
-                        padding: EdgeInsets.only(top: 10),
-                        child: Text(
-                          "Today",
-                          textAlign: TextAlign.center,
-                          style: AppTextTheme.txt12white
-                              .copyWith(color: AppTheme.greyButtonInsideColor),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        width: widget.size.width / 3.5,
-                        height: 5,
-                        color: today
-                            ? AppTheme.primaryColor
-                            : AppTheme.secondaryColor,
-                      ),
-                    ],
-                  ),
-                ),
+            FittedBox(
+              child: Text(
+                "Settings",
+                style: controller.theme.appTextTheme.txt32grey,
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      today = false;
-                    });
-                  },
-                  child: Column(
+            FittedBox(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        height: 20,
-                        padding: EdgeInsets.only(top: 10),
-                        child: Text(
-                          "Tommorrow",
-                          textAlign: TextAlign.center,
-                          style: AppTextTheme.txt12white
-                              .copyWith(color: AppTheme.greyButtonInsideColor),
-                        ),
+                      Text(
+                        "Temperature Unit",
+                        style: controller.theme.appTextTheme.txt18grey,
                       ),
-                      SizedBox(
-                        height: 5,
+                      Row(
+                        children: [
+                          Radio(
+                              activeColor: controller
+                                  .theme.appColorTheme.graphBorderColor,
+                              value: "degree",
+                              groupValue: controller.appSettings.isCelciuis
+                                  ? "degree"
+                                  : "farenheit",
+                              onChanged: (value) {
+                                controller.appSettings.isCelciuis = true;
+                                controller.update();
+                              }),
+                          Text(
+                            "°C",
+                            style: controller.theme.appTextTheme.txt18grey
+                                .copyWith(fontSize: 14),
+                          ),
+                        ],
                       ),
-                      Container(
-                        width: widget.size.width / 3.5,
-                        height: 5,
-                        color: !today
-                            ? AppTheme.primaryColor
-                            : AppTheme.secondaryColor,
-                      ),
+                      Row(
+                        children: [
+                          Radio(
+                              activeColor: controller
+                                  .theme.appColorTheme.graphBorderColor,
+                              value: "farenheit",
+                              groupValue: controller.appSettings.isCelciuis
+                                  ? "degree"
+                                  : "farenheit",
+                              onChanged: (value) {
+                                controller.appSettings.isCelciuis = false;
+                                controller.update();
+                              }),
+                          Text(
+                            "°F",
+                            style: controller.theme.appTextTheme.txt18grey
+                                .copyWith(fontSize: 14),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-                ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Theme",
+                        style: controller.theme.appTextTheme.txt18grey,
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      DropdownButton<String>(
+                        dropdownColor:
+                            controller.theme.appColorTheme.colorBackground,
+                        icon: Icon(
+                          Icons.brightness_medium_rounded,
+                          color: controller
+                              .theme.appColorTheme.greyButtonInsideColor,
+                        ),
+                        underline: Container(),
+                        value: controller.appSettings.isDarkMode
+                            ? "dark"
+                            : "light",
+                        items: [
+                          DropdownMenuItem(
+                            child: Text(
+                              "Light",
+                              style: controller.theme.appTextTheme.txt18grey,
+                            ),
+                            value: "light",
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                              "Dark",
+                              style: controller.theme.appTextTheme.txt18grey,
+                            ),
+                            value: "dark",
+                          ),
+                          DropdownMenuItem(
+                              child: Text(
+                                "System Default",
+                                style: controller.theme.appTextTheme.txt18grey,
+                              ),
+                              value: "sys_def"),
+                        ],
+                        onChanged: (value) {
+                          if (value == "light") {
+                            controller.appSettings.isDarkMode = false;
+                            controller.appSettings.isdefaultTheme = false;
+                          } else if (value == "dark") {
+                            controller.appSettings.isDarkMode = true;
+                            controller.appSettings.isdefaultTheme = false;
+                          } else {
+                            controller.appSettings.isDarkMode = false;
+                            controller.appSettings.isdefaultTheme = true;
+                          }
+                          controller.setTheme();
+                        },
+                      )
+                    ],
+                  )
+                ],
               ),
             ),
-            Spacer()
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
+                  decoration: BoxDecoration(
+                      color: controller
+                          .theme.appColorTheme.greyButtonInsideColor
+                          .withOpacity(0.4),
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        controller.settingsBackClicked();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Text(
+                          "Cancel",
+                          style: controller.theme.appTextTheme.txt12white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: controller.size.width * 0.3,
+                  height: controller.size.height * 0.04,
+                  decoration: BoxDecoration(
+                      color: controller.theme.appColorTheme.color3,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [controller.theme.appColorTheme.shadowMild]),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(15),
+                      onTap: () {
+                        controller.onSettingsSaveClicked();
+                        controller.settingsBackClicked();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: double.infinity,
+                        child: Text(
+                          "Save",
+                          style: controller.theme.appTextTheme.txt12white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
-        ),
-      ],
-    ));
-  }
-}
-
-class PeriodChooser extends StatefulWidget {
-  late Size size;
-  PeriodChooser({required Size size}) {
-    this.size = size;
-  }
-  @override
-  _PeriodChooserState createState() => _PeriodChooserState(size);
-}
-
-class _PeriodChooserState extends State<PeriodChooser> {
-  late Size size;
-  _PeriodChooserState(Size size) {
-    this.size = size;
-  }
-  List<bool> isClicked = [true, false, false];
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          SizedBox(
-            width: size.width * 0.06,
-          ),
-          buttonChooser(title: "Day", index: 0),
-          SizedBox(
-            width: 10,
-          ),
-          buttonChooser(title: "Week", index: 1),
-          SizedBox(
-            width: 10,
-          ),
-          buttonChooser(title: "Month", index: 2),
-          Spacer(),
-        ],
-      ),
-    );
-  }
-
-  Widget buttonChooser({required String title, required int index}) {
-    return Container(
-      child: Align(
-        alignment: Alignment.center,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 200),
-          width: size.aspectRatio > 280 / 653 ? size.width / 6 : size.width / 5,
-          height: size.aspectRatio > 280 / 653
-              ? size.height / 30
-              : size.height / 28,
-          margin: isClicked[index] ? EdgeInsets.only(top: 2) : EdgeInsets.zero,
-          decoration: BoxDecoration(
-              color: !isClicked[index]
-                  ? Colors.grey.withOpacity(0.3)
-                  : AppTheme.color1,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: !isClicked[index] ? [AppTheme.shadowMedium] : []),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: () {
-                setState(() {
-                  isClicked = [false, false, false];
-                  isClicked[index] = !isClicked[index];
-                });
-              },
-              child: Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                child: FittedBox(
-                  child: Text(
-                    "$title",
-                    style: AppTextTheme.txt12white.copyWith(fontSize: 8),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );
