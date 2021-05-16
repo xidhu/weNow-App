@@ -13,7 +13,11 @@ Widget dialogBox(
     child: Container(
       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       width: controller.size.width * 0.8,
+<<<<<<< HEAD
       height: controller.size.height * 0.3,
+=======
+      height: controller.size.height * 0.25,
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
       decoration: BoxDecoration(
           color: controller.theme.appColorTheme.colorBackground,
           borderRadius: BorderRadius.circular(15),
@@ -21,11 +25,17 @@ Widget dialogBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
+<<<<<<< HEAD
           FittedBox(
             child: Text(
               title,
               style: controller.theme.appTextTheme.txt32grey,
             ),
+=======
+          Text(
+            title,
+            style: controller.theme.appTextTheme.txt32grey,
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
           ),
           description,
           Row(

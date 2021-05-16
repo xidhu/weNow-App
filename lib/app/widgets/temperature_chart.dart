@@ -104,10 +104,32 @@ class TemperatureChart extends GetView<HomeController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+<<<<<<< HEAD
             Image.asset(
               controller.theme.appPngImages.getWeatherIcon(data.weatherIcon),
               height: 50,
             ),
+=======
+            FutureBuilder(
+                future: controller.isOnline(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return CachedNetworkImage(
+                      imageUrl: data.weatherIcon,
+                      placeholder: (context, url) => Icon(
+                        Icons.wb_sunny_rounded,
+                        color: Colors.yellow,
+                      ),
+                      errorWidget: (context, url, error) => Icon(
+                        Icons.wb_sunny_rounded,
+                        color: Colors.yellow,
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                }),
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
             Container(
               margin: EdgeInsets.only(top: 30),
               child: Text(

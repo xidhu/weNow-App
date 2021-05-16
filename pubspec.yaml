@@ -39,7 +39,10 @@ dependencies:
   connectivity: ^3.0.3
   cached_network_image: ^3.0.0
   url_launcher: ^6.0.3
+<<<<<<< HEAD
   flutter_local_notifications: ^5.0.0+4
+=======
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +68,11 @@ flutter:
     - lib/assets/images/svg/images/
     - lib/assets/images/svg/vectors/
     - lib/assets/images/gif/
+<<<<<<< HEAD
     - lib/assets/images/png/weather_icons/
+=======
+    - lib/assets/images/png/
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

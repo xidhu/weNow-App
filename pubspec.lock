@@ -448,6 +448,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.19"
+<<<<<<< HEAD
   timezone:
     dependency: transitive
     description:
@@ -455,6 +456,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
+=======
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
   typed_data:
     dependency: transitive
     description:

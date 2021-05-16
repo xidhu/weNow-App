@@ -272,6 +272,7 @@ class HomeController extends GetxController {
           color: Colors.grey.withOpacity(0.4),
           child: dialogBox(
               controller: this,
+<<<<<<< HEAD
               title: " ",
               description: Container(
                 child: Column(
@@ -302,6 +303,35 @@ class HomeController extends GetxController {
                     ),
                   ],
                 ),
+=======
+              title: "",
+              description: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SvgPicture.asset(
+                    theme.appSvgImages.logo,
+                    width: 50,
+                  ),
+                  Text(
+                    "WeNow",
+                    style: theme.appTextTheme.txt18grey,
+                  ),
+                  Text(
+                    "v1.0.0",
+                    style: theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "by Xidhu",
+                    style: theme.appTextTheme.txt12white,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+>>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
               ),
               negetive: "API Doc",
               positive: "Ok",
