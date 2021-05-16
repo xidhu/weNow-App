@@ -38,8 +38,8 @@ void main() async {
           'locId': appSettings.currentLocationId,
           'isCel': appSettings.isCelciuis
         },
-        frequency: Duration(hours: 3),
-        initialDelay: Duration(seconds: 5));
+        frequency: Duration(hours: 1),
+        initialDelay: Duration(minutes: 15));
   }
 
   runApp(GetMaterialApp(
