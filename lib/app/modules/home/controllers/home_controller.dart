@@ -13,7 +13,6 @@ import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/data/models/temperature_model.dart';
 import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
-import 'package:we_now/app/utils/local_notifications.dart';
 import 'package:we_now/app/widgets/common_components.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
