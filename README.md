@@ -1,3 +1,9 @@
+<p align="center">
+<img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_banner.svg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" width=700>
+</p>
+
+
+
 # We Now
 WeNow is a simple weather forecast app, which uses some APIs to fetch 8 day / 1 hour forecast data from the [OpenWeatherMap](https://openweathermap.org/forecast5) and to fetch places,cities,counties,coords etc.
 
