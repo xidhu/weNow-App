@@ -12,10 +12,18 @@ void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     var database = AppDatabase.instance;
     Location data = (await database.getLocation(inputData!['locId']));
-    data.setFullWeather(
-        await WeatherApi().getFullWeather(data.longitude, data.latitude));
+    LocalNotifications notifications = LocalNotifications();
+    await notifications.intialize();
 
-    LocalNotifications().showNotificationWithDefaultSound(
+    DateTime currTime = DateTime.now();
+
+    if (!((data.date.day == currTime.day) &&
+        (data.date.month == currTime.month) &&
+        (data.date.year == currTime.year))) {
+      data.setFullWeather(
+          await WeatherApi().getFullWeather(data.longitude, data.latitude));
+    }
+    notifications.showNotificationWithDefaultSound(
         location: data, isCelcius: inputData['isCel']);
     return Future.value(true);
   });
@@ -28,8 +36,8 @@ void main() async {
 
   if (appSettings.currentLocation >= 0) {
     Workmanager wrk = Workmanager();
-    wrk.initialize(callbackDispatcher);
-    wrk.registerPeriodicTask("1", "backgroundNotification",
+    await wrk.initialize(callbackDispatcher);
+    await wrk.registerPeriodicTask("wenow_background", "wenow_weather_update",
         existingWorkPolicy: ExistingWorkPolicy.replace,
         constraints: Constraints(
           networkType: NetworkType.connected,
@@ -38,8 +46,8 @@ void main() async {
           'locId': appSettings.currentLocationId,
           'isCel': appSettings.isCelciuis
         },
-        frequency: Duration(hours: 1),
-        initialDelay: Duration(minutes: 15));
+        frequency: Duration(minutes: 30),
+        initialDelay: Duration(seconds: 10));
   }
 
   runApp(GetMaterialApp(
