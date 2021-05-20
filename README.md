@@ -1,3 +1,4 @@
+
 <p align="center">
 <img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_banner.svg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" width=700>
 </p>
@@ -20,45 +21,36 @@ WeNow is a simple weather forecast app, which uses some APIs to fetch 8 day / 1 
 
 # App UI
 
-## All Screens
+## Screens
 
-<br>
 
-| <img align="left" alt="Splash Screen" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/splash.jpg" width="250px" /> | <img align="left" alt="Welcome Screen" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/welcome.jpg" width="250px" /> | <img align="left" alt="Login Screen" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/login.jpg" width="250px" /> | <img align="left" alt="Dashboard" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/yellowLight.jpg" width="250px" /> |
+#### Light Theme
+
+
+
+| <img align="left" alt="Splash Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/main_light.jpg?token=APOIDJEVSLIIKPKRKS6NECDAV6QGG" width="250px" /> | <img align="left" alt="Main Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/loc_light.jpg?token=APOIDJBQ37ZLHILX5BS2P73AV6QQK" width="250px" /> | <img align="left" alt="Location Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/side_light.jpg?token=APOIDJFMQWEOWR4GML2A4WTAV6QTU" width="250px" /> | <img align="left" alt="Side View" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/side_light.jpg?token=APOIDJBMQXHOR4V3V7ZI5SLAV6QWA" width="250px" /> |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+#### Dark Theme
+
+
+
+<img align="left" alt="Splash Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/main_dark.jpg?token=APOIDJA46ANXYB2QTGV6VJTAV6Q4Y" width="250px" /> | <img align="left" alt="Main Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/loc_dark.jpg?token=APOIDJBEIJ2YJLHICFYP5JLAV6Q3E" width="250px" /> | <img align="left" alt="Location Screen" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/side_dark.jpg?token=APOIDJAX5YWT3LHVIDTYMJTAV6RA6" width="250px" /> | <img align="left" alt="Side View" src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/noti_light.jpg?token=APOIDJEA4P2USFWM3Q54FODAV6RCW" width="250px" /> |
 | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-| <img align="left" alt="Daily Tasks" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/dailyTasks.jpg" width="250px" /> | <img align="left" alt="All Tasks" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/allTasks.jpg" width="250px" /> | <img align="left" alt="Profile" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/profile.jpg" width="250px" /> | <img align="left" alt="Settings" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/settings.jpg" width="250px" /> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 
-| <img align="left" alt="Edit Account" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/editAccount.jpg" width="250px" /> | <img align="left" alt="Add Task Sheet" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/addTaskFn.jpg" width="250px" /> | <img align="left" alt="Icon Selection" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/iconSelection.jpg" width="250px" /> | <img align="left" alt="Update Task Sheet" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/updateTaskFn.jpg" width="250px" /> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 
-| <img align="left" alt="Edit Account" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/editOption.jpg" width="250px" /> | <img align="left" alt="Add Task Sheet" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/deleteOption.jpg" width="250px" /> | <img align="left" alt="Icon Selection" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/confirmDelete.jpg" width="250px" /> | <img align="left" alt="Update Task Sheet" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/confirmLogOut.jpg" width="250px" /> |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 
-<div> </div>
-<br>
-<br>
+# Contribution
 
-## Themes Available
+See [contributing.markdown][5] for details.
 
-<br>
+# Support
 
-| <img align="left" alt="Yellow Light" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/yellowLight.jpg" width="250px" /> | <img align="left" alt="Red Light" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/redLight.jpg" width="250px" /> | <img align="left" alt="Teal Light" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/tealLight.jpg" width="250px" /> | <img align="left" alt="Green Light" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/greenLight.jpg" width="250px" /> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+See  the [issue page][6]  for any kind of support.
 
-| <img align="left" alt="Yellow Dark" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/yellowDark.jpg" width="250px" /> | <img align="left" alt="Red Dark" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/redDark.jpg" width="250px" /> | <img align="left" alt="Teal Dark" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/tealDark.jpg" width="250px" /> | <img align="left" alt="Green Dark" src="https://raw.githubusercontent.com/JobinBiju/Taskly/main/assets/readmeFiles/greenDark.jpg" width="250px" /> |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+# License
 
-<br>
+MIT 
 
-## Contribution
-
-- Fork this project, add improvements & make a pull request.
-- Send feedback & sugestions [here.](https://wa.me/918281392010/)
-
-<br>
-
-## Support
-
-Support this project by giving a star and sharing with your friends.
+[5]: https://github.com/xidhu/Gchat-app/blob/master/CONTRIBUTING.md
+[6]: https://github.com/xidhu/Gchat-app/issues
