@@ -18,6 +18,8 @@ WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.her
 * 2 days hourly forecast.
 * Current weather notification at each 2 hour.
 
+[![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/xidhu/weNow-App)
+
 ## Features
 * Live in-app database
 * Simple UI
