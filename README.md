@@ -7,7 +7,7 @@
 
 
 
-# We Now
+# WeNow
 WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.herokuapp.com/) to fetch 8 day / 1 hour forecast data from the [OpenWeatherMap](https://openweathermap.org/) and fetch places,cities,counties,coords etc.
 #### [WeNowAPI](https://github.com/xidhu/weNow-API/)
 
