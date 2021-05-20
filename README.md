@@ -13,7 +13,7 @@ WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.her
 
 
 
-* 5000+ cities weather data available.
+* 5000+ cities.
 * 8 Days weather forecast.
 * 2 days hourly forecast.
 * Current weather notification at each 2 hour.
