@@ -25,7 +25,6 @@ WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.her
 * Simple UI
 * Fast Loading
 
-# App UI
 
 ## Screens
 
