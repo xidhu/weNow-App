@@ -1,5 +1,8 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:we_now/app/data/Api/weather_api.dart';
+import 'package:we_now/app/data/database/database.dart';
 import 'package:we_now/app/data/models/location_model.dart';
+import 'package:workmanager/workmanager.dart';
 
 class LocalNotifications {
   late FlutterLocalNotificationsPlugin notificationsPlugin;
@@ -50,4 +53,25 @@ class LocalNotifications {
       payload: 'Default_Sound',
     );
   }
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    var database = AppDatabase.instance;
+    Location data = (await database.getLocation(inputData!['locId']));
+    LocalNotifications notifications = LocalNotifications();
+    await notifications.intialize();
+
+    DateTime currTime = DateTime.now();
+
+    if (!((data.date.day == currTime.day) &&
+        (data.date.month == currTime.month) &&
+        (data.date.year == currTime.year))) {
+      data.setFullWeather(
+          await WeatherApi().getFullWeather(data.longitude, data.latitude));
+    }
+    notifications.showNotificationWithDefaultSound(
+        location: data, isCelcius: inputData['isCel']);
+    return Future.value(true);
+  });
 }

@@ -214,7 +214,7 @@ class HomeViewComponents {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         width: controller.size.width * 0.8,
-        height: controller.size.height * 0.3,
+        height: controller.size.height * 0.4,
         decoration: BoxDecoration(
             color: controller.theme.appColorTheme.colorBackground,
             borderRadius: BorderRadius.circular(15),
@@ -300,9 +300,11 @@ class HomeViewComponents {
                               .theme.appColorTheme.greyButtonInsideColor,
                         ),
                         underline: Container(),
-                        value: controller.appSettings.isDarkMode
-                            ? "dark"
-                            : "light",
+                        value: controller.appSettings.isdefaultTheme
+                            ? "sys_def"
+                            : controller.appSettings.isDarkMode
+                                ? "dark"
+                                : "light",
                         items: [
                           DropdownMenuItem(
                             child: Text(
@@ -339,6 +341,59 @@ class HomeViewComponents {
                           controller.setTheme();
                         },
                       )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Weather Updates",
+                        style: controller.theme.appTextTheme.txt18grey,
+                        textAlign: TextAlign.left,
+                      ),
+                      Switch(
+                          activeColor:
+                              controller.theme.appColorTheme.graphBorderColor,
+                          value: controller.appSettings.weatherUpdate,
+                          onChanged: (val) =>
+                              controller.onWeatherAlertClicked(val)),
+                      controller.appSettings.weatherUpdate
+                          ? DropdownButton<int>(
+                              dropdownColor: controller
+                                  .theme.appColorTheme.colorBackground,
+                              underline: Container(),
+                              value: controller.appSettings.updateTime,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "every 2 hours",
+                                    style:
+                                        controller.theme.appTextTheme.txt18grey,
+                                  ),
+                                  value: 2,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "every 6 hours",
+                                    style:
+                                        controller.theme.appTextTheme.txt18grey,
+                                  ),
+                                  value: 6,
+                                ),
+                                DropdownMenuItem(
+                                    child: Text(
+                                      "every 12 hours",
+                                      style: controller
+                                          .theme.appTextTheme.txt18grey,
+                                    ),
+                                    value: 12),
+                              ],
+                              onChanged: (value) {
+                                controller.appSettings.updateTime = value ?? 2;
+                                controller.update();
+                              },
+                            )
+                          : Container()
                     ],
                   )
                 ],
