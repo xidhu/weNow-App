@@ -15,7 +15,7 @@ WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.her
 
 * 5000+ cities.
 * 8 Days weather forecast.
-* 2 days hourly forecast.
+* 2 Day hourly forecast.
 * Weather alerts.
 
 [![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/xidhu/weNow-App)
