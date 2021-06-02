@@ -40,7 +40,7 @@ public class MainActivity extends io.flutter.app.FlutterActivity {
                 startActivity(intent);
             }
         } catch (Exception e) {
-            Log.e("exc", String.valueOf(e));
+            Log.e("Can't Launch Settings", String.valueOf(e));
         }
     }
 
