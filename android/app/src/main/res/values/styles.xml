@@ -3,7 +3,6 @@
     <!-- Theme applied to the Android Window while the process is starting -->
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
-        <item name="android:windowFullscreen">true</item>
     </style>
     <color name="white">#FFFFFF</color>
     <color name="blue">#87CEEB</color>

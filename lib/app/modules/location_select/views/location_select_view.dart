@@ -66,12 +66,8 @@ class LocationSelectView extends GetView<LocationSelectController> {
                                               .locationBuilder(
                                                   isCelcius: controller
                                                       .appSettings.isCelciuis,
-<<<<<<< HEAD
                                                   isOnline:
                                                       controller.isOnline(),
-=======
-                                                  isOnline: controller.isOnline(),
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                                                   count: controller
                                                       .locations?.length,
                                                   currLoc: controller

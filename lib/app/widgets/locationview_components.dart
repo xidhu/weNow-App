@@ -266,40 +266,11 @@ class LocationViewComponents {
                                                 )
                                               ],
                                             ),
-<<<<<<< HEAD
                                             Image.asset(
                                               theme.appPngImages.getWeatherIcon(
                                                   location.weatherIcon),
                                               height: 60,
                                             )
-=======
-                                            FutureBuilder(
-                                                future: isOnline,
-                                                builder: (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    return CachedNetworkImage(
-                                                      imageUrl:
-                                                          location.weatherIcon,
-                                                      placeholder:
-                                                          (context, url) =>
-                                                              Icon(
-                                                        Icons.wb_sunny_rounded,
-                                                        color: Colors.yellow,
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Icon(
-                                                        Icons.wb_sunny_rounded,
-                                                        color: Colors.yellow,
-                                                      ),
-                                                    );
-                                                  } else {
-                                                    return Container();
-                                                  }
-                                                })
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                                           ],
                                         ),
                                       ),

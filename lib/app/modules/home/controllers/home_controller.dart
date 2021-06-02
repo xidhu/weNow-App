@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -13,10 +14,12 @@ import 'package:we_now/app/data/models/location_model.dart';
 import 'package:we_now/app/data/models/temperature_model.dart';
 import 'package:we_now/app/routes/app_pages.dart';
 import 'package:we_now/app/theme/app_theme.dart';
+import 'package:we_now/app/utils/local_notifications.dart';
 import 'package:we_now/app/widgets/common_components.dart';
 import 'package:we_now/app/widgets/homeview_components.dart';
 import 'package:we_now/app/widgets/temperature_chart.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:workmanager/workmanager.dart';
 
 class HomeController extends GetxController {
   //Static Variables
@@ -96,6 +99,7 @@ class HomeController extends GetxController {
     periodChooserState = [true, false, false];
     switcherState = true;
     setData(data);
+    setNotification();
     super.onInit();
   }
 
@@ -248,7 +252,29 @@ class HomeController extends GetxController {
     Get.offAndToNamed(AppPages.LOCATION);
   }
 
+  void setNotification() async {
+    if (appSettings.weatherUpdate) {
+      Workmanager wrk = Workmanager();
+      await wrk.initialize(callbackDispatcher);
+      await wrk.registerPeriodicTask("wenow_background", "wenow_weather_update",
+          existingWorkPolicy: ExistingWorkPolicy.replace,
+          constraints: Constraints(
+            networkType: NetworkType.connected,
+          ),
+          inputData: {
+            'locId': appSettings.currentLocationId,
+            'isCel': appSettings.isCelciuis
+          },
+          frequency: Duration(hours: appSettings.updateTime),
+          initialDelay: Duration(seconds: 5));
+    } else {
+      Workmanager wrk = Workmanager();
+      await wrk.cancelAll();
+    }
+  }
+
   void onSettingsSaveClicked() async {
+    setNotification();
     await appSettings.saveData();
     await appSettings.loadData();
     isSettingsOpen = false;
@@ -272,7 +298,6 @@ class HomeController extends GetxController {
           color: Colors.grey.withOpacity(0.4),
           child: dialogBox(
               controller: this,
-<<<<<<< HEAD
               title: " ",
               description: Container(
                 child: Column(
@@ -303,35 +328,6 @@ class HomeController extends GetxController {
                     ),
                   ],
                 ),
-=======
-              title: "",
-              description: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SvgPicture.asset(
-                    theme.appSvgImages.logo,
-                    width: 50,
-                  ),
-                  Text(
-                    "WeNow",
-                    style: theme.appTextTheme.txt18grey,
-                  ),
-                  Text(
-                    "v1.0.0",
-                    style: theme.appTextTheme.txt18grey.copyWith(fontSize: 10),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    "by Xidhu",
-                    style: theme.appTextTheme.txt12white,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
               ),
               negetive: "API Doc",
               positive: "Ok",
@@ -349,5 +345,49 @@ class HomeController extends GetxController {
         barrierDismissible: true,
         barrierColor: Colors.transparent,
         transitionDuration: Duration(milliseconds: 200));
+  }
+
+  void onWeatherAlertClicked(bool isWeatherUpdateTrue) async {
+    if (!isWeatherUpdateTrue) {
+      appSettings.weatherUpdate = isWeatherUpdateTrue;
+      update();
+    }
+    if (isWeatherUpdateTrue) {
+      Get.dialog(
+          Material(
+            color: Colors.grey.withOpacity(0.4),
+            child: dialogBox(
+                controller: this,
+                title: "AutoStart Permission Required",
+                description: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "app requires special auto start permission to show background notifications in some smartphones.",
+                        style: theme.appTextTheme.txt18grey,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                negetive: "Cancel",
+                positive: "Go to Settings",
+                onNegetive: () {
+                  Get.back();
+                },
+                onPositive: () async {
+                  const platform =
+                      const MethodChannel('com.xidhu.we_now/autostart');
+                  await platform.invokeMethod('autostart');
+                  Get.back();
+                  appSettings.weatherUpdate = isWeatherUpdateTrue;
+                  update();
+                }),
+          ),
+          barrierDismissible: true,
+          barrierColor: Colors.transparent,
+          transitionDuration: Duration(milliseconds: 200));
+    }
   }
 }

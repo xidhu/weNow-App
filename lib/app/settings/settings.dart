@@ -3,7 +3,9 @@ import 'package:we_now/app/data/database/database.dart';
 class Settings {
   bool isDarkMode = false;
   bool isCelciuis = true;
-  bool isdefaultTheme = false;
+  bool isdefaultTheme = true;
+  bool weatherUpdate = false;
+  int updateTime = 2;
 
   int currentLocation = -1;
   String currentLocationId = "0";
@@ -22,7 +24,9 @@ class Settings {
       'isCelciuis': isCelciuis,
       'isdefaultTheme': isdefaultTheme,
       'currentLocation': currentLocation,
-      'currentLocationId': currentLocationId
+      'currentLocationId': currentLocationId,
+      'weatherUpdate': weatherUpdate,
+      'updateTime': updateTime
     });
   }
 
@@ -35,6 +39,8 @@ class Settings {
       isdefaultTheme = data.value['isdefaultTheme'];
       currentLocation = data.value['currentLocation'];
       currentLocationId = data.value['currentLocationId'];
+      weatherUpdate = data.value['weatherUpdate'];
+      updateTime = data.value['updateTime'];
     }
   }
 }

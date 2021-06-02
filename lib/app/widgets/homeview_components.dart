@@ -111,11 +111,7 @@ class HomeViewComponents {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: SvgPicture.asset(
-<<<<<<< HEAD
                       controller.theme.appSvgImages.getAnImage(index),
-=======
-                      controller.theme.appSvgImages.background1,
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -218,7 +214,7 @@ class HomeViewComponents {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         width: controller.size.width * 0.8,
-        height: controller.size.height * 0.3,
+        height: controller.size.height * 0.4,
         decoration: BoxDecoration(
             color: controller.theme.appColorTheme.colorBackground,
             borderRadius: BorderRadius.circular(15),
@@ -226,7 +222,6 @@ class HomeViewComponents {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-<<<<<<< HEAD
             FittedBox(
               child: Text(
                 "Settings",
@@ -305,9 +300,11 @@ class HomeViewComponents {
                               .theme.appColorTheme.greyButtonInsideColor,
                         ),
                         underline: Container(),
-                        value: controller.appSettings.isDarkMode
-                            ? "dark"
-                            : "light",
+                        value: controller.appSettings.isdefaultTheme
+                            ? "sys_def"
+                            : controller.appSettings.isDarkMode
+                                ? "dark"
+                                : "light",
                         items: [
                           DropdownMenuItem(
                             child: Text(
@@ -345,123 +342,62 @@ class HomeViewComponents {
                         },
                       )
                     ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Weather Updates",
+                        style: controller.theme.appTextTheme.txt18grey,
+                        textAlign: TextAlign.left,
+                      ),
+                      Switch(
+                          activeColor:
+                              controller.theme.appColorTheme.graphBorderColor,
+                          value: controller.appSettings.weatherUpdate,
+                          onChanged: (val) =>
+                              controller.onWeatherAlertClicked(val)),
+                      controller.appSettings.weatherUpdate
+                          ? DropdownButton<int>(
+                              dropdownColor: controller
+                                  .theme.appColorTheme.colorBackground,
+                              underline: Container(),
+                              value: controller.appSettings.updateTime,
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "every 2 hours",
+                                    style:
+                                        controller.theme.appTextTheme.txt18grey,
+                                  ),
+                                  value: 2,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "every 6 hours",
+                                    style:
+                                        controller.theme.appTextTheme.txt18grey,
+                                  ),
+                                  value: 6,
+                                ),
+                                DropdownMenuItem(
+                                    child: Text(
+                                      "every 12 hours",
+                                      style: controller
+                                          .theme.appTextTheme.txt18grey,
+                                    ),
+                                    value: 12),
+                              ],
+                              onChanged: (value) {
+                                controller.appSettings.updateTime = value ?? 2;
+                                controller.update();
+                              },
+                            )
+                          : Container()
+                    ],
                   )
                 ],
               ),
-=======
-            Text(
-              "Settings",
-              style: controller.theme.appTextTheme.txt32grey,
-            ),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Temperature Unit",
-                      style: controller.theme.appTextTheme.txt18grey,
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                            activeColor:
-                                controller.theme.appColorTheme.graphBorderColor,
-                            value: "degree",
-                            groupValue: controller.appSettings.isCelciuis
-                                ? "degree"
-                                : "farenheit",
-                            onChanged: (value) {
-                              controller.appSettings.isCelciuis = true;
-                              controller.update();
-                            }),
-                        Text(
-                          "°C",
-                          style: controller.theme.appTextTheme.txt18grey
-                              .copyWith(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Radio(
-                            activeColor:
-                                controller.theme.appColorTheme.graphBorderColor,
-                            value: "farenheit",
-                            groupValue: controller.appSettings.isCelciuis
-                                ? "degree"
-                                : "farenheit",
-                            onChanged: (value) {
-                              controller.appSettings.isCelciuis = false;
-                              controller.update();
-                            }),
-                        Text(
-                          "°F",
-                          style: controller.theme.appTextTheme.txt18grey
-                              .copyWith(fontSize: 14),
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Theme",
-                      style: controller.theme.appTextTheme.txt18grey,
-                    ),
-                    DropdownButton<String>(
-                      dropdownColor:
-                          controller.theme.appColorTheme.colorBackground,
-                      icon: Icon(
-                        Icons.brightness_medium_rounded,
-                        color: controller
-                            .theme.appColorTheme.greyButtonInsideColor,
-                      ),
-                      underline: Container(),
-                      value:
-                          controller.appSettings.isDarkMode ? "dark" : "light",
-                      items: [
-                        DropdownMenuItem(
-                          child: Text(
-                            "Light",
-                            style: controller.theme.appTextTheme.txt18grey,
-                          ),
-                          value: "light",
-                        ),
-                        DropdownMenuItem(
-                          child: Text(
-                            "Dark",
-                            style: controller.theme.appTextTheme.txt18grey,
-                          ),
-                          value: "dark",
-                        ),
-                        DropdownMenuItem(
-                            child: Text(
-                              "System Default",
-                              style: controller.theme.appTextTheme.txt18grey,
-                            ),
-                            value: "sys_def"),
-                      ],
-                      onChanged: (value) {
-                        if (value == "light") {
-                          controller.appSettings.isDarkMode = false;
-                          controller.appSettings.isdefaultTheme = false;
-                        } else if (value == "dark") {
-                          controller.appSettings.isDarkMode = true;
-                          controller.appSettings.isdefaultTheme = false;
-                        } else {
-                          controller.appSettings.isDarkMode = false;
-                          controller.appSettings.isdefaultTheme = true;
-                        }
-                        controller.setTheme();
-                      },
-                    )
-                  ],
-                )
-              ],
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

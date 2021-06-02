@@ -23,17 +23,11 @@ class ForeGroundUpView extends GetView<HomeController> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-<<<<<<< HEAD
                           FittedBox(
                             child: Text(
                               controller.data.cityName,
                               style: controller.theme.appTextTheme.txt32white,
                             ),
-=======
-                          Text(
-                            controller.data.cityName,
-                            style: controller.theme.appTextTheme.txt32white,
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                           ),
                           FittedBox(
                             child: Text(
@@ -100,17 +94,10 @@ class ForeGroundUpView extends GetView<HomeController> {
                                             (controller.appSettings.isCelciuis
                                                         ? (((controller.switcherState
                                                                         ? controller
-<<<<<<< HEAD
                                                                             .data
                                                                             .currentTemperature
                                                                         : controller
                                                                             .data
-=======
-                                                                            .data
-                                                                            .currentTemperature
-                                                                        : controller
-                                                                            .data
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                                                                             .tommorrowData
                                                                             .temperature) -
                                                                     273.75) *
@@ -166,7 +153,6 @@ class ForeGroundUpView extends GetView<HomeController> {
                           ],
                         ),
                         Padding(
-<<<<<<< HEAD
                           padding: EdgeInsets.only(bottom: 50),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
@@ -187,15 +173,6 @@ class ForeGroundUpView extends GetView<HomeController> {
                                       controller.theme.appTextTheme.txt32white,
                                 ),
                               ]),
-=======
-                          padding: EdgeInsets.only(bottom: 20),
-                          child: Text(
-                            controller.switcherState
-                                ? controller.data.currentWeather
-                                : controller.data.tommorrowData.weather,
-                            style: controller.theme.appTextTheme.txt32white,
-                          ),
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                         ),
                       ],
                     ),

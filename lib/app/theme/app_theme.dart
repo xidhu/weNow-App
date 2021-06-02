@@ -138,10 +138,6 @@ class AppSvgImages {
 
   AppSvgImages.lightTheme() {
     logo = src + "icons/logo.svg";
-<<<<<<< HEAD
-=======
-    background1 = src + "images/background1.svg";
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
     mainVector = src + "vectors/main_page_vector.svg";
     droplet = src + "icons/droplet.svg";
     uvi = src + "icons/uvi.svg";
@@ -152,10 +148,6 @@ class AppSvgImages {
 
   AppSvgImages.darkTheme() {
     logo = src + "icons/logo.svg";
-<<<<<<< HEAD
-=======
-    background1 = src + "images/background1.svg";
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
     mainVector = src + "vectors/main_page_vector_dark.svg";
     droplet = src + "icons/droplet.svg";
     uvi = src + "icons/uvi.svg";
@@ -180,14 +172,6 @@ class AppPngImages {
   }
 }
 
-class AppPngImages {
-  var src = "lib/assets/images/png/";
-
-  AppPngImages.lightTheme() {}
-
-  AppPngImages.darkTheme() {}
-}
-
 class AppTheme {
   late AppTextTheme appTextTheme;
   late AppColorTheme appColorTheme;
@@ -197,20 +181,12 @@ class AppTheme {
     appSvgImages = AppSvgImages.lightTheme();
     appColorTheme = AppColorTheme.lightTheme();
     appTextTheme = AppTextTheme.lightTheme();
-<<<<<<< HEAD
     appPngImages = AppPngImages();
-=======
-    appPngImages = AppPngImages.lightTheme();
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
   }
   AppTheme.darkTheme() {
     appSvgImages = AppSvgImages.darkTheme();
     appTextTheme = AppTextTheme.darkTheme();
     appColorTheme = AppColorTheme.darkTheme();
-<<<<<<< HEAD
     appPngImages = AppPngImages();
-=======
-    appPngImages = AppPngImages.darkTheme();
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
   }
 }

@@ -120,13 +120,10 @@ class HomeView extends GetView<HomeController> {
                                                       duration: Duration(
                                                           milliseconds: 200),
                                                       decoration: BoxDecoration(
-<<<<<<< HEAD
                                                           color: controller
                                                               .theme
                                                               .appColorTheme
                                                               .graphColor,
-=======
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
@@ -141,18 +138,11 @@ class HomeView extends GetView<HomeController> {
                                                                 .circular(20)
                                                             : BorderRadius.zero,
                                                         child: SvgPicture.asset(
-<<<<<<< HEAD
                                                           controller.theme
                                                               .appSvgImages
                                                               .getAnImage(controller
                                                                   .appSettings
                                                                   .currentLocation),
-=======
-                                                          controller
-                                                              .theme
-                                                              .appSvgImages
-                                                              .background1,
->>>>>>> 3447e952d082e16e0ddca148912d3fa79fbde907
                                                           fit: BoxFit.cover,
                                                           width: controller
                                                               .size.width,

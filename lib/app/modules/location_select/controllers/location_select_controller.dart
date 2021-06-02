@@ -28,7 +28,6 @@ class LocationSelectController extends GetxController {
   late Size size;
   late AppDatabase database;
   late ConnectionStatusSingleton connectionStatus;
-  late StreamSubscription connectionChangeStream;
   late Settings appSettings;
 
   //State Variables
