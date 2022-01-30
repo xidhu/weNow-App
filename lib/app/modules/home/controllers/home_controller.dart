@@ -21,7 +21,7 @@ import 'package:we_now/app/widgets/temperature_chart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:workmanager/workmanager.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with WidgetsBindingObserver {
   //Static Variables
   final WeatherApi api = WeatherApi();
 
@@ -100,6 +100,7 @@ class HomeController extends GetxController {
     switcherState = true;
     setData(data);
     setNotification();
+    WidgetsBinding.instance!.addObserver(this);
     super.onInit();
   }
 
@@ -124,14 +125,22 @@ class HomeController extends GetxController {
 
   @override
   void onClose() {
+    WidgetsBinding.instance!.removeObserver(this);
     super.onClose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    setTheme();
+    super.didChangePlatformBrightness();
   }
 
   void setTheme() {
     if (appSettings.isdefaultTheme) {
-      theme = Get.mediaQuery.platformBrightness == Brightness.dark
-          ? AppTheme.darkTheme()
-          : AppTheme.lightTheme();
+      theme =
+          WidgetsBinding.instance!.window.platformBrightness == Brightness.dark
+              ? AppTheme.darkTheme()
+              : AppTheme.lightTheme();
     } else {
       theme =
           appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();
@@ -364,7 +373,7 @@ class HomeController extends GetxController {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "app requires special auto start permission to show background notifications in some smartphones.",
+                        "This app requires special auto start permission to show background notifications in some devices.",
                         style: theme.appTextTheme.txt18grey,
                         textAlign: TextAlign.center,
                       ),

@@ -7,7 +7,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Settings appSettings = Settings.instance;
   await appSettings.loadData();
-
   runApp(GetMaterialApp(
     theme: ThemeData(
       fontFamily: 'ReemKufi',

@@ -14,7 +14,8 @@ import 'package:we_now/app/theme/app_theme.dart';
 import 'package:we_now/app/widgets/common_components.dart';
 import 'package:we_now/app/widgets/locationview_components.dart';
 
-class LocationSelectController extends GetxController {
+class LocationSelectController extends GetxController
+    with WidgetsBindingObserver {
   //statc variables
   final WeatherApi api = WeatherApi();
   ScrollController scrollController =
@@ -68,14 +69,28 @@ class LocationSelectController extends GetxController {
       currentLocation = appSettings.currentLocation;
       update();
     }
+    WidgetsBinding.instance!.addObserver(this);
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
+  void didChangePlatformBrightness() {
+    setTheme();
+    super.didChangePlatformBrightness();
   }
 
   void setTheme() {
     if (appSettings.isdefaultTheme) {
-      theme = Get.mediaQuery.platformBrightness == Brightness.dark
-          ? AppTheme.darkTheme()
-          : AppTheme.lightTheme();
+      theme =
+          WidgetsBinding.instance!.window.platformBrightness == Brightness.dark
+              ? AppTheme.darkTheme()
+              : AppTheme.lightTheme();
     } else {
       theme =
           appSettings.isDarkMode ? AppTheme.darkTheme() : AppTheme.lightTheme();

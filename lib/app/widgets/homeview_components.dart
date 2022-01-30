@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:we_now/app/modules/home/controllers/home_controller.dart';
-import 'package:we_now/app/theme/app_theme.dart';
 
 class HomeViewComponents {
   Widget menuButton(
@@ -403,18 +402,19 @@ class HomeViewComponents {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: controller.size.width * 0.3,
-                  height: controller.size.height * 0.04,
+                  padding: EdgeInsets.only(top: 4),
+                  width: controller.size.width * 0.2,
+                  height: controller.size.height * 0.05,
                   decoration: BoxDecoration(
                       color: controller
                           .theme.appColorTheme.greyButtonInsideColor
                           .withOpacity(0.4),
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [controller.theme.appColorTheme.shadowMild]),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                       onTap: () {
                         controller.settingsBackClicked();
                       },
@@ -424,34 +424,37 @@ class HomeViewComponents {
                         height: double.infinity,
                         child: Text(
                           "Cancel",
-                          style: controller.theme.appTextTheme.txt12white,
+                          style: controller.theme.appTextTheme.txt12white
+                              .copyWith(fontSize: 13),
                         ),
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  width: controller.size.width * 0.3,
-                  height: controller.size.height * 0.04,
+                  width: controller.size.width * 0.43,
+                  height: controller.size.height * 0.05,
                   decoration: BoxDecoration(
                       color: controller.theme.appColorTheme.color3,
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                       boxShadow: [controller.theme.appColorTheme.shadowMild]),
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(10),
                       onTap: () {
                         controller.onSettingsSaveClicked();
                         controller.settingsBackClicked();
                       },
                       child: Container(
+                        padding: EdgeInsets.only(top: 4),
                         alignment: Alignment.center,
                         width: double.infinity,
                         height: double.infinity,
                         child: Text(
                           "Save",
-                          style: controller.theme.appTextTheme.txt12white,
+                          style: controller.theme.appTextTheme.txt12white
+                              .copyWith(fontSize: 13),
                         ),
                       ),
                     ),

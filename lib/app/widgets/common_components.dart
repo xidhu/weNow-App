@@ -32,21 +32,22 @@ Widget dialogBox(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Container(
-                width: controller.size.width * 0.3,
-                height: controller.size.height * 0.04,
+                width: controller.size.width * 0.2,
+                height: controller.size.height * 0.05,
                 decoration: BoxDecoration(
                     color: controller.theme.appColorTheme.greyButtonInsideColor
                         .withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     boxShadow: [controller.theme.appColorTheme.shadowMild]),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     onTap: () {
                       onNegetive();
                     },
                     child: Container(
+                      padding: EdgeInsets.only(top: 4),
                       alignment: Alignment.center,
                       width: double.infinity,
                       height: double.infinity,
@@ -59,20 +60,21 @@ Widget dialogBox(
                 ),
               ),
               Container(
-                width: controller.size.width * 0.3,
-                height: controller.size.height * 0.04,
+                width: controller.size.width * 0.42,
+                height: controller.size.height * 0.05,
                 decoration: BoxDecoration(
                     color: controller.theme.appColorTheme.color3,
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     boxShadow: [controller.theme.appColorTheme.shadowMild]),
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                     onTap: () {
                       onPositive();
                     },
                     child: Container(
+                      padding: EdgeInsets.only(top: 4),
                       alignment: Alignment.center,
                       width: double.infinity,
                       height: double.infinity,
