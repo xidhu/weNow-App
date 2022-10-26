@@ -6,30 +6,33 @@
 </p>
 
 
-</p>
 
 
 
 # WeNow
-WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.herokuapp.com/) to fetch 8 day / 1 hour forecasted data from the [OpenWeather](https://openweathermap.org/) and also provides places,cities,counties,coords etc.
-<br/><br/>
-<img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_ui.jpg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" height=500>
+
+<table border="0">
+ <tr>
+    <td> WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.herokuapp.com/) to fetch 8 day / 1 hour forecasted data from the [OpenWeather](https://openweathermap.org/) and also provides places,cities,counties,coords etc.
+
 #### [WeNowAPI](https://github.com/xidhu/weNow-API/)
-
-
-
 
 * 5000+ cities.
 * 8 Days weather forecast.
 * Hourly forecast data of 2 days.
-* Weather alerts.
+* Weather alerts  
 
 [![Let's fund issues in this repository](https://issuehunt.io/static/embed/issuehunt-button-v1.svg)](https://issuehunt.io/r/xidhu/weNow-App)
 
 ## Features
 * Live in-app database
 * Simple UI
-* Optimized API calls
+* Optimized API calls</td>
+    <td><img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_ui.jpg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" width=1500> </td>
+ </tr>
+</table>
+
+
 
 
 ## Screens
