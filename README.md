@@ -13,7 +13,11 @@
 
 <table border="0">
  <tr>
-    <td> WeNow is a simple weather forecast app, which uses [WeNowAPI](https://we-now.herokuapp.com/) to fetch 8 day / 1 hour forecasted data from the [OpenWeather](https://openweathermap.org/) and also provides places,cities,counties,coords etc.
+    <td> WeNow is a simple weather forecast app, which uses 
+    WeNow API
+    to fetch 8 day / 1 hour forecasted data from the OpenWeather and also provides places,cities,counties,coords etc.
+    
+#### [Download Now For Android](https://github.com/xidhu/weNow-App/releases/download/1.0.0/WeNow-x86_64-release.apk/)
 
 #### [WeNowAPI](https://github.com/xidhu/weNow-API/)
 
