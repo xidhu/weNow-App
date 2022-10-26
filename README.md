@@ -28,7 +28,7 @@
 * Live in-app database
 * Simple UI
 * Optimized API calls</td>
-    <td><img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_ui.jpg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" width=1500> </td>
+    <td><img src="https://raw.githubusercontent.com/xidhu/weNow-App/master/lib/assets/repo/app_ui.jpg?token=APOIDJDNTCIVRQ2DTOHNBLLAVPXGC" width=2500> </td>
  </tr>
 </table>
 
