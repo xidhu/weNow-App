@@ -17,7 +17,7 @@
     WeNow API
     to fetch 8 day / 1 hour forecasted data from the OpenWeather and also provides places,cities,counties,coords etc.
     
-#### [Download Now For Android](https://github.com/xidhu/weNow-App/releases/download/1.0.0/WeNow-x86_64-release.apk/)
+#### [Download Now For Android](https://github.com/xidhu/weNow-App/releases/download/1.0.0/WeNow-arm64-v8a-release.apk)
 
 #### [WeNowAPI](https://github.com/xidhu/weNow-API/)
 
