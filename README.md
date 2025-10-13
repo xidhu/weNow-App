@@ -15,7 +15,7 @@
  <tr>
     <td> WeNow is a simple weather forecast app, which uses 
     WeNow API
-    to fetch 8 day / 1 hour forecasted data from the OpenWeather and also provides places,cities,counties,coords etc.
+    to fetch 8 day / 1 hour forecasted data from the OpenWeather.
     
 #### [Download Now For Android](https://github.com/xidhu/weNow-App/releases/download/1.0.0/WeNow-arm64-v8a-release.apk)
 
